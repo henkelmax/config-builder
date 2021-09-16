@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Properties;
 
@@ -15,13 +16,7 @@ public class Config {
     public Config(Path path) {
         this.path = path;
         this.properties = new Properties();
-        try {
-            load();
-        } catch (IOException e) {
-            System.err.println("Failed to read " + path.getFileName().toString());
-            System.err.println("Using default configuration values");
-            e.printStackTrace();
-        }
+        loadInternal();
     }
 
     public String get(String key) {
@@ -37,17 +32,35 @@ public class Config {
     }
 
     public void load() throws IOException {
-        File file = path.toFile();
-        if (file.exists()) {
-            properties.load(new FileInputStream(file));
+        if (Files.exists(path)) {
+            try (FileInputStream inputStream = new FileInputStream(path.toFile())) {
+                properties.load(inputStream);
+            }
         }
     }
 
-    private void saveUnthreaded() {
+    private void loadInternal() {
+        try {
+            load();
+        } catch (IOException e) {
+            System.err.println("Failed to read " + path.getFileName().toString());
+            System.err.println("Using default configuration values");
+            e.printStackTrace();
+        }
+    }
+
+    public void reload() {
+        properties = new Properties();
+        loadInternal();
+    }
+
+    public void saveSync() {
         try {
             File file = path.toFile();
             file.getParentFile().mkdirs();
-            properties.store(new FileWriter(file, false), "");
+            try (FileWriter writer = new FileWriter(file, false)) {
+                properties.store(writer, "");
+            }
         } catch (IOException e) {
             System.err.println("Failed to save " + path.getFileName().toString());
             e.printStackTrace();
@@ -57,7 +70,7 @@ public class Config {
     public void save() {
         new Thread(() -> {
             synchronized (Config.this) {
-                saveUnthreaded();
+                saveSync();
             }
         }).start();
     }

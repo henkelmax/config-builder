@@ -9,25 +9,36 @@ import java.util.stream.Collectors;
 
 public class ConfigBuilder {
 
+    protected Config config;
     protected List<ConfigEntry<?>> entries;
 
-    private ConfigBuilder() {
-        entries = new ArrayList<>();
+    private ConfigBuilder(Config config) {
+        this.config = config;
+        this.entries = new ArrayList<>();
     }
 
-    public static void create(Path path, Consumer<ConfigBuilder> builderConsumer) {
-        ConfigBuilder builder = new ConfigBuilder();
-        builderConsumer.accept(builder);
+    static ConfigBuilder createInternal(Path path, Consumer<ConfigBuilder> builderConsumer) {
         Config config = new Config(path);
+        ConfigBuilder builder = new ConfigBuilder(config);
+        builderConsumer.accept(builder);
         for (ConfigEntry<?> entry : builder.entries) {
-            entry.config = config;
             entry.loadOrDefault();
         }
         config.save();
+        return builder;
+    }
+
+    public static void create(Path path, Consumer<ConfigBuilder> builderConsumer) {
+        createInternal(path, builderConsumer);
+    }
+
+    void reloadFromDisk() {
+        config.reload();
+        entries.forEach(ConfigEntry::loadOrDefault);
     }
 
     public ConfigEntry<Boolean> booleanEntry(String key, boolean def) {
-        BooleanConfigEntry entry = new BooleanConfigEntry();
+        BooleanConfigEntry entry = new BooleanConfigEntry(config);
         entry.key = key;
         entry.def = def;
         entries.add(entry);
@@ -35,7 +46,7 @@ public class ConfigBuilder {
     }
 
     public ConfigEntry<Integer> integerEntry(String key, int def, int min, int max) {
-        IntegerConfigEntry entry = new IntegerConfigEntry(min, max);
+        IntegerConfigEntry entry = new IntegerConfigEntry(config, min, max);
         entry.key = key;
         entry.def = def;
         entries.add(entry);
@@ -43,7 +54,7 @@ public class ConfigBuilder {
     }
 
     public ConfigEntry<Double> doubleEntry(String key, double def, double min, double max) {
-        DoubleConfigEntry entry = new DoubleConfigEntry(min, max);
+        DoubleConfigEntry entry = new DoubleConfigEntry(config, min, max);
         entry.key = key;
         entry.def = def;
         entries.add(entry);
@@ -51,7 +62,7 @@ public class ConfigBuilder {
     }
 
     public ConfigEntry<String> stringEntry(String key, String def) {
-        StringConfigEntry entry = new StringConfigEntry();
+        StringConfigEntry entry = new StringConfigEntry(config);
         entry.key = key;
         entry.def = def;
         entries.add(entry);
@@ -59,7 +70,7 @@ public class ConfigBuilder {
     }
 
     public ConfigEntry<List<Integer>> integerListEntry(String key, List<Integer> def) {
-        IntegerListConfigEntry entry = new IntegerListConfigEntry();
+        IntegerListConfigEntry entry = new IntegerListConfigEntry(config);
         entry.key = key;
         entry.def = def;
         entries.add(entry);
@@ -67,7 +78,7 @@ public class ConfigBuilder {
     }
 
     public <T extends Enum> ConfigEntry<T> enumEntry(String key, T def) {
-        EnumConfigEntry<T> entry = new EnumConfigEntry(def.getClass());
+        EnumConfigEntry<T> entry = new EnumConfigEntry(config, def.getClass());
         entry.key = key;
         entry.def = def;
         entries.add(entry);
@@ -79,8 +90,8 @@ public class ConfigBuilder {
         protected String key;
         protected T value, def;
 
-        private ConfigEntry() {
-
+        private ConfigEntry(Config config) {
+            this.config = config;
         }
 
         public T get() {
@@ -91,8 +102,8 @@ public class ConfigBuilder {
             if (this.value.equals(value)) {
                 return this;
             }
-            this.value = value;
-            String serialized = serialize(value);
+            this.value = fixValue(value);
+            String serialized = serialize(this.value);
             config.getProperties().setProperty(key, serialized);
             return this;
         }
@@ -103,7 +114,7 @@ public class ConfigBuilder {
                 if (val == null) {
                     reset();
                 } else {
-                    value = val;
+                    value = fixValue(val);
                 }
             } else {
                 reset();
@@ -121,10 +132,19 @@ public class ConfigBuilder {
             return this;
         }
 
+        public ConfigEntry<T> saveSync() {
+            config.saveSync();
+            return this;
+        }
+
         @Nullable
         public abstract T deserialize(String str);
 
         public abstract String serialize(T val);
+
+        protected T fixValue(T value) {
+            return value;
+        }
 
         public Config getConfig() {
             return config;
@@ -132,6 +152,11 @@ public class ConfigBuilder {
     }
 
     private static class BooleanConfigEntry extends ConfigEntry<Boolean> {
+
+        private BooleanConfigEntry(Config config) {
+            super(config);
+        }
+
         @Override
         @Nullable
         public Boolean deserialize(String str) {
@@ -148,7 +173,8 @@ public class ConfigBuilder {
 
         private final int min, max;
 
-        public IntegerConfigEntry(int min, int max) {
+        public IntegerConfigEntry(Config config, int min, int max) {
+            super(config);
             this.min = min;
             this.max = max;
         }
@@ -157,10 +183,15 @@ public class ConfigBuilder {
         @Nullable
         public Integer deserialize(String str) {
             try {
-                return Math.max(Math.min(Integer.parseInt(str), max), min);
+                return Integer.parseInt(str);
             } catch (NumberFormatException e) {
                 return null;
             }
+        }
+
+        @Override
+        protected Integer fixValue(Integer value) {
+            return Math.max(Math.min(value, max), min);
         }
 
         @Override
@@ -173,7 +204,8 @@ public class ConfigBuilder {
 
         private final double min, max;
 
-        public DoubleConfigEntry(double min, double max) {
+        public DoubleConfigEntry(Config config, double min, double max) {
+            super(config);
             this.min = min;
             this.max = max;
         }
@@ -182,10 +214,15 @@ public class ConfigBuilder {
         @Nullable
         public Double deserialize(String str) {
             try {
-                return Math.max(Math.min(Double.parseDouble(str), max), min);
+                return Double.parseDouble(str);
             } catch (NumberFormatException e) {
                 return null;
             }
+        }
+
+        @Override
+        protected Double fixValue(Double value) {
+            return Math.max(Math.min(value, max), min);
         }
 
         @Override
@@ -195,6 +232,11 @@ public class ConfigBuilder {
     }
 
     private static class StringConfigEntry extends ConfigEntry<String> {
+
+        private StringConfigEntry(Config config) {
+            super(config);
+        }
+
         @Override
         @Nullable
         public String deserialize(String str) {
@@ -210,7 +252,8 @@ public class ConfigBuilder {
     private static class EnumConfigEntry<T extends Enum> extends ConfigEntry<Enum> {
         protected Class<T> enumClass;
 
-        public EnumConfigEntry(Class<T> enumClass) {
+        public EnumConfigEntry(Config config, Class<T> enumClass) {
+            super(config);
             this.enumClass = enumClass;
         }
 
@@ -231,6 +274,11 @@ public class ConfigBuilder {
     }
 
     private static class IntegerListConfigEntry extends ConfigEntry<List<Integer>> {
+
+        private IntegerListConfigEntry(Config config) {
+            super(config);
+        }
+
         @Override
         @Nullable
         public List<Integer> deserialize(String str) {
