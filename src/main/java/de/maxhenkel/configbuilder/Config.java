@@ -1,11 +1,9 @@
 package de.maxhenkel.configbuilder;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 import java.util.Properties;
 
 public class Config {
@@ -33,7 +31,7 @@ public class Config {
 
     public void load() throws IOException {
         if (Files.exists(path)) {
-            try (FileInputStream inputStream = new FileInputStream(path.toFile())) {
+            try (InputStream inputStream = Files.newInputStream(path)) {
                 properties.load(inputStream);
             }
         }
@@ -55,12 +53,8 @@ public class Config {
     }
 
     public void saveSync() {
-        try {
-            File file = path.toFile();
-            file.getParentFile().mkdirs();
-            try (FileWriter writer = new FileWriter(file, false)) {
-                properties.store(writer, "");
-            }
+        try (OutputStream stream = Files.newOutputStream(path, StandardOpenOption.CREATE, StandardOpenOption.SYNC, StandardOpenOption.TRUNCATE_EXISTING)) {
+            properties.store(stream, "");
         } catch (IOException e) {
             System.err.println("Failed to save " + path.getFileName().toString());
             e.printStackTrace();

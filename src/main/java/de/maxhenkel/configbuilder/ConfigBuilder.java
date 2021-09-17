@@ -17,19 +17,14 @@ public class ConfigBuilder {
         this.entries = new ArrayList<>();
     }
 
-    static ConfigBuilder createInternal(Path path, Consumer<ConfigBuilder> builderConsumer) {
-        Config config = new Config(path);
-        ConfigBuilder builder = new ConfigBuilder(config);
-        builderConsumer.accept(builder);
-        for (ConfigEntry<?> entry : builder.entries) {
-            entry.loadOrDefault();
-        }
-        config.save();
-        return builder;
+    static ConfigBuilder createInternal(Path path) {
+        return new ConfigBuilder(new Config(path));
     }
 
     public static void create(Path path, Consumer<ConfigBuilder> builderConsumer) {
-        createInternal(path, builderConsumer);
+        ConfigBuilder builder = createInternal(path);
+        builderConsumer.accept(builder);
+        builder.config.save();
     }
 
     void reloadFromDisk() {
@@ -41,6 +36,7 @@ public class ConfigBuilder {
         BooleanConfigEntry entry = new BooleanConfigEntry(config);
         entry.key = key;
         entry.def = def;
+        entry.loadOrDefault();
         entries.add(entry);
         return entry;
     }
@@ -49,6 +45,7 @@ public class ConfigBuilder {
         IntegerConfigEntry entry = new IntegerConfigEntry(config, min, max);
         entry.key = key;
         entry.def = def;
+        entry.loadOrDefault();
         entries.add(entry);
         return entry;
     }
@@ -57,6 +54,7 @@ public class ConfigBuilder {
         DoubleConfigEntry entry = new DoubleConfigEntry(config, min, max);
         entry.key = key;
         entry.def = def;
+        entry.loadOrDefault();
         entries.add(entry);
         return entry;
     }
@@ -65,6 +63,7 @@ public class ConfigBuilder {
         StringConfigEntry entry = new StringConfigEntry(config);
         entry.key = key;
         entry.def = def;
+        entry.loadOrDefault();
         entries.add(entry);
         return entry;
     }
@@ -73,6 +72,7 @@ public class ConfigBuilder {
         IntegerListConfigEntry entry = new IntegerListConfigEntry(config);
         entry.key = key;
         entry.def = def;
+        entry.loadOrDefault();
         entries.add(entry);
         return entry;
     }
@@ -81,6 +81,7 @@ public class ConfigBuilder {
         EnumConfigEntry<T> entry = new EnumConfigEntry(config, def.getClass());
         entry.key = key;
         entry.def = def;
+        entry.loadOrDefault();
         entries.add(entry);
         return (ConfigEntry<T>) entry;
     }
