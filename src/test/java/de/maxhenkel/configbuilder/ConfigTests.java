@@ -21,10 +21,10 @@ public class ConfigTests {
     @DisplayName("Save and read")
     void saveAndRead(@TempDir Path tempDir) {
         Path config = tempDir.resolve(CONFIG_NAME);
-        ConfigBuilder builder = ConfigBuilder.createInternal(config);
-        ConfigBuilder.ConfigEntry<Boolean> booleanEntry = builder.booleanEntry("boolean_test", false);
-        ConfigBuilder.ConfigEntry<Integer> integerEntry = builder.integerEntry("integer_test", 10, 0, 20);
-        ConfigBuilder.ConfigEntry<String> stringEntry = builder.stringEntry("string_test", "Test 123");
+        ConfigBuilder builder = ConfigBuilder.buildInternal(config);
+        ConfigEntry<Boolean> booleanEntry = builder.booleanEntry("boolean_test", false);
+        ConfigEntry<Integer> integerEntry = builder.integerEntry("integer_test", 10, 0, 20);
+        ConfigEntry<String> stringEntry = builder.stringEntry("string_test", "Test 123");
         builder.config.save();
 
         assertEquals(false, booleanEntry.get());
@@ -37,10 +37,10 @@ public class ConfigTests {
         assertEquals(15, integerEntry.get());
         assertEquals("Another string", stringEntry.get());
 
-        builder = ConfigBuilder.createInternal(config);
-        ConfigBuilder.ConfigEntry<Boolean> booleanEntry2 = builder.booleanEntry("boolean_test", false);
-        ConfigBuilder.ConfigEntry<Integer> integerEntry2 = builder.integerEntry("integer_test", 10, 0, 20);
-        ConfigBuilder.ConfigEntry<String> stringEntry2 = builder.stringEntry("string_test", "Test 123");
+        builder = ConfigBuilder.buildInternal(config);
+        ConfigEntry<Boolean> booleanEntry2 = builder.booleanEntry("boolean_test", false);
+        ConfigEntry<Integer> integerEntry2 = builder.integerEntry("integer_test", 10, 0, 20);
+        ConfigEntry<String> stringEntry2 = builder.stringEntry("string_test", "Test 123");
         builder.config.save();
 
         assertEquals(true, booleanEntry2.get());
@@ -51,10 +51,10 @@ public class ConfigTests {
     @Test
     @DisplayName("Save, reload and read")
     void saveReloadAndRead(@TempDir Path tempDir) {
-        ConfigBuilder builder = ConfigBuilder.createInternal(tempDir.resolve(CONFIG_NAME));
-        ConfigBuilder.ConfigEntry<Boolean> booleanEntry = builder.booleanEntry("boolean_test", false);
-        ConfigBuilder.ConfigEntry<Integer> integerEntry = builder.integerEntry("integer_test", 10, 0, 20);
-        ConfigBuilder.ConfigEntry<String> stringEntry = builder.stringEntry("string_test", "Test 123");
+        ConfigBuilder builder = ConfigBuilder.buildInternal(tempDir.resolve(CONFIG_NAME));
+        ConfigEntry<Boolean> booleanEntry = builder.booleanEntry("boolean_test", false);
+        ConfigEntry<Integer> integerEntry = builder.integerEntry("integer_test", 10, 0, 20);
+        ConfigEntry<String> stringEntry = builder.stringEntry("string_test", "Test 123");
         builder.config.save();
 
         assertEquals(false, booleanEntry.get());
@@ -78,10 +78,10 @@ public class ConfigTests {
     @Test
     @DisplayName("Save, reload and read async")
     void saveReloadAndReadAsync(@TempDir Path tempDir) {
-        ConfigBuilder builder = ConfigBuilder.createInternal(tempDir.resolve(CONFIG_NAME));
-        ConfigBuilder.ConfigEntry<Boolean> booleanEntry = builder.booleanEntry("boolean_test", false);
-        ConfigBuilder.ConfigEntry<Integer> integerEntry = builder.integerEntry("integer_test", 10, 0, 20);
-        ConfigBuilder.ConfigEntry<String> stringEntry = builder.stringEntry("string_test", "Test 123");
+        ConfigBuilder builder = ConfigBuilder.buildInternal(tempDir.resolve(CONFIG_NAME));
+        ConfigEntry<Boolean> booleanEntry = builder.booleanEntry("boolean_test", false);
+        ConfigEntry<Integer> integerEntry = builder.integerEntry("integer_test", 10, 0, 20);
+        ConfigEntry<String> stringEntry = builder.stringEntry("string_test", "Test 123");
         builder.config.save();
 
         assertEquals(false, booleanEntry.get());
@@ -105,10 +105,10 @@ public class ConfigTests {
     @Test
     @DisplayName("Change and read without saving")
     void changeAndReadWithoutSaving(@TempDir Path tempDir) {
-        ConfigBuilder builder = ConfigBuilder.createInternal(tempDir.resolve(CONFIG_NAME));
-        ConfigBuilder.ConfigEntry<Boolean> booleanEntry = builder.booleanEntry("boolean_test", false);
-        ConfigBuilder.ConfigEntry<Integer> integerEntry = builder.integerEntry("integer_test", 10, 0, 20);
-        ConfigBuilder.ConfigEntry<String> stringEntry = builder.stringEntry("string_test", "Test 123");
+        ConfigBuilder builder = ConfigBuilder.buildInternal(tempDir.resolve(CONFIG_NAME));
+        ConfigEntry<Boolean> booleanEntry = builder.booleanEntry("boolean_test", false);
+        ConfigEntry<Integer> integerEntry = builder.integerEntry("integer_test", 10, 0, 20);
+        ConfigEntry<String> stringEntry = builder.stringEntry("string_test", "Test 123");
         builder.config.save();
 
         assertEquals(false, booleanEntry.get());
@@ -131,8 +131,8 @@ public class ConfigTests {
     @Test
     @DisplayName("Async save spamming")
     void asyncSaveSpamming(@TempDir Path tempDir) {
-        ConfigBuilder builder = ConfigBuilder.createInternal(tempDir.resolve(CONFIG_NAME));
-        ConfigBuilder.ConfigEntry<Integer> integerEntry = builder.integerEntry("integer_test", 0, 0, 20);
+        ConfigBuilder builder = ConfigBuilder.buildInternal(tempDir.resolve(CONFIG_NAME));
+        ConfigEntry<Integer> integerEntry = builder.integerEntry("integer_test", 0, 0, 20);
         builder.config.save();
 
         for (int i = 1; i <= 20; i++) {
@@ -149,8 +149,8 @@ public class ConfigTests {
     @Test
     @DisplayName("Set boolean")
     void setBoolean(@TempDir Path tempDir) {
-        ConfigBuilder builder = ConfigBuilder.createInternal(tempDir.resolve(CONFIG_NAME));
-        ConfigBuilder.ConfigEntry<Boolean> entry = builder.booleanEntry("boolean_test", false);
+        ConfigBuilder builder = ConfigBuilder.buildInternal(tempDir.resolve(CONFIG_NAME));
+        ConfigEntry<Boolean> entry = builder.booleanEntry("boolean_test", false);
         builder.config.save();
 
         assertEquals(false, entry.get());
@@ -166,8 +166,8 @@ public class ConfigTests {
     @Test
     @DisplayName("Set integer")
     void setInteger(@TempDir Path tempDir) {
-        ConfigBuilder builder = ConfigBuilder.createInternal(tempDir.resolve(CONFIG_NAME));
-        ConfigBuilder.ConfigEntry<Integer> entry = builder.integerEntry("integer_test", 10, 0, 20);
+        ConfigBuilder builder = ConfigBuilder.buildInternal(tempDir.resolve(CONFIG_NAME));
+        ConfigEntry<Integer> entry = builder.integerEntry("integer_test", 10, 0, 20);
         builder.config.save();
 
         assertEquals(10, entry.get());
@@ -196,8 +196,8 @@ public class ConfigTests {
     @Test
     @DisplayName("Set double")
     void setDouble(@TempDir Path tempDir) {
-        ConfigBuilder builder = ConfigBuilder.createInternal(tempDir.resolve(CONFIG_NAME));
-        ConfigBuilder.ConfigEntry<Double> entry = builder.doubleEntry("double_test", 10D, 0D, 20D);
+        ConfigBuilder builder = ConfigBuilder.buildInternal(tempDir.resolve(CONFIG_NAME));
+        ConfigEntry<Double> entry = builder.doubleEntry("double_test", 10D, 0D, 20D);
         builder.config.save();
 
         assertEquals(10D, entry.get());
@@ -226,8 +226,8 @@ public class ConfigTests {
     @Test
     @DisplayName("Set string")
     void setString(@TempDir Path tempDir) {
-        ConfigBuilder builder = ConfigBuilder.createInternal(tempDir.resolve(CONFIG_NAME));
-        ConfigBuilder.ConfigEntry<String> entry = builder.stringEntry("string_test", "test123=!\"");
+        ConfigBuilder builder = ConfigBuilder.buildInternal(tempDir.resolve(CONFIG_NAME));
+        ConfigEntry<String> entry = builder.stringEntry("string_test", "test123=!\"");
         builder.config.save();
 
         assertEquals("test123=!\"", entry.get());
@@ -243,8 +243,8 @@ public class ConfigTests {
     @Test
     @DisplayName("Set integer list")
     void setIntList(@TempDir Path tempDir) {
-        ConfigBuilder builder = ConfigBuilder.createInternal(tempDir.resolve(CONFIG_NAME));
-        ConfigBuilder.ConfigEntry<List<Integer>> entry = builder.integerListEntry("int_list_test", Arrays.asList(-1, 0, 1, Integer.MIN_VALUE, Integer.MAX_VALUE));
+        ConfigBuilder builder = ConfigBuilder.buildInternal(tempDir.resolve(CONFIG_NAME));
+        ConfigEntry<List<Integer>> entry = builder.integerListEntry("int_list_test", Arrays.asList(-1, 0, 1, Integer.MIN_VALUE, Integer.MAX_VALUE));
         builder.config.save();
 
         assertEquals(Arrays.asList(-1, 0, 1, Integer.MIN_VALUE, Integer.MAX_VALUE), entry.get());
@@ -261,8 +261,8 @@ public class ConfigTests {
     @Test
     @DisplayName("Set enum")
     void setEnum(@TempDir Path tempDir) {
-        ConfigBuilder builder = ConfigBuilder.createInternal(tempDir.resolve(CONFIG_NAME));
-        ConfigBuilder.ConfigEntry<TestEnum> entry = builder.enumEntry("enum_test", TestEnum.TEST_2);
+        ConfigBuilder builder = ConfigBuilder.buildInternal(tempDir.resolve(CONFIG_NAME));
+        ConfigEntry<TestEnum> entry = builder.enumEntry("enum_test", TestEnum.TEST_2);
         builder.config.save();
 
         assertEquals(TestEnum.TEST_2, entry.get());
@@ -282,8 +282,8 @@ public class ConfigTests {
         Path configPath = tempDir.resolve(CONFIG_NAME);
         Files.write(configPath, Arrays.asList("test=test123"));
         sleep();
-        ConfigBuilder builder = ConfigBuilder.createInternal(configPath);
-        ConfigBuilder.ConfigEntry<String> entry = builder.stringEntry("test", "");
+        ConfigBuilder builder = ConfigBuilder.buildInternal(configPath);
+        ConfigEntry<String> entry = builder.stringEntry("test", "");
         builder.config.save();
 
         assertEquals("test123", entry.get());
@@ -299,8 +299,8 @@ public class ConfigTests {
     @DisplayName("Manually read config")
     void manuallyReadConfig(@TempDir Path tempDir) throws IOException {
         Path configPath = tempDir.resolve(CONFIG_NAME);
-        ConfigBuilder builder = ConfigBuilder.createInternal(configPath);
-        ConfigBuilder.ConfigEntry<String> entry = builder.stringEntry("test", "test123");
+        ConfigBuilder builder = ConfigBuilder.buildInternal(configPath);
+        ConfigEntry<String> entry = builder.stringEntry("test", "test123");
         builder.config.save();
 
         assertEquals("test123", entry.get());
@@ -316,8 +316,8 @@ public class ConfigTests {
     @DisplayName("Delete config and save")
     void deleteConfigAndSave(@TempDir Path tempDir) throws IOException {
         Path configPath = tempDir.resolve(CONFIG_NAME);
-        ConfigBuilder builder = ConfigBuilder.createInternal(configPath);
-        ConfigBuilder.ConfigEntry<String> entry = builder.stringEntry("test", "test123");
+        ConfigBuilder builder = ConfigBuilder.buildInternal(configPath);
+        ConfigEntry<String> entry = builder.stringEntry("test", "test123");
         builder.config.save();
 
         assertEquals("test123", entry.get());
@@ -328,8 +328,8 @@ public class ConfigTests {
         entry.set("abc").saveSync();
         sleep();
 
-        builder = ConfigBuilder.createInternal(configPath);
-        ConfigBuilder.ConfigEntry<String> entry2 = builder.stringEntry("test", "test123");
+        builder = ConfigBuilder.buildInternal(configPath);
+        ConfigEntry<String> entry2 = builder.stringEntry("test", "test123");
         builder.config.save();
 
         assertEquals("abc", entry2.get());

@@ -4,32 +4,33 @@ import javax.annotation.Nullable;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class ConfigBuilder {
 
-    protected Config config;
-    protected List<ConfigEntry<?>> entries;
+    protected PropertyConfig config;
+    protected List<ConfigEntryImpl<?>> entries;
 
-    private ConfigBuilder(Config config) {
+    private ConfigBuilder(PropertyConfig config) {
         this.config = config;
         this.entries = new ArrayList<>();
     }
 
-    static ConfigBuilder createInternal(Path path) {
-        return new ConfigBuilder(new Config(path));
+    static ConfigBuilder buildInternal(Path path) {
+        return new ConfigBuilder(new PropertyConfig(path));
     }
 
-    public static void create(Path path, Consumer<ConfigBuilder> builderConsumer) {
-        ConfigBuilder builder = createInternal(path);
-        builderConsumer.accept(builder);
+    public static <T> T build(Path path, Function<ConfigBuilder, T> builderConsumer) {
+        ConfigBuilder builder = buildInternal(path);
+        T config = builderConsumer.apply(builder);
         builder.config.save();
+        return config;
     }
 
     void reloadFromDisk() {
         config.reload();
-        entries.forEach(ConfigEntry::loadOrDefault);
+        entries.forEach(ConfigEntryImpl::loadOrDefault);
     }
 
     public ConfigEntry<Boolean> booleanEntry(String key, boolean def) {
@@ -77,29 +78,31 @@ public class ConfigBuilder {
         return entry;
     }
 
-    public <T extends Enum> ConfigEntry<T> enumEntry(String key, T def) {
+    public <T extends Enum<T>> ConfigEntry<T> enumEntry(String key, T def) {
         EnumConfigEntry<T> entry = new EnumConfigEntry(config, def.getClass());
         entry.key = key;
         entry.def = def;
         entry.loadOrDefault();
         entries.add(entry);
-        return (ConfigEntry<T>) entry;
+        return (ConfigEntryImpl<T>) entry;
     }
 
-    public static abstract class ConfigEntry<T> {
-        protected Config config;
+    private static abstract class ConfigEntryImpl<T> implements ConfigEntry<T> {
+        protected PropertyConfig config;
         protected String key;
         protected T value, def;
 
-        private ConfigEntry(Config config) {
+        private ConfigEntryImpl(PropertyConfig config) {
             this.config = config;
         }
 
+        @Override
         public T get() {
             return value;
         }
 
-        public ConfigEntry<T> set(T value) {
+        @Override
+        public ConfigEntryImpl<T> set(T value) {
             if (this.value.equals(value)) {
                 return this;
             }
@@ -122,17 +125,20 @@ public class ConfigBuilder {
             }
         }
 
+        @Override
         public ConfigEntry<T> reset() {
             value = def;
             config.getProperties().setProperty(key, serialize(def));
             return this;
         }
 
+        @Override
         public ConfigEntry<T> save() {
             config.save();
             return this;
         }
 
+        @Override
         public ConfigEntry<T> saveSync() {
             config.saveSync();
             return this;
@@ -147,14 +153,15 @@ public class ConfigBuilder {
             return value;
         }
 
+        @Override
         public Config getConfig() {
             return config;
         }
     }
 
-    private static class BooleanConfigEntry extends ConfigEntry<Boolean> {
+    private static class BooleanConfigEntry extends ConfigEntryImpl<Boolean> {
 
-        private BooleanConfigEntry(Config config) {
+        private BooleanConfigEntry(PropertyConfig config) {
             super(config);
         }
 
@@ -170,11 +177,11 @@ public class ConfigBuilder {
         }
     }
 
-    private static class IntegerConfigEntry extends ConfigEntry<Integer> {
+    private static class IntegerConfigEntry extends ConfigEntryImpl<Integer> {
 
         private final int min, max;
 
-        public IntegerConfigEntry(Config config, int min, int max) {
+        public IntegerConfigEntry(PropertyConfig config, int min, int max) {
             super(config);
             this.min = min;
             this.max = max;
@@ -201,11 +208,11 @@ public class ConfigBuilder {
         }
     }
 
-    private static class DoubleConfigEntry extends ConfigEntry<Double> {
+    private static class DoubleConfigEntry extends ConfigEntryImpl<Double> {
 
         private final double min, max;
 
-        public DoubleConfigEntry(Config config, double min, double max) {
+        public DoubleConfigEntry(PropertyConfig config, double min, double max) {
             super(config);
             this.min = min;
             this.max = max;
@@ -232,9 +239,9 @@ public class ConfigBuilder {
         }
     }
 
-    private static class StringConfigEntry extends ConfigEntry<String> {
+    private static class StringConfigEntry extends ConfigEntryImpl<String> {
 
-        private StringConfigEntry(Config config) {
+        private StringConfigEntry(PropertyConfig config) {
             super(config);
         }
 
@@ -250,10 +257,10 @@ public class ConfigBuilder {
         }
     }
 
-    private static class EnumConfigEntry<T extends Enum> extends ConfigEntry<Enum> {
+    private static class EnumConfigEntry<T extends Enum> extends ConfigEntryImpl<Enum> {
         protected Class<T> enumClass;
 
-        public EnumConfigEntry(Config config, Class<T> enumClass) {
+        public EnumConfigEntry(PropertyConfig config, Class<T> enumClass) {
             super(config);
             this.enumClass = enumClass;
         }
@@ -274,9 +281,9 @@ public class ConfigBuilder {
         }
     }
 
-    private static class IntegerListConfigEntry extends ConfigEntry<List<Integer>> {
+    private static class IntegerListConfigEntry extends ConfigEntryImpl<List<Integer>> {
 
-        private IntegerListConfigEntry(Config config) {
+        private IntegerListConfigEntry(PropertyConfig config) {
             super(config);
         }
 
