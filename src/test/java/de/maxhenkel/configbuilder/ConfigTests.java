@@ -335,6 +335,27 @@ public class ConfigTests {
         assertEquals("abc", entry2.get());
     }
 
+    @Test
+    @DisplayName("Remove unused values")
+    void removeUnused(@TempDir Path tempDir) throws IOException {
+        Path configPath = tempDir.resolve(CONFIG_NAME);
+        Files.write(configPath, Arrays.asList("test=test123", "test1=123", "test2=456"));
+        sleep();
+        ConfigBuilder builder = ConfigBuilder.buildInternal(configPath);
+        ConfigEntry<String> entry = builder.stringEntry("test", "");
+        builder.removeUnused();
+        builder.config.save();
+
+        assertEquals("test123", entry.get());
+
+        sleep();
+
+        List<String> strings = Files.readAllLines(configPath);
+
+        assertEquals(3, strings.size());
+        assertEquals("test=test123", strings.get(2));
+    }
+
     private void sleep() {
         try {
             Thread.sleep(500);

@@ -22,10 +22,25 @@ public class ConfigBuilder {
     }
 
     public static <T> T build(Path path, Function<ConfigBuilder, T> builderConsumer) {
+        return build(path, false, builderConsumer);
+    }
+
+    public static <T> T build(Path path, boolean removeUnused, Function<ConfigBuilder, T> builderConsumer) {
         ConfigBuilder builder = buildInternal(path);
         T config = builderConsumer.apply(builder);
+        if (removeUnused) {
+            builder.removeUnused();
+        }
         builder.config.save();
         return config;
+    }
+
+    void removeUnused() {
+        List<String> existingKeys = entries.stream().map(configEntry -> configEntry.key).collect(Collectors.toList());
+        List<String> toRemove = config.getProperties().stringPropertyNames().stream().filter(s -> !existingKeys.contains(s)).collect(Collectors.toList());
+        for (String key : toRemove) {
+            config.getProperties().remove(key);
+        }
     }
 
     void reloadFromDisk() {
