@@ -55,6 +55,13 @@ public class PropertyConfig implements Config {
     }
 
     public void saveSync() {
+        try {
+            Files.createDirectories(path.getParent());
+        } catch (IOException e) {
+            System.err.println("Failed to create parent directory of " + path.getFileName().toString());
+            e.printStackTrace();
+        }
+
         try (OutputStream stream = Files.newOutputStream(path, StandardOpenOption.CREATE, StandardOpenOption.SYNC, StandardOpenOption.TRUNCATE_EXISTING)) {
             properties.store(stream, "");
         } catch (IOException e) {
