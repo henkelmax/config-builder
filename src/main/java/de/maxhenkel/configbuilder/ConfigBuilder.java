@@ -102,7 +102,7 @@ public class ConfigBuilder {
         return (ConfigEntryImpl<T>) entry;
     }
 
-    private static abstract class ConfigEntryImpl<T> implements ConfigEntry<T> {
+    public static abstract class ConfigEntryImpl<T> implements ConfigEntry<T> {
         protected PropertyConfig config;
         protected String key;
         protected T value, def;
@@ -169,12 +169,17 @@ public class ConfigBuilder {
         }
 
         @Override
+        public T getDefault() {
+            return def;
+        }
+
+        @Override
         public Config getConfig() {
             return config;
         }
     }
 
-    private static class BooleanConfigEntry extends ConfigEntryImpl<Boolean> {
+    public static class BooleanConfigEntry extends ConfigEntryImpl<Boolean> {
 
         private BooleanConfigEntry(PropertyConfig config) {
             super(config);
@@ -192,7 +197,7 @@ public class ConfigBuilder {
         }
     }
 
-    private static class IntegerConfigEntry extends ConfigEntryImpl<Integer> {
+    public static class IntegerConfigEntry extends ConfigEntryImpl<Integer> {
 
         private final int min, max;
 
@@ -212,6 +217,14 @@ public class ConfigBuilder {
             }
         }
 
+        public int getMin() {
+            return min;
+        }
+
+        public int getMax() {
+            return max;
+        }
+
         @Override
         protected Integer fixValue(Integer value) {
             return Math.max(Math.min(value, max), min);
@@ -223,7 +236,7 @@ public class ConfigBuilder {
         }
     }
 
-    private static class DoubleConfigEntry extends ConfigEntryImpl<Double> {
+    public static class DoubleConfigEntry extends ConfigEntryImpl<Double> {
 
         private final double min, max;
 
@@ -243,6 +256,14 @@ public class ConfigBuilder {
             }
         }
 
+        public double getMin() {
+            return min;
+        }
+
+        public double getMax() {
+            return max;
+        }
+
         @Override
         protected Double fixValue(Double value) {
             return Math.max(Math.min(value, max), min);
@@ -254,7 +275,7 @@ public class ConfigBuilder {
         }
     }
 
-    private static class StringConfigEntry extends ConfigEntryImpl<String> {
+    public static class StringConfigEntry extends ConfigEntryImpl<String> {
 
         private StringConfigEntry(PropertyConfig config) {
             super(config);
@@ -272,7 +293,7 @@ public class ConfigBuilder {
         }
     }
 
-    private static class EnumConfigEntry<T extends Enum> extends ConfigEntryImpl<Enum> {
+    public static class EnumConfigEntry<T extends Enum> extends ConfigEntryImpl<Enum> {
         protected Class<T> enumClass;
 
         public EnumConfigEntry(PropertyConfig config, Class<T> enumClass) {
@@ -296,7 +317,7 @@ public class ConfigBuilder {
         }
     }
 
-    private static class IntegerListConfigEntry extends ConfigEntryImpl<List<Integer>> {
+    public static class IntegerListConfigEntry extends ConfigEntryImpl<List<Integer>> {
 
         private IntegerListConfigEntry(PropertyConfig config) {
             super(config);

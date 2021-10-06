@@ -12,6 +12,8 @@ public interface ConfigEntry<T> {
 
     ConfigEntry<T> saveSync();
 
+    T getDefault();
+
     Config getConfig();
 
 }
