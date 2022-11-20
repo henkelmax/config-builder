@@ -207,7 +207,7 @@ public class CommentedProperties implements Map<String, String> {
 
     public CommentedProperties save(OutputStream outputStream) {
         try (PrintWriter writer = new PrintWriter(outputStream)) {
-            for (String comment : headerComments) {
+            for (String comment : removeNewLines(headerComments)) {
                 writer.print("# ");
                 writer.println(comment);
             }
@@ -215,7 +215,7 @@ public class CommentedProperties implements Map<String, String> {
                 writer.println();
             }
             for (Map.Entry<String, Property> entry : properties.entrySet()) {
-                for (String comment : entry.getValue().comments) {
+                for (String comment : removeNewLines(entry.getValue().comments)) {
                     writer.print("# ");
                     writer.println(comment);
                 }
@@ -230,6 +230,14 @@ public class CommentedProperties implements Map<String, String> {
             writer.flush();
         }
         return this;
+    }
+
+    private static List<String> removeNewLines(List<String> comments) {
+        List<String> newComments = new ArrayList<>();
+        for (String comment : comments) {
+            newComments.addAll(Arrays.asList(comment.split("\\r?\\n")));
+        }
+        return newComments;
     }
 
     private static String escapeKey(String str) {
