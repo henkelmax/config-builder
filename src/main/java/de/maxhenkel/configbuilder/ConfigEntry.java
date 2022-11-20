@@ -2,6 +2,8 @@ package de.maxhenkel.configbuilder;
 
 public interface ConfigEntry<T> {
 
+    ConfigEntry<T> comment(String... comments);
+
     T get();
 
     ConfigEntry<T> set(T value);

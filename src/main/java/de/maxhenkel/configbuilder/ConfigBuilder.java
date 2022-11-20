@@ -135,6 +135,13 @@ public class ConfigBuilder {
             return this;
         }
 
+        @Override
+        public ConfigEntryImpl<T> comment(String... comments) {
+            this.comments = comments;
+            config.getProperties().setComments(key, Arrays.asList(comments));
+            return this;
+        }
+
         protected void loadOrDefault() {
             if (config.getProperties().containsKey(key)) {
                 T val = deserialize(config.getProperties().get(key));
