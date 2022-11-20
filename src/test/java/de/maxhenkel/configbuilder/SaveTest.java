@@ -7,13 +7,10 @@ import org.junit.jupiter.api.io.TempDir;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class ConfigTests {
+public class SaveTest {
 
     private static final String CONFIG_NAME = "config.properties";
 
@@ -67,7 +64,7 @@ public class ConfigTests {
         assertEquals(15, integerEntry.get());
         assertEquals("Another string", stringEntry.get());
 
-        sleep();
+        TestUtils.sleep();
         builder.reloadFromDisk();
 
         assertEquals(true, booleanEntry.get());
@@ -94,7 +91,7 @@ public class ConfigTests {
         assertEquals(15, integerEntry.get());
         assertEquals("Another string", stringEntry.get());
 
-        sleep();
+        TestUtils.sleep();
         builder.reloadFromDisk();
 
         assertEquals(true, booleanEntry.get());
@@ -110,6 +107,7 @@ public class ConfigTests {
         ConfigEntry<Integer> integerEntry = builder.integerEntry("integer_test", 10, 0, 20);
         ConfigEntry<String> stringEntry = builder.stringEntry("string_test", "Test 123");
         builder.config.save();
+        TestUtils.sleep();
 
         assertEquals(false, booleanEntry.get());
         assertEquals(10, integerEntry.get());
@@ -121,6 +119,7 @@ public class ConfigTests {
         assertEquals(15, integerEntry.get());
         assertEquals("Another string", stringEntry.get());
 
+        TestUtils.sleep();
         builder.reloadFromDisk();
 
         assertEquals(false, booleanEntry.get());
@@ -140,193 +139,27 @@ public class ConfigTests {
         }
         assertEquals(20, integerEntry.get());
 
-        sleep();
+        TestUtils.sleep();
         builder.reloadFromDisk();
 
         assertEquals(20, integerEntry.get());
     }
 
     @Test
-    @DisplayName("Set boolean")
-    void setBoolean(@TempDir Path tempDir) {
-        ConfigBuilder builder = ConfigBuilder.buildInternal(tempDir.resolve(CONFIG_NAME));
-        ConfigEntry<Boolean> entry = builder.booleanEntry("boolean_test", false);
-        builder.config.save();
-
-        assertEquals(false, entry.get());
-        entry.set(true).saveSync();
-        assertEquals(true, entry.get());
-
-        sleep();
-        builder.reloadFromDisk();
-
-        assertEquals(true, entry.get());
-    }
-
-    @Test
-    @DisplayName("Set integer")
-    void setInteger(@TempDir Path tempDir) {
-        ConfigBuilder builder = ConfigBuilder.buildInternal(tempDir.resolve(CONFIG_NAME));
-        ConfigEntry<Integer> entry = builder.integerEntry("integer_test", 10, 0, 20);
-        builder.config.save();
-
-        assertEquals(10, entry.get());
-        entry.set(15).saveSync();
-        assertEquals(15, entry.get());
-
-        sleep();
-        builder.reloadFromDisk();
-
-        assertEquals(15, entry.get());
-
-        entry.set(30).saveSync();
-        assertEquals(20, entry.get());
-
-        entry.set(30).saveSync();
-
-        sleep();
-        builder.reloadFromDisk();
-
-        assertEquals(20, entry.get());
-
-        entry.set(-10).saveSync();
-        assertEquals(0, entry.get());
-    }
-
-    @Test
-    @DisplayName("Set double")
-    void setDouble(@TempDir Path tempDir) {
-        ConfigBuilder builder = ConfigBuilder.buildInternal(tempDir.resolve(CONFIG_NAME));
-        ConfigEntry<Double> entry = builder.doubleEntry("double_test", 10D, 0D, 20D);
-        builder.config.save();
-
-        assertEquals(10D, entry.get());
-        entry.set(15D).saveSync();
-        assertEquals(15D, entry.get());
-
-        sleep();
-        builder.reloadFromDisk();
-
-        assertEquals(15D, entry.get());
-
-        entry.set(30D).saveSync();
-        assertEquals(20D, entry.get());
-
-        entry.set(30D).saveSync();
-
-        sleep();
-        builder.reloadFromDisk();
-
-        assertEquals(20D, entry.get());
-
-        entry.set(-10D).saveSync();
-        assertEquals(0D, entry.get());
-    }
-
-    @Test
-    @DisplayName("Set string")
-    void setString(@TempDir Path tempDir) {
-        ConfigBuilder builder = ConfigBuilder.buildInternal(tempDir.resolve(CONFIG_NAME));
-        ConfigEntry<String> entry = builder.stringEntry("string_test", "test123=!\"");
-        builder.config.save();
-
-        assertEquals("test123=!\"", entry.get());
-        entry.set("abc!=\"").saveSync();
-        assertEquals("abc!=\"", entry.get());
-
-        sleep();
-        builder.reloadFromDisk();
-
-        assertEquals("abc!=\"", entry.get());
-    }
-
-    @Test
-    @DisplayName("Set integer list")
-    void setIntList(@TempDir Path tempDir) {
-        ConfigBuilder builder = ConfigBuilder.buildInternal(tempDir.resolve(CONFIG_NAME));
-        ConfigEntry<List<Integer>> entry = builder.integerListEntry("int_list_test", Arrays.asList(-1, 0, 1, Integer.MIN_VALUE, Integer.MAX_VALUE));
-        builder.config.save();
-
-        assertEquals(Arrays.asList(-1, 0, 1, Integer.MIN_VALUE, Integer.MAX_VALUE), entry.get());
-        entry.set(Collections.emptyList()).saveSync();
-        assertEquals(Collections.emptyList(), entry.get());
-        entry.set(Arrays.asList(1, 2, 3, Integer.MIN_VALUE, Integer.MAX_VALUE)).saveSync();
-
-        sleep();
-        builder.reloadFromDisk();
-
-        assertEquals(Arrays.asList(1, 2, 3, Integer.MIN_VALUE, Integer.MAX_VALUE), entry.get());
-    }
-
-    @Test
-    @DisplayName("Set enum")
-    void setEnum(@TempDir Path tempDir) {
-        ConfigBuilder builder = ConfigBuilder.buildInternal(tempDir.resolve(CONFIG_NAME));
-        ConfigEntry<TestEnum> entry = builder.enumEntry("enum_test", TestEnum.TEST_2);
-        builder.config.save();
-
-        assertEquals(TestEnum.TEST_2, entry.get());
-        entry.set(TestEnum.TEST_4).saveSync();
-        assertEquals(TestEnum.TEST_4, entry.get());
-        entry.set(TestEnum.TEST_3).saveSync();
-
-        sleep();
-        builder.reloadFromDisk();
-
-        assertEquals(TestEnum.TEST_3, entry.get());
-    }
-
-    @Test
-    @DisplayName("Manually create config")
-    void manuallyCreateConfig(@TempDir Path tempDir) throws IOException {
-        Path configPath = tempDir.resolve(CONFIG_NAME);
-        Files.write(configPath, Arrays.asList("test=test123"));
-        sleep();
-        ConfigBuilder builder = ConfigBuilder.buildInternal(configPath);
-        ConfigEntry<String> entry = builder.stringEntry("test", "");
-        builder.config.save();
-
-        assertEquals("test123", entry.get());
-        entry.set("abc").saveSync();
-
-        sleep();
-        builder.reloadFromDisk();
-
-        assertEquals("abc", entry.get());
-    }
-
-    @Test
-    @DisplayName("Manually read config")
-    void manuallyReadConfig(@TempDir Path tempDir) throws IOException {
-        Path configPath = tempDir.resolve(CONFIG_NAME);
-        ConfigBuilder builder = ConfigBuilder.buildInternal(configPath);
-        ConfigEntry<String> entry = builder.stringEntry("test", "test123");
-        builder.config.save();
-
-        assertEquals("test123", entry.get());
-
-        sleep();
-        List<String> strings = Files.readAllLines(configPath);
-
-        assertEquals(3, strings.size());
-        assertEquals("test=test123", strings.get(2));
-    }
-
-    @Test
     @DisplayName("Delete config and save")
     void deleteConfigAndSave(@TempDir Path tempDir) throws IOException {
-        Path configPath = tempDir.resolve(CONFIG_NAME);
+        Path configPath = tempDir.resolve(TestUtils.CONFIG_NAME);
         ConfigBuilder builder = ConfigBuilder.buildInternal(configPath);
         ConfigEntry<String> entry = builder.stringEntry("test", "test123");
         builder.config.save();
 
         assertEquals("test123", entry.get());
 
-        sleep();
+        TestUtils.sleep();
         Files.deleteIfExists(configPath);
 
         entry.set("abc").saveSync();
-        sleep();
+        TestUtils.sleep();
 
         builder = ConfigBuilder.buildInternal(configPath);
         ConfigEntry<String> entry2 = builder.stringEntry("test", "test123");
@@ -336,36 +169,28 @@ public class ConfigTests {
     }
 
     @Test
-    @DisplayName("Remove unused values")
-    void removeUnused(@TempDir Path tempDir) throws IOException {
-        Path configPath = tempDir.resolve(CONFIG_NAME);
-        Files.write(configPath, Arrays.asList("test=test123", "test1=123", "test2=456"));
-        sleep();
-        ConfigBuilder builder = ConfigBuilder.buildInternal(configPath);
-        ConfigEntry<String> entry = builder.stringEntry("test", "");
-        builder.removeUnused();
+    @DisplayName("Reset and read again")
+    void resetAndRead(@TempDir Path tempDir) {
+        ConfigBuilder builder = ConfigBuilder.buildInternal(tempDir.resolve(TestUtils.CONFIG_NAME));
+        ConfigEntry<String> entry = builder.stringEntry("test", "123");
         builder.config.save();
 
-        assertEquals("test123", entry.get());
+        assertEquals("123", entry.get());
+        entry.set("456").saveSync();
+        assertEquals("456", entry.get());
 
-        sleep();
+        TestUtils.sleep();
+        builder.reloadFromDisk();
 
-        List<String> strings = Files.readAllLines(configPath);
+        assertEquals("456", entry.get());
+        entry.reset().saveSync();
 
-        assertEquals(3, strings.size());
-        assertEquals("test=test123", strings.get(2));
-    }
+        assertEquals("123", entry.get());
 
-    private void sleep() {
-        try {
-            Thread.sleep(500);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
+        TestUtils.sleep();
+        builder.reloadFromDisk();
 
-    enum TestEnum {
-        TEST_1, TEST_2, TEST_3, TEST_4;
+        assertEquals("123", entry.get());
     }
 
 }
