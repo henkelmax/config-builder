@@ -51,7 +51,7 @@ public class ConfigBuilder {
 
     public ConfigEntry<Boolean> booleanEntry(String key, boolean def, String... comments) {
         BooleanConfigEntry entry = new BooleanConfigEntry(config);
-        entry.comments = Arrays.asList(comments);
+        entry.comments = comments;
         entry.key = key;
         entry.def = def;
         entry.loadOrDefault();
@@ -61,7 +61,7 @@ public class ConfigBuilder {
 
     public ConfigEntry<Integer> integerEntry(String key, int def, int min, int max, String... comments) {
         IntegerConfigEntry entry = new IntegerConfigEntry(config, min, max);
-        entry.comments = Arrays.asList(comments);
+        entry.comments = comments;
         entry.key = key;
         entry.def = def;
         entry.loadOrDefault();
@@ -71,7 +71,7 @@ public class ConfigBuilder {
 
     public ConfigEntry<Double> doubleEntry(String key, double def, double min, double max, String... comments) {
         DoubleConfigEntry entry = new DoubleConfigEntry(config, min, max);
-        entry.comments = Arrays.asList(comments);
+        entry.comments = comments;
         entry.key = key;
         entry.def = def;
         entry.loadOrDefault();
@@ -81,7 +81,7 @@ public class ConfigBuilder {
 
     public ConfigEntry<String> stringEntry(String key, String def, String... comments) {
         StringConfigEntry entry = new StringConfigEntry(config);
-        entry.comments = Arrays.asList(comments);
+        entry.comments = comments;
         entry.key = key;
         entry.def = def;
         entry.loadOrDefault();
@@ -91,7 +91,7 @@ public class ConfigBuilder {
 
     public ConfigEntry<List<Integer>> integerListEntry(String key, List<Integer> def, String... comments) {
         IntegerListConfigEntry entry = new IntegerListConfigEntry(config);
-        entry.comments = Arrays.asList(comments);
+        entry.comments = comments;
         entry.key = key;
         entry.def = def;
         entry.loadOrDefault();
@@ -101,7 +101,7 @@ public class ConfigBuilder {
 
     public <T extends Enum<T>> ConfigEntry<T> enumEntry(String key, T def, String... comments) {
         EnumConfigEntry<T> entry = new EnumConfigEntry(config, def.getClass());
-        entry.comments = Arrays.asList(comments);
+        entry.comments = comments;
         entry.key = key;
         entry.def = def;
         entry.loadOrDefault();
@@ -111,7 +111,7 @@ public class ConfigBuilder {
 
     public static abstract class ConfigEntryImpl<T> implements ConfigEntry<T> {
         protected CommentedPropertyConfig config;
-        protected List<String> comments;
+        protected String[] comments;
         protected String key;
         protected T value, def;
 
@@ -131,7 +131,7 @@ public class ConfigBuilder {
             }
             this.value = fixValue(value);
             String serialized = serialize(this.value);
-            config.getProperties().set(key, serialized);
+            config.getProperties().set(key, serialized, comments);
             return this;
         }
 
@@ -142,6 +142,7 @@ public class ConfigBuilder {
                     reset();
                 } else {
                     value = fixValue(val);
+                    config.properties.setComments(key, Arrays.asList(comments));
                 }
             } else {
                 reset();
@@ -151,7 +152,7 @@ public class ConfigBuilder {
         @Override
         public ConfigEntry<T> reset() {
             value = def;
-            config.getProperties().set(key, serialize(def));
+            config.getProperties().set(key, serialize(def), comments);
             return this;
         }
 

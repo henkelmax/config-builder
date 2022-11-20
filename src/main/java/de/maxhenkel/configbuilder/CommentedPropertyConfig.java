@@ -25,7 +25,7 @@ public class CommentedPropertyConfig implements Config {
     }
 
     public void set(String key, String value, String... comments) {
-        properties.set(key, value);
+        properties.set(key, value, comments);
     }
 
     public CommentedProperties getProperties() {

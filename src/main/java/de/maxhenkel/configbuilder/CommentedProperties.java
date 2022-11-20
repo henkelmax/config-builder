@@ -45,6 +45,16 @@ public class CommentedProperties implements Map<String, String> {
         return property.comments;
     }
 
+    public CommentedProperties setComments(String key, List<String> comments) {
+        Property property = properties.get(key);
+        if (property == null) {
+            properties.put(key, new Property(comments, ""));
+            return this;
+        }
+        property.comments = comments;
+        return this;
+    }
+
     public CommentedProperties set(String key, String value, String... comments) {
         properties.put(key, new Property(Arrays.asList(comments), value));
         return this;
