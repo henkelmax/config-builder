@@ -35,6 +35,12 @@ public class ParseTest {
     }
 
     @Test
+    @DisplayName("Backslash in comment")
+    void backslashInComment() throws IOException {
+        testInput("#Te\\st\ntest=123", "test", "123");
+    }
+
+    @Test
     @DisplayName("Spaced Comment")
     void spacedComment() throws IOException {
         testInput(" #Test\ntest=123", "test", "123");
@@ -162,6 +168,12 @@ public class ParseTest {
     @DisplayName("Escaped new line")
     void escapedNewLine() throws IOException {
         testInput("test=123\\\n456", "test", "123456");
+    }
+
+    @Test
+    @DisplayName("Commented escaped new line")
+    void commentedEscapedNewLine() throws IOException {
+        testInputNoParity("test=123\n# Test\\\ntest=456", "test", "123");
     }
 
     @Test
