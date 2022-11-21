@@ -85,6 +85,14 @@ public class ParseTest {
     }
 
     @Test
+    @DisplayName("Special character in value")
+    void specialCharacterInValue() throws IOException {
+        testInputNoParity("test=°", "test", "°");
+        testInputNoParity("test=§", "test", "§");
+        testInputNoParity("test=╦", "test", "╦");
+    }
+
+    @Test
     @DisplayName("Backslash in value")
     void backslashInValue() throws IOException {
         testInput("test=12\\\\3", "test", "12\\3");
