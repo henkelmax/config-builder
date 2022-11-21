@@ -9,7 +9,7 @@ import java.nio.file.StandardOpenOption;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class CommentedPropertyConfig implements Config {
+class CommentedPropertyConfig implements Config {
 
     protected CommentedProperties properties;
     protected Path path;
