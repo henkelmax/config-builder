@@ -12,12 +12,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class SaveTest {
 
-    private static final String CONFIG_NAME = "config.properties";
-
     @Test
     @DisplayName("Save and read")
     void saveAndRead(@TempDir Path tempDir) {
-        Path config = tempDir.resolve(CONFIG_NAME);
+        Path config = tempDir.resolve(TestUtils.CONFIG_NAME);
         ConfigBuilder builder = ConfigBuilder.buildInternal(config);
         ConfigEntry<Boolean> booleanEntry = builder.booleanEntry("boolean_test", false);
         ConfigEntry<Integer> integerEntry = builder.integerEntry("integer_test", 10, 0, 20);
@@ -48,7 +46,7 @@ public class SaveTest {
     @Test
     @DisplayName("Save, reload and read")
     void saveReloadAndRead(@TempDir Path tempDir) {
-        ConfigBuilder builder = ConfigBuilder.buildInternal(tempDir.resolve(CONFIG_NAME));
+        ConfigBuilder builder = ConfigBuilder.buildInternal(tempDir.resolve(TestUtils.CONFIG_NAME));
         ConfigEntry<Boolean> booleanEntry = builder.booleanEntry("boolean_test", false);
         ConfigEntry<Integer> integerEntry = builder.integerEntry("integer_test", 10, 0, 20);
         ConfigEntry<String> stringEntry = builder.stringEntry("string_test", "Test 123");
@@ -75,7 +73,7 @@ public class SaveTest {
     @Test
     @DisplayName("Save, reload and read async")
     void saveReloadAndReadAsync(@TempDir Path tempDir) {
-        ConfigBuilder builder = ConfigBuilder.buildInternal(tempDir.resolve(CONFIG_NAME));
+        ConfigBuilder builder = ConfigBuilder.buildInternal(tempDir.resolve(TestUtils.CONFIG_NAME));
         ConfigEntry<Boolean> booleanEntry = builder.booleanEntry("boolean_test", false);
         ConfigEntry<Integer> integerEntry = builder.integerEntry("integer_test", 10, 0, 20);
         ConfigEntry<String> stringEntry = builder.stringEntry("string_test", "Test 123");
@@ -102,7 +100,7 @@ public class SaveTest {
     @Test
     @DisplayName("Change and read without saving")
     void changeAndReadWithoutSaving(@TempDir Path tempDir) {
-        ConfigBuilder builder = ConfigBuilder.buildInternal(tempDir.resolve(CONFIG_NAME));
+        ConfigBuilder builder = ConfigBuilder.buildInternal(tempDir.resolve(TestUtils.CONFIG_NAME));
         ConfigEntry<Boolean> booleanEntry = builder.booleanEntry("boolean_test", false);
         ConfigEntry<Integer> integerEntry = builder.integerEntry("integer_test", 10, 0, 20);
         ConfigEntry<String> stringEntry = builder.stringEntry("string_test", "Test 123");
@@ -130,7 +128,7 @@ public class SaveTest {
     @Test
     @DisplayName("Async save spamming")
     void asyncSaveSpamming(@TempDir Path tempDir) {
-        ConfigBuilder builder = ConfigBuilder.buildInternal(tempDir.resolve(CONFIG_NAME));
+        ConfigBuilder builder = ConfigBuilder.buildInternal(tempDir.resolve(TestUtils.CONFIG_NAME));
         ConfigEntry<Integer> integerEntry = builder.integerEntry("integer_test", 0, 0, 20);
         builder.config.save();
 
