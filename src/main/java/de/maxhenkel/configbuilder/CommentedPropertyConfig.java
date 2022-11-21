@@ -7,9 +7,13 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 class CommentedPropertyConfig implements Config {
+
+    private static final Logger LOGGER = Logger.getLogger(CommentedPropertyConfig.class.getName());
 
     protected CommentedProperties properties;
     protected Path path;
@@ -45,9 +49,7 @@ class CommentedPropertyConfig implements Config {
         try {
             load();
         } catch (IOException e) {
-            System.err.println("Failed to read " + path.getFileName().toString());
-            System.err.println("Using default configuration values");
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "Failed to reload config", e);
         }
     }
 
@@ -55,15 +57,13 @@ class CommentedPropertyConfig implements Config {
         try {
             Files.createDirectories(path.getParent());
         } catch (IOException e) {
-            System.err.println("Failed to create parent directory of " + path.getFileName().toString());
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "Failed to create parent directories of config", e);
         }
 
         try (OutputStream stream = Files.newOutputStream(path, StandardOpenOption.CREATE, StandardOpenOption.SYNC, StandardOpenOption.TRUNCATE_EXISTING)) {
             properties.save(stream);
         } catch (IOException e) {
-            System.err.println("Failed to save " + path.getFileName().toString());
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "Failed to save config", e);
         }
     }
 
