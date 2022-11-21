@@ -76,7 +76,7 @@ class CommentedPropertyConfig implements Config {
     }
 
     @Override
-    public Map<String, Object> getEntries() {
+    public Map<String, String> getEntries() {
         return properties.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 }

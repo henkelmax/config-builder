@@ -4,6 +4,6 @@ import java.util.Map;
 
 public interface Config {
 
-    Map<String, Object> getEntries();
+    Map<String, String> getEntries();
 
 }
