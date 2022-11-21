@@ -49,6 +49,11 @@ public class ConfigBuilder {
         entries.forEach(ConfigEntryImpl::loadOrDefault);
     }
 
+    public ConfigBuilder header(String... header) {
+        config.getProperties().setHeaderComments(Arrays.asList(header));
+        return this;
+    }
+
     public ConfigEntry<Boolean> booleanEntry(String key, boolean def, String... comments) {
         BooleanConfigEntry entry = new BooleanConfigEntry(config);
         entry.comments = comments;
