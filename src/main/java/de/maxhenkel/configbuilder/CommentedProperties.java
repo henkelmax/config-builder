@@ -145,6 +145,7 @@ public class CommentedProperties implements Map<String, String> {
                 if (isSeparator(c)) {
                     isKey = false;
                     isStartOfValue = true;
+                    onlyHadWhitespace = false;
                     continue;
                 }
                 if (isWhitespace(c)) {
@@ -166,7 +167,7 @@ public class CommentedProperties implements Map<String, String> {
                 }
             }
         }
-        return new Pair(key.length() <= 0 ? null : key.toString(), value.toString());
+        return new Pair(isComment ? null : key.toString(), value.toString());
     }
 
     private static int readEscapedCharacter(int c, StringReader reader) throws IOException {

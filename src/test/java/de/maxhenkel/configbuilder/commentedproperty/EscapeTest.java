@@ -21,6 +21,12 @@ public class EscapeTest {
     }
 
     @Test
+    @DisplayName("Empty Key")
+    void emptyKey() throws IOException {
+        testKeyValue("", "123", "=123");
+    }
+
+    @Test
     @DisplayName("Double backslash")
     void doubleBackslash() throws IOException {
         testKeyValue("test", "\\\\t", "test=\\\\\\\\t");

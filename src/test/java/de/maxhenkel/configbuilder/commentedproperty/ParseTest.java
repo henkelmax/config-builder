@@ -20,6 +20,12 @@ public class ParseTest {
     }
 
     @Test
+    @DisplayName("Empty key")
+    void emptyKey() throws IOException {
+        testInput("=123", "", "123");
+    }
+
+    @Test
     @DisplayName("Spaced out key value")
     void spacedOutKeyValue() throws IOException {
         testInput("test = 123", "test", "123");

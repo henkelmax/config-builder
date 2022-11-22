@@ -71,6 +71,15 @@ public class ConvertTest {
         testConversionNoParity("!Test\ntest=123", "# Test\ntest=123\n");
         testConversionNoParity("!  Test\ntest=123", "# Test\ntest=123\n");
         testConversionNoParity("!  \t\t  Test\ntest=123", "# Test\ntest=123\n");
+
+        testConversionNoParity("test=123 # Test", "test=123 \\# Test\n");
+    }
+
+    @Test
+    @DisplayName("Separator and comment")
+    void separatorAndComment() throws IOException {
+        testConversionNoParity("=#Test\ntest=123", "=\\#Test\ntest=123\n");
+        testConversionNoParity("\\ =#Test\ntest=123", "\\ =\\#Test\ntest=123\n");
     }
 
     private static void testConversion(String input, String expectedOutput) throws IOException {
