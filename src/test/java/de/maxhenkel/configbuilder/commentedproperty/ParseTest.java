@@ -105,6 +105,12 @@ public class ParseTest {
     }
 
     @Test
+    @DisplayName("Colon in value")
+    void colonInValue() throws IOException {
+        testInput("test=1:2:3", "test", "1:2:3");
+    }
+
+    @Test
     @DisplayName("Equals in value")
     void equalsInValue() throws IOException {
         testInput("test=abc=def", "test", "abc=def");
