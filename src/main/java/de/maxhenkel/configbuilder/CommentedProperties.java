@@ -109,6 +109,11 @@ public class CommentedProperties implements Map<String, String> {
         while ((c = reader.read()) != -1) {
             boolean isWhitespace = isWhitespace(c);
             if (isComment) {
+                if (onlyHadWhitespace && isWhitespace) {
+                    continue;
+                } else {
+                    onlyHadWhitespace = false;
+                }
                 value.append((char) c);
                 continue;
             }
