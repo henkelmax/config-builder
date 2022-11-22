@@ -10,7 +10,7 @@ A simple Java configuration library.
 <dependency>
   <groupId>de.maxhenkel.configbuilder</groupId>
   <artifactId>configbuilder</artifactId>
-  <version>1.0.0</version>
+  <version>1.1.0</version>
 </dependency>
 
 <repositories>
@@ -25,7 +25,7 @@ A simple Java configuration library.
 
 ``` groovy
 dependencies {
-  implementation 'de.maxhenkel.configbuilder:configbuilder:1.0.0'
+  implementation 'de.maxhenkel.configbuilder:configbuilder:1.1.0'
 }
 
 repositories {
