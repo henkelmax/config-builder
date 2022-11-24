@@ -16,7 +16,7 @@ public class DataTypesTest {
     @Test
     @DisplayName("Set boolean")
     void setBoolean(@TempDir Path tempDir) {
-        ConfigBuilder builder = ConfigBuilder.buildInternal(tempDir.resolve(TestUtils.CONFIG_NAME));
+        ConfigBuilderImpl builder = ConfigBuilderImpl.buildInternal(tempDir.resolve(TestUtils.CONFIG_NAME));
         ConfigEntry<Boolean> entry = builder.booleanEntry("boolean_test", false);
         builder.config.save();
 
@@ -33,7 +33,7 @@ public class DataTypesTest {
     @Test
     @DisplayName("Set integer")
     void setInteger(@TempDir Path tempDir) {
-        ConfigBuilder builder = ConfigBuilder.buildInternal(tempDir.resolve(TestUtils.CONFIG_NAME));
+        ConfigBuilderImpl builder = ConfigBuilderImpl.buildInternal(tempDir.resolve(TestUtils.CONFIG_NAME));
         ConfigEntry<Integer> entry = builder.integerEntry("integer_test", 10, 0, 20);
         builder.config.save();
 
@@ -63,7 +63,7 @@ public class DataTypesTest {
     @Test
     @DisplayName("Set double")
     void setDouble(@TempDir Path tempDir) {
-        ConfigBuilder builder = ConfigBuilder.buildInternal(tempDir.resolve(TestUtils.CONFIG_NAME));
+        ConfigBuilderImpl builder = ConfigBuilderImpl.buildInternal(tempDir.resolve(TestUtils.CONFIG_NAME));
         ConfigEntry<Double> entry = builder.doubleEntry("double_test", 10D, 0D, 20D);
         builder.config.save();
 
@@ -93,7 +93,7 @@ public class DataTypesTest {
     @Test
     @DisplayName("Set string")
     void setString(@TempDir Path tempDir) {
-        ConfigBuilder builder = ConfigBuilder.buildInternal(tempDir.resolve(TestUtils.CONFIG_NAME));
+        ConfigBuilderImpl builder = ConfigBuilderImpl.buildInternal(tempDir.resolve(TestUtils.CONFIG_NAME));
         ConfigEntry<String> entry = builder.stringEntry("string_test", "test123=!\"");
         builder.config.save();
 
@@ -110,7 +110,7 @@ public class DataTypesTest {
     @Test
     @DisplayName("Set integer list")
     void setIntList(@TempDir Path tempDir) {
-        ConfigBuilder builder = ConfigBuilder.buildInternal(tempDir.resolve(TestUtils.CONFIG_NAME));
+        ConfigBuilderImpl builder = ConfigBuilderImpl.buildInternal(tempDir.resolve(TestUtils.CONFIG_NAME));
         ConfigEntry<List<Integer>> entry = builder.integerListEntry("int_list_test", Arrays.asList(-1, 0, 1, Integer.MIN_VALUE, Integer.MAX_VALUE));
         builder.config.save();
 
@@ -128,7 +128,7 @@ public class DataTypesTest {
     @Test
     @DisplayName("Set enum")
     void setEnum(@TempDir Path tempDir) {
-        ConfigBuilder builder = ConfigBuilder.buildInternal(tempDir.resolve(TestUtils.CONFIG_NAME));
+        ConfigBuilderImpl builder = ConfigBuilderImpl.buildInternal(tempDir.resolve(TestUtils.CONFIG_NAME));
         ConfigEntry<TestEnum> entry = builder.enumEntry("enum_test", TestEnum.TEST_2);
         builder.config.save();
 

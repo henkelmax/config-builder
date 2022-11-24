@@ -4,6 +4,8 @@ public interface ConfigEntry<T> {
 
     ConfigEntry<T> comment(String... comments);
 
+    String[] getComments();
+
     T get();
 
     ConfigEntry<T> set(T value);

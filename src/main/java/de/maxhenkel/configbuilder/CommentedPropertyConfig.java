@@ -11,7 +11,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
-class CommentedPropertyConfig implements Config {
+public class CommentedPropertyConfig implements Config {
 
     private static final Logger LOGGER = Logger.getLogger(CommentedPropertyConfig.class.getName());
 
