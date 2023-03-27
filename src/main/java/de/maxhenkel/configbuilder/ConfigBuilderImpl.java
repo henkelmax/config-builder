@@ -2,9 +2,7 @@ package de.maxhenkel.configbuilder;
 
 import javax.annotation.Nullable;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class ConfigBuilderImpl implements ConfigBuilder {
@@ -27,6 +25,14 @@ public class ConfigBuilderImpl implements ConfigBuilder {
         for (String key : toRemove) {
             config.getProperties().remove(key);
         }
+    }
+
+    void sortEntries() {
+        Map<String, Integer> map = new HashMap<>();
+        for (int i = 0; i < entries.size(); i++) {
+            map.put(entries.get(i).key, i);
+        }
+        config.getProperties().sort(Comparator.comparingInt(o -> map.getOrDefault(o, Integer.MAX_VALUE)));
     }
 
     void reloadFromDisk() {

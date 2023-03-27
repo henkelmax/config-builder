@@ -13,7 +13,7 @@ public class CommentedProperties implements Map<String, String> {
 
     public CommentedProperties() {
         this.headerComments = new ArrayList<>();
-        this.properties = new ConcurrentHashMap<>();
+        this.properties = new LinkedHashMap<>();
     }
 
     public CommentedProperties addHeaderComment(String comment) {
@@ -25,6 +25,16 @@ public class CommentedProperties implements Map<String, String> {
         this.headerComments.clear();
         this.headerComments.addAll(headerComments);
         return this;
+    }
+
+    void sort(Comparator<String> comparator) {
+        List<Map.Entry<String, Property>> list = new ArrayList<>(properties.entrySet());
+        list.sort((o1, o2) -> comparator.compare(o1.getKey(), o2.getKey()));
+
+        properties.clear();
+        for (Map.Entry<String, Property> entry : list) {
+            properties.put(entry.getKey(), entry.getValue());
+        }
     }
 
     @Nullable
@@ -62,7 +72,7 @@ public class CommentedProperties implements Map<String, String> {
 
     public CommentedProperties load(InputStream inputStream) throws IOException {
         List<String> headerComments = new ArrayList<>();
-        Map<String, Property> properties = new HashMap<>();
+        Map<String, Property> properties = new LinkedHashMap<>();
         try (LineReader reader = LineReader.fromInputStream(inputStream)) {
             boolean header = true;
             List<String> previousComments = new ArrayList<>();

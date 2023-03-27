@@ -30,6 +30,7 @@ public interface ConfigBuilder {
         if (removeUnused) {
             builder.removeUnused();
         }
+        builder.sortEntries();
         builder.config.save();
         return config;
     }
