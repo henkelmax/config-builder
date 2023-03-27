@@ -139,6 +139,11 @@ public class ConfigBuilderImpl implements ConfigBuilder {
         }
 
         @Override
+        public String getKey() {
+            return key;
+        }
+
+        @Override
         public ConfigEntryImpl<T> comment(String... comments) {
             this.comments = comments;
             config.getProperties().setComments(key, Arrays.asList(comments));

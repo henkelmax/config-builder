@@ -10,6 +10,8 @@ public interface ConfigEntry<T> {
 
     ConfigEntry<T> set(T value);
 
+    String getKey();
+
     ConfigEntry<T> reset();
 
     ConfigEntry<T> save();
