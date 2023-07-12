@@ -1,7 +1,7 @@
 name: Build
 on:
   release:
-    types: 
+    types:
       - created
 
 env:
@@ -23,7 +23,7 @@ jobs:
       - name: Unit tests
         run: mvn -B test
       - name: Publish to maxhenkel.de
-        run: mvn -B deploy
+        run: mvn -Dmaven.test.skip=true -B deploy
         env:
           MAVEN_USERNAME: ${{ secrets.MAVEN_USERNAME }}
           MAVEN_PASSWORD: ${{ secrets.MAVEN_PASSWORD }}
