@@ -10,7 +10,7 @@ A simple Java configuration library.
 <dependency>
   <groupId>de.maxhenkel.configbuilder</groupId>
   <artifactId>configbuilder</artifactId>
-  <version>1.1.0</version>
+  <version>1.1.3</version>
 </dependency>
 
 <repositories>
@@ -25,7 +25,7 @@ A simple Java configuration library.
 
 ``` groovy
 dependencies {
-  implementation 'de.maxhenkel.configbuilder:configbuilder:1.1.0'
+  implementation 'de.maxhenkel.configbuilder:configbuilder:1.1.3'
 }
 
 repositories {
@@ -41,6 +41,7 @@ repositories {
 ```java
 public static ConfigBuilder.ConfigEntry<Boolean> aBooleanEntry;
 public static ConfigBuilder.ConfigEntry<Integer> anIntegerEntry;
+public static ConfigBuilder.ConfigEntry<Long> aLongEntry;
 public static ConfigBuilder.ConfigEntry<Double> aDoubleEntry;
 public static ConfigBuilder.ConfigEntry<String> aStringEntry;
 public static ConfigBuilder.ConfigEntry<List<Integer>> anIntegerListEntry;
@@ -50,6 +51,7 @@ public static void main(String[] args) {
     ConfigBuilder.create(new File("./test.properties").toPath(), configBuilder -> {
         aBooleanEntry = configBuilder.booleanEntry("boolean_entry", false);
         anIntegerEntry = configBuilder.integerEntry("integer_entry", 50, 0, 100);
+        aLongEntry = configBuilder.longEntry("long_entry", 50L, 0L, 100L);
         aDoubleEntry = configBuilder.doubleEntry("double_entry", 50D, 0D, 100D);
         aStringEntry = configBuilder.stringEntry("string_entry", "test");
         anIntegerListEntry = configBuilder.integerListEntry("integer_list_entry", Collections.singletonList(5));

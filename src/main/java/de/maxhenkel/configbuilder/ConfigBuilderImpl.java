@@ -69,6 +69,17 @@ public class ConfigBuilderImpl implements ConfigBuilder {
     }
 
     @Override
+    public ConfigEntry<Long> longEntry(String key, long def, long min, long max, String... comments) {
+        LongConfigEntry entry = new LongConfigEntry(config, min, max);
+        entry.comments = comments;
+        entry.key = key;
+        entry.def = def;
+        entry.loadOrDefault();
+        entries.add(entry);
+        return entry;
+    }
+
+    @Override
     public ConfigEntry<Double> doubleEntry(String key, double def, double min, double max, String... comments) {
         DoubleConfigEntry entry = new DoubleConfigEntry(config, min, max);
         entry.comments = comments;
@@ -261,6 +272,45 @@ public class ConfigBuilderImpl implements ConfigBuilder {
 
         @Override
         public String serialize(Integer val) {
+            return String.valueOf(val);
+        }
+    }
+
+    public static class LongConfigEntry extends ConfigEntryImpl<Long> {
+
+        private final long min, max;
+
+        private LongConfigEntry(CommentedPropertyConfig config, long min, long max) {
+            super(config);
+            this.min = min;
+            this.max = max;
+        }
+
+        @Override
+        @Nullable
+        public Long deserialize(String str) {
+            try {
+                return Long.parseLong(str);
+            } catch (NumberFormatException e) {
+                return null;
+            }
+        }
+
+        public long getMin() {
+            return min;
+        }
+
+        public long getMax() {
+            return max;
+        }
+
+        @Override
+        protected Long fixValue(Long value) {
+            return Math.max(Math.min(value, max), min);
+        }
+
+        @Override
+        public String serialize(Long val) {
             return String.valueOf(val);
         }
     }

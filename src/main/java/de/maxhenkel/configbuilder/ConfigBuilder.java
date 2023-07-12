@@ -12,6 +12,8 @@ public interface ConfigBuilder {
 
     ConfigEntry<Integer> integerEntry(String key, int def, int min, int max, String... comments);
 
+    ConfigEntry<Long> longEntry(String key, long def, long min, long max, String... comments);
+
     ConfigEntry<Double> doubleEntry(String key, double def, double min, double max, String... comments);
 
     ConfigEntry<String> stringEntry(String key, String def, String... comments);
