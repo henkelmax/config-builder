@@ -15,7 +15,7 @@ public class SaveTest {
     @Test
     @DisplayName("Save and read")
     void saveAndRead(@TempDir Path tempDir) {
-        Path config = tempDir.resolve(TestUtils.CONFIG_NAME);
+        Path config = TestUtils.randomConfigName(tempDir);
         ConfigBuilderImpl builder = ConfigBuilderImpl.buildInternal(config);
         ConfigEntry<Boolean> booleanEntry = builder.booleanEntry("boolean_test", false);
         ConfigEntry<Integer> integerEntry = builder.integerEntry("integer_test", 10, 0, 20);
@@ -46,7 +46,7 @@ public class SaveTest {
     @Test
     @DisplayName("Save, reload and read")
     void saveReloadAndRead(@TempDir Path tempDir) {
-        ConfigBuilderImpl builder = ConfigBuilderImpl.buildInternal(tempDir.resolve(TestUtils.CONFIG_NAME));
+        ConfigBuilderImpl builder = ConfigBuilderImpl.buildInternal(TestUtils.randomConfigName(tempDir));
         ConfigEntry<Boolean> booleanEntry = builder.booleanEntry("boolean_test", false);
         ConfigEntry<Integer> integerEntry = builder.integerEntry("integer_test", 10, 0, 20);
         ConfigEntry<String> stringEntry = builder.stringEntry("string_test", "Test 123");
@@ -73,7 +73,7 @@ public class SaveTest {
     @Test
     @DisplayName("Save, reload and read async")
     void saveReloadAndReadAsync(@TempDir Path tempDir) {
-        ConfigBuilderImpl builder = ConfigBuilderImpl.buildInternal(tempDir.resolve(TestUtils.CONFIG_NAME));
+        ConfigBuilderImpl builder = ConfigBuilderImpl.buildInternal(TestUtils.randomConfigName(tempDir));
         ConfigEntry<Boolean> booleanEntry = builder.booleanEntry("boolean_test", false);
         ConfigEntry<Integer> integerEntry = builder.integerEntry("integer_test", 10, 0, 20);
         ConfigEntry<String> stringEntry = builder.stringEntry("string_test", "Test 123");
@@ -100,7 +100,7 @@ public class SaveTest {
     @Test
     @DisplayName("Change and read without saving")
     void changeAndReadWithoutSaving(@TempDir Path tempDir) {
-        ConfigBuilderImpl builder = ConfigBuilderImpl.buildInternal(tempDir.resolve(TestUtils.CONFIG_NAME));
+        ConfigBuilderImpl builder = ConfigBuilderImpl.buildInternal(TestUtils.randomConfigName(tempDir));
         ConfigEntry<Boolean> booleanEntry = builder.booleanEntry("boolean_test", false);
         ConfigEntry<Integer> integerEntry = builder.integerEntry("integer_test", 10, 0, 20);
         ConfigEntry<String> stringEntry = builder.stringEntry("string_test", "Test 123");
@@ -128,7 +128,7 @@ public class SaveTest {
     @Test
     @DisplayName("Async save spamming")
     void asyncSaveSpamming(@TempDir Path tempDir) {
-        ConfigBuilderImpl builder = ConfigBuilderImpl.buildInternal(tempDir.resolve(TestUtils.CONFIG_NAME));
+        ConfigBuilderImpl builder = ConfigBuilderImpl.buildInternal(TestUtils.randomConfigName(tempDir));
         ConfigEntry<Integer> integerEntry = builder.integerEntry("integer_test", 0, 0, 20);
         builder.config.save();
 
@@ -146,7 +146,7 @@ public class SaveTest {
     @Test
     @DisplayName("Delete config and save")
     void deleteConfigAndSave(@TempDir Path tempDir) throws IOException {
-        Path configPath = tempDir.resolve(TestUtils.CONFIG_NAME);
+        Path configPath = TestUtils.randomConfigName(tempDir);
         ConfigBuilderImpl builder = ConfigBuilderImpl.buildInternal(configPath);
         ConfigEntry<String> entry = builder.stringEntry("test", "test123");
         builder.config.save();
@@ -169,7 +169,7 @@ public class SaveTest {
     @Test
     @DisplayName("Reset and read again")
     void resetAndRead(@TempDir Path tempDir) {
-        ConfigBuilderImpl builder = ConfigBuilderImpl.buildInternal(tempDir.resolve(TestUtils.CONFIG_NAME));
+        ConfigBuilderImpl builder = ConfigBuilderImpl.buildInternal(TestUtils.randomConfigName(tempDir));
         ConfigEntry<String> entry = builder.stringEntry("test", "123");
         builder.config.save();
 

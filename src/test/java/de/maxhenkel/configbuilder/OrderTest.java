@@ -18,7 +18,7 @@ public class OrderTest {
     @Test
     @DisplayName("Save and read")
     void saveAndRead(@TempDir Path tempDir) throws IOException {
-        Path config = tempDir.resolve(TestUtils.CONFIG_NAME);
+        Path config = TestUtils.randomConfigName(tempDir);
 
         StringBuilder configString = new StringBuilder();
         configString.append("test_three=true");

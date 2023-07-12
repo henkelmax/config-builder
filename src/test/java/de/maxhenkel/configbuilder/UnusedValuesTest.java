@@ -17,7 +17,7 @@ public class UnusedValuesTest {
     @Test
     @DisplayName("Remove unused values")
     void removeUnused(@TempDir Path tempDir) throws IOException {
-        Path configPath = tempDir.resolve(TestUtils.CONFIG_NAME);
+        Path configPath = TestUtils.randomConfigName(tempDir);
         Files.write(configPath, Arrays.asList("test=test123", "test1=123", "test2=456"));
         TestUtils.sleep();
         ConfigBuilderImpl builder = ConfigBuilderImpl.buildInternal(configPath);

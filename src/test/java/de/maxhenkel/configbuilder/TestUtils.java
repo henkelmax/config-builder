@@ -1,8 +1,9 @@
 package de.maxhenkel.configbuilder;
 
-public class TestUtils {
+import java.nio.file.Path;
+import java.util.UUID;
 
-    public static final String CONFIG_NAME = "config.properties";
+public class TestUtils {
 
     public static void sleep() {
         try {
@@ -10,6 +11,10 @@ public class TestUtils {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    public static Path randomConfigName(Path tempDir) {
+        return tempDir.resolve(String.format("config_%s.properties", UUID.randomUUID()));
     }
 
 }
