@@ -61,6 +61,36 @@ public class DataTypesTest {
     }
 
     @Test
+    @DisplayName("Set long")
+    void setLong(@TempDir Path tempDir) {
+        ConfigBuilderImpl builder = ConfigBuilderImpl.buildInternal(TestUtils.randomConfigName(tempDir));
+        ConfigEntry<Long> entry = builder.longEntry("long_test", Long.MAX_VALUE - 100L, 0L, Long.MAX_VALUE - 50L);
+        builder.config.save();
+
+        assertEquals(Long.MAX_VALUE - 100L, entry.get());
+        entry.set(Long.MAX_VALUE - 75L).saveSync();
+        assertEquals(Long.MAX_VALUE - 75L, entry.get());
+
+        TestUtils.sleep();
+        builder.reloadFromDisk();
+
+        assertEquals(Long.MAX_VALUE - 75L, entry.get());
+
+        entry.set(Long.MAX_VALUE).saveSync();
+        assertEquals(Long.MAX_VALUE - 50L, entry.get());
+
+        entry.set(Long.MAX_VALUE).saveSync();
+
+        TestUtils.sleep();
+        builder.reloadFromDisk();
+
+        assertEquals(Long.MAX_VALUE - 50L, entry.get());
+
+        entry.set(Long.MIN_VALUE).saveSync();
+        assertEquals(0L, entry.get());
+    }
+
+    @Test
     @DisplayName("Set double")
     void setDouble(@TempDir Path tempDir) {
         ConfigBuilderImpl builder = ConfigBuilderImpl.buildInternal(TestUtils.randomConfigName(tempDir));
