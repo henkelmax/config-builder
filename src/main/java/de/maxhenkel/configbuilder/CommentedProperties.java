@@ -7,25 +7,43 @@ import java.util.stream.Collectors;
 
 public class CommentedProperties implements Map<String, String> {
 
-    private final boolean strictEscape;
+    private final boolean strict;
     private final List<String> headerComments;
     private final Map<String, Property> properties;
 
-    public CommentedProperties(boolean strictEscape) {
-        this.strictEscape = strictEscape;
+    /**
+     * @param strict if this should be compliant with Javas {@link java.util.Properties} implementation
+     */
+    public CommentedProperties(boolean strict) {
+        this.strict = strict;
         this.headerComments = new ArrayList<>();
         this.properties = new LinkedHashMap<>();
     }
 
+    /**
+     * Creates a new instance with strict mode enabled
+     */
     public CommentedProperties() {
         this(true);
     }
 
+    /**
+     * Adds the provided comment to the header comments
+     *
+     * @param comment the comment
+     * @return this
+     */
     public CommentedProperties addHeaderComment(String comment) {
         headerComments.add(comment);
         return this;
     }
 
+    /**
+     * Clears all previously set header comments and adds the provided comments
+     *
+     * @param headerComments the header comments
+     * @return this
+     */
     public CommentedProperties setHeaderComments(List<String> headerComments) {
         this.headerComments.clear();
         this.headerComments.addAll(headerComments);
@@ -42,6 +60,10 @@ public class CommentedProperties implements Map<String, String> {
         }
     }
 
+    /**
+     * @param key the key
+     * @return the value or <code>null</code> if the entry does not exist
+     */
     @Nullable
     public String get(String key) {
         Property property = properties.get(key);
@@ -51,6 +73,10 @@ public class CommentedProperties implements Map<String, String> {
         return property.value;
     }
 
+    /**
+     * @param key the key
+     * @return all comments for the entry or <code>null</code> if the entry does not exist
+     */
     @Nullable
     public List<String> getComments(String key) {
         Property property = properties.get(key);
@@ -60,6 +86,11 @@ public class CommentedProperties implements Map<String, String> {
         return property.comments;
     }
 
+    /**
+     * @param key      the key
+     * @param comments the comments for the entry
+     * @return this
+     */
     public CommentedProperties setComments(String key, List<String> comments) {
         Property property = properties.get(key);
         if (property == null) {
@@ -70,11 +101,24 @@ public class CommentedProperties implements Map<String, String> {
         return this;
     }
 
+    /**
+     * @param key      the key
+     * @param value    the value
+     * @param comments the comments for the entry
+     * @return this
+     */
     public CommentedProperties set(String key, String value, String... comments) {
         properties.put(key, new Property(Arrays.asList(comments), value));
         return this;
     }
 
+    /**
+     * Loads the properties from the provided file
+     *
+     * @param inputStream the input stream to read from
+     * @return this
+     * @throws IOException if an IO error occurs
+     */
     public CommentedProperties load(InputStream inputStream) throws IOException {
         List<String> headerComments = new ArrayList<>();
         Map<String, Property> properties = new LinkedHashMap<>();
@@ -226,6 +270,12 @@ public class CommentedProperties implements Map<String, String> {
         return c == '=' || c == ':' || c == ' ' || c == '\t';
     }
 
+    /**
+     * Saves the properties to the provided output stream
+     *
+     * @param outputStream the output stream to write to
+     * @return this
+     */
     public CommentedProperties save(OutputStream outputStream) {
         try (PrintWriter writer = new PrintWriter(outputStream)) {
             for (String comment : removeNewLines(headerComments)) {
@@ -267,7 +317,7 @@ public class CommentedProperties implements Map<String, String> {
 
     private String escapeValue(String str) {
         str = escape(str);
-        if (strictEscape) {
+        if (strict) {
             str = str.replace("=", "\\=");
             str = str.replace(":", "\\:");
         }
@@ -295,21 +345,36 @@ public class CommentedProperties implements Map<String, String> {
         return str;
     }
 
+    /**
+     * @return the number of properties
+     */
     @Override
     public int size() {
         return properties.size();
     }
 
+    /**
+     * @return true if there are no properties
+     */
     @Override
     public boolean isEmpty() {
         return properties.isEmpty();
     }
 
+    /**
+     * @param key the key
+     * @return if the key is present
+     */
     @Override
     public boolean containsKey(Object key) {
         return properties.containsKey(key);
     }
 
+    /**
+     * @param value the value
+     * @return if the value is present
+     * @deprecated this method is not performant and only present to satisfy the Map interface
+     */
     @Override
     @Deprecated
     public boolean containsValue(Object value) {
@@ -321,6 +386,11 @@ public class CommentedProperties implements Map<String, String> {
         return false;
     }
 
+    /**
+     * @param key the key
+     * @return the value or <code>null</code> if the key is not a string
+     * @deprecated use {@link #get(String)} instead
+     */
     @Override
     @Nullable
     @Deprecated
@@ -331,6 +401,12 @@ public class CommentedProperties implements Map<String, String> {
         return get((String) key);
     }
 
+    /**
+     * @param key   the key
+     * @param value the value
+     * @return the previous value or <code>null</code> if there was no previous value
+     * @deprecated use {@link #set(String, String, String...)}} instead
+     */
     @Override
     @Deprecated
     public String put(String key, String value) {
@@ -343,6 +419,10 @@ public class CommentedProperties implements Map<String, String> {
         return put.value;
     }
 
+    /**
+     * @param key the key
+     * @return the previous value or <code>null</code> if there was no previous value
+     */
     @Override
     public String remove(Object key) {
         Property removed = properties.remove(key);
@@ -352,31 +432,51 @@ public class CommentedProperties implements Map<String, String> {
         return removed.value;
     }
 
+    /**
+     * Adds all the properties from the provided map
+     *
+     * @param map the map
+     * @deprecated use {@link #set(String, String, String...)} instead
+     */
     @Override
     @Deprecated
-    public void putAll(Map<? extends String, ? extends String> m) {
-        for (Map.Entry<? extends String, ? extends String> entry : m.entrySet()) {
+    public void putAll(Map<? extends String, ? extends String> map) {
+        for (Map.Entry<? extends String, ? extends String> entry : map.entrySet()) {
             put(entry.getKey(), entry.getValue());
         }
     }
 
+    /**
+     * Clears all the properties and comments
+     */
     @Override
     public void clear() {
         headerComments.clear();
         properties.clear();
     }
 
+    /**
+     * @return all property keys
+     */
     @Override
     public Set<String> keySet() {
         return properties.keySet();
     }
 
+    /**
+     * @return all property values
+     * @deprecated this method is not performant and only present to satisfy the Map interface
+     */
     @Override
     @Deprecated
     public Collection<String> values() {
         return properties.values().stream().map(property -> property.value).collect(Collectors.toList());
     }
 
+    /**
+     * @return all properties
+     * @deprecated this method is not performant and only present to satisfy the Map interface
+     */
     @Override
     @Deprecated
     public Set<Entry<String, String>> entrySet() {
