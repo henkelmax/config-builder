@@ -95,7 +95,7 @@ public class CommentedPropertyConfig implements Config {
 
     /**
      * @param key the config key
-     * @return the string representation of the value
+     * @return the string representation of the value or <code>null</code> if the entry does not exist
      */
     public String get(String key) {
         return properties.get(key);
