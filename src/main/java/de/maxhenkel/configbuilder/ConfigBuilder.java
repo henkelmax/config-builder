@@ -151,7 +151,7 @@ public interface ConfigBuilder {
         }
 
         /**
-         * This value is required
+         * If the path is not specified, the config will be in-memory only and not saved anywhere
          *
          * @param path the storage location of the config file
          * @return the builder
@@ -216,9 +216,6 @@ public interface ConfigBuilder {
          * @throws IllegalStateException if {@link #path} was not set
          */
         public C build() {
-            if (path == null) {
-                throw new IllegalStateException("Path is null");
-            }
             CommentedPropertyConfig cpc = CommentedPropertyConfig.builder().path(path).strict(strict).build();
 
             ConfigBuilderImpl builder = new ConfigBuilderImpl(cpc);
