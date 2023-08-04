@@ -219,8 +219,7 @@ public interface ConfigBuilder {
             if (path == null) {
                 throw new IllegalStateException("Path is null");
             }
-
-            CommentedPropertyConfig cpc = new CommentedPropertyConfig(path, strict);
+            CommentedPropertyConfig cpc = CommentedPropertyConfig.builder().path(path).strict(strict).build();
 
             ConfigBuilderImpl builder = new ConfigBuilderImpl(cpc);
             C config = builderConsumer.apply(builder);

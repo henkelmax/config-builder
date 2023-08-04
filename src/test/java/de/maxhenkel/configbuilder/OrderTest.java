@@ -49,7 +49,7 @@ public class OrderTest {
             throw new RuntimeException(e);
         }
 
-        ConfigBuilderImpl builder = ConfigBuilderImpl.create(config);
+        ConfigBuilderImpl builder = TestUtils.createBuilder(config);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         builder.config.properties.save(baos);
 

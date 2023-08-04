@@ -20,7 +20,7 @@ public class ManualConfigTest {
         Path configPath = TestUtils.randomConfigName(tempDir);
         Files.write(configPath, Arrays.asList("test=test123"));
         TestUtils.sleep();
-        ConfigBuilderImpl builder = ConfigBuilderImpl.create(configPath);
+        ConfigBuilderImpl builder = TestUtils.createBuilder(configPath);
         ConfigEntry<String> entry = builder.stringEntry("test", "");
         builder.config.save();
 
@@ -37,7 +37,7 @@ public class ManualConfigTest {
     @DisplayName("Manually read config")
     void manuallyReadConfig(@TempDir Path tempDir) throws IOException {
         Path configPath = TestUtils.randomConfigName(tempDir);
-        ConfigBuilderImpl builder = ConfigBuilderImpl.create(configPath);
+        ConfigBuilderImpl builder = TestUtils.createBuilder(configPath);
         ConfigEntry<String> entry = builder.stringEntry("test", "test123");
         builder.config.save();
 

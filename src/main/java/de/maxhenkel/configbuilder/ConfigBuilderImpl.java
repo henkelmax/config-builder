@@ -1,7 +1,6 @@
 package de.maxhenkel.configbuilder;
 
 import javax.annotation.Nullable;
-import java.nio.file.Path;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -13,10 +12,6 @@ public class ConfigBuilderImpl implements ConfigBuilder {
     public ConfigBuilderImpl(CommentedPropertyConfig config) {
         this.config = config;
         this.entries = new ArrayList<>();
-    }
-
-    static ConfigBuilderImpl create(Path path) {
-        return new ConfigBuilderImpl(new CommentedPropertyConfig(path));
     }
 
     void removeUnused() {

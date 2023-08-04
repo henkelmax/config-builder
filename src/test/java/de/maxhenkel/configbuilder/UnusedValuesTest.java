@@ -20,7 +20,7 @@ public class UnusedValuesTest {
         Path configPath = TestUtils.randomConfigName(tempDir);
         Files.write(configPath, Arrays.asList("test=test123", "test1=123", "test2=456"));
         TestUtils.sleep();
-        ConfigBuilderImpl builder = ConfigBuilderImpl.create(configPath);
+        ConfigBuilderImpl builder = TestUtils.createBuilder(configPath);
         ConfigEntry<String> entry = builder.stringEntry("test", "");
         builder.removeUnused();
         builder.config.save();
