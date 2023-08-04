@@ -17,7 +17,11 @@ import java.util.logging.Logger;
 public class CommentedPropertyConfig implements Config {
 
     private static final Logger LOGGER = Logger.getLogger(CommentedPropertyConfig.class.getName());
-    private static final ExecutorService SAVE_EXECUTOR_SERVICE = Executors.newSingleThreadExecutor();
+    private static final ExecutorService SAVE_EXECUTOR_SERVICE = Executors.newSingleThreadExecutor(runnable -> {
+        Thread thread = new Thread(runnable);
+        thread.setName("ConfigSaver");
+        return thread;
+    });
 
     protected CommentedProperties properties;
     @Nullable
