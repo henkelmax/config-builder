@@ -7,12 +7,18 @@ import java.util.stream.Collectors;
 
 public class CommentedProperties implements Map<String, String> {
 
+    private final boolean strictEscape;
     private final List<String> headerComments;
     private final Map<String, Property> properties;
 
-    public CommentedProperties() {
+    public CommentedProperties(boolean strictEscape) {
+        this.strictEscape = strictEscape;
         this.headerComments = new ArrayList<>();
         this.properties = new LinkedHashMap<>();
+    }
+
+    public CommentedProperties() {
+        this(true);
     }
 
     public CommentedProperties addHeaderComment(String comment) {
@@ -251,27 +257,31 @@ public class CommentedProperties implements Map<String, String> {
         return newComments;
     }
 
-    private static String escapeKey(String str) {
+    private String escapeKey(String str) {
         str = escape(str);
         str = str.replace(" ", "\\ ");
+        str = str.replace("=", "\\=");
+        str = str.replace(":", "\\:");
         return str;
     }
 
-    private static String escapeValue(String str) {
+    private String escapeValue(String str) {
         str = escape(str);
+        if (strictEscape) {
+            str = str.replace("=", "\\=");
+            str = str.replace(":", "\\:");
+        }
         if (str.startsWith(" ")) {
             str = String.format("\\%s", str);
         }
         return str;
     }
 
-    private static String escape(String str) {
+    private String escape(String str) {
         str = str.replace("\\", "\\\\");
         str = str.replace("\n", "\\n");
         str = str.replace("\r", "\\n");
         str = str.replace("\t", "\\t");
-        str = str.replace("=", "\\=");
-        str = str.replace(":", "\\:");
         str = str.replace("#", "\\#");
         str = str.replace("!", "\\!");
 

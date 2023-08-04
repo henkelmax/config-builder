@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class EscapeTest {
+public class StrictEscapeTest {
 
     @Test
     @DisplayName("Plain key value")
@@ -182,15 +182,6 @@ public class EscapeTest {
         properties.store(stream1, "");
         String output1 = Arrays.stream(stream1.toString().replace("\r\n", "\n").split("\n")).skip(2).filter(s -> !s.trim().isEmpty()).collect(Collectors.joining("\n"));
         assertEquals(expectedOutput, output1, "Properties and CommentedProperties should be equal");
-    }
-
-    private static void testKeyValueNoParity(String key, String value, String expectedOutput) throws IOException {
-        CommentedProperties commentedProperties = new CommentedProperties();
-        commentedProperties.set(key, value);
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        commentedProperties.save(stream);
-        String output = Arrays.stream(stream.toString().replace("\r\n", "\n").split("\n")).filter(s -> !s.trim().isEmpty()).collect(Collectors.joining("\n"));
-        assertEquals(expectedOutput, output);
     }
 
 }
