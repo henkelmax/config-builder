@@ -10,7 +10,7 @@ A simple Java configuration library.
 <dependency>
   <groupId>de.maxhenkel.configbuilder</groupId>
   <artifactId>configbuilder</artifactId>
-  <version>1.1.3</version>
+  <version>1.2.0</version>
 </dependency>
 
 <repositories>
@@ -25,12 +25,12 @@ A simple Java configuration library.
 
 ``` groovy
 dependencies {
-  implementation 'de.maxhenkel.configbuilder:configbuilder:1.1.3'
+  implementation 'de.maxhenkel.configbuilder:configbuilder:1.2.0'
 }
 
 repositories {
   maven {
-    name = "henkelmax.public"
+    name = 'henkelmax.public'
     url = 'https://maven.maxhenkel.de/repository/public'
   }
 }
@@ -39,32 +39,36 @@ repositories {
 ## Example Code
 
 ```java
-public static ConfigBuilder.ConfigEntry<Boolean> aBooleanEntry;
-public static ConfigBuilder.ConfigEntry<Integer> anIntegerEntry;
-public static ConfigBuilder.ConfigEntry<Long> aLongEntry;
-public static ConfigBuilder.ConfigEntry<Double> aDoubleEntry;
-public static ConfigBuilder.ConfigEntry<String> aStringEntry;
-public static ConfigBuilder.ConfigEntry<List<Integer>> anIntegerListEntry;
-public static ConfigBuilder.ConfigEntry<TestEnum> anEnumEntry;
-
 public static void main(String[] args) {
-    ConfigBuilder.create(new File("./test.properties").toPath(), configBuilder -> {
-        aBooleanEntry = configBuilder.booleanEntry("boolean_entry", false);
-        anIntegerEntry = configBuilder.integerEntry("integer_entry", 50, 0, 100);
-        aLongEntry = configBuilder.longEntry("long_entry", 50L, 0L, 100L);
-        aDoubleEntry = configBuilder.doubleEntry("double_entry", 50D, 0D, 100D);
-        aStringEntry = configBuilder.stringEntry("string_entry", "test");
-        anIntegerListEntry = configBuilder.integerListEntry("integer_list_entry", Collections.singletonList(5));
-        anEnumEntry = configBuilder.enumEntry("enum_entry", TestEnum.TEST_1);
-    });
+    Config config = ConfigBuilder.builder(Config::new).path(Paths.get("config.properties")).keepOrder(true).removeUnused(true).strict(true).build();
 
-    System.out.println(anEnumEntry.get().name());
-    System.out.println(aDoubleEntry.get());
-    aDoubleEntry.set(10D).save();
-    System.out.println(aDoubleEntry.get());
+    System.out.println(config.booleanEntry.getKey() +": " +config.booleanEntry.get());  // boolean: false
+    System.out.println(config.integerEntry.getKey() +": " +config.integerEntry.get());  // integer: 10
+    System.out.println(config.longEntry.getKey() +": " +config.longEntry.get());        // long: 10
+    System.out.println(config.doubleEntry.getKey() +": " +config.doubleEntry.get());    // double: 10.0
+    System.out.println(config.stringEntry.getKey() +": " +config.stringEntry.get());    // string: test123
+    System.out.println(config.enumEntry.getKey() +": " +config.enumEntry.get());        // enum: TEST_1
 }
 
-public enum TestEnum {
+class Config {
+    public final ConfigEntry<Boolean> booleanEntry;
+    public final ConfigEntry<Integer> integerEntry;
+    public final ConfigEntry<Long> longEntry;
+    public final ConfigEntry<Double> doubleEntry;
+    public final ConfigEntry<String> stringEntry;
+    public final ConfigEntry<TestEnum> enumEntry;
+
+    public Config(ConfigBuilder builder) {
+        booleanEntry = builder.booleanEntry("boolean", false);
+        integerEntry = builder.integerEntry("integer", 10, 0, 20);
+        longEntry = builder.longEntry("long", 10L, 0L, 20L);
+        doubleEntry = builder.doubleEntry("double", 10D, 0D, 20D);
+        stringEntry = builder.stringEntry("string", "test123");
+        enumEntry = builder.enumEntry("enum", TestEnum.TEST_1);
+    }
+}
+
+enum TestEnum {
     TEST_1, TEST_2, TEST_3;
 }
 ```

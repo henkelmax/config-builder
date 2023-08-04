@@ -18,10 +18,14 @@ public class CommentedPropertyConfig implements Config {
     protected CommentedProperties properties;
     protected Path path;
 
-    public CommentedPropertyConfig(Path path) {
-        this.path = path;
-        this.properties = new CommentedProperties();
+    public CommentedPropertyConfig(Path path, boolean strict) {
+        this.path = path.toAbsolutePath();
+        this.properties = new CommentedProperties(strict);
         reload();
+    }
+
+    public CommentedPropertyConfig(Path path) {
+        this(path, true);
     }
 
     public String get(String key) {

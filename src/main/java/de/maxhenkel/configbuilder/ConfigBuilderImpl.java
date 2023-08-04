@@ -10,12 +10,12 @@ public class ConfigBuilderImpl implements ConfigBuilder {
     protected CommentedPropertyConfig config;
     protected List<ConfigEntryImpl<?>> entries;
 
-    private ConfigBuilderImpl(CommentedPropertyConfig config) {
+    public ConfigBuilderImpl(CommentedPropertyConfig config) {
         this.config = config;
         this.entries = new ArrayList<>();
     }
 
-    static ConfigBuilderImpl buildInternal(Path path) {
+    static ConfigBuilderImpl create(Path path) {
         return new ConfigBuilderImpl(new CommentedPropertyConfig(path));
     }
 
