@@ -220,6 +220,7 @@ public interface ConfigBuilder {
 
             ConfigBuilderImpl builder = new ConfigBuilderImpl(cpc);
             C config = builderConsumer.apply(builder);
+            builder.freeze();
             if (removeUnused) {
                 builder.removeUnused();
             }
