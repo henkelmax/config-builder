@@ -3,7 +3,6 @@ package de.maxhenkel.configbuilder;
 import javax.annotation.Nullable;
 import java.io.*;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 public class CommentedProperties implements Map<String, String> {
@@ -237,11 +236,7 @@ public class CommentedProperties implements Map<String, String> {
                 }
                 writer.print(escapeKey(entry.getKey()));
                 writer.print("=");
-                String value = entry.getValue().value;
-                if (value.startsWith(" ")) {
-                    writer.print("\\");
-                }
-                writer.println(escapeValue(value));
+                writer.println(escapeValue(entry.getValue().value));
             }
             writer.flush();
         }
@@ -257,12 +252,20 @@ public class CommentedProperties implements Map<String, String> {
     }
 
     private static String escapeKey(String str) {
-        str = escapeValue(str);
+        str = escape(str);
         str = str.replace(" ", "\\ ");
         return str;
     }
 
     private static String escapeValue(String str) {
+        str = escape(str);
+        if (str.startsWith(" ")) {
+            str = String.format("\\%s", str);
+        }
+        return str;
+    }
+
+    private static String escape(String str) {
         str = str.replace("\\", "\\\\");
         str = str.replace("\n", "\\n");
         str = str.replace("\r", "\\n");
