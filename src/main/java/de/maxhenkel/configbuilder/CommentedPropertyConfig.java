@@ -7,10 +7,10 @@ import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
+import java.util.Collections;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
 public class CommentedPropertyConfig implements Config {
 
@@ -183,12 +183,9 @@ public class CommentedPropertyConfig implements Config {
         }).start();
     }
 
-    /**
-     * @return all config entries
-     */
     @Override
     public Map<String, String> getEntries() {
-        return properties.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+        return Collections.unmodifiableMap(properties);
     }
 
 }
