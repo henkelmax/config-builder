@@ -12,10 +12,22 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class BuilderTest {
 
     @Test
-    @DisplayName("Builder")
+    @DisplayName("Builder with saving")
     void builder(@TempDir Path tempDir) {
         Path configPath = TestUtils.randomConfigName(tempDir);
         Config cfg = ConfigBuilder.builder(Config::new).path(configPath).keepOrder(true).removeUnused(true).strict(true).build();
+
+        cfg.enumEntry.saveSync();
+        cfg.stringEntry.save();
+
+        // Wait a while until the async save is done
+        TestUtils.sleep();
+    }
+
+    @Test
+    @DisplayName("Builder without saving")
+    void builder() {
+        Config cfg = ConfigBuilder.builder(Config::new).keepOrder(true).removeUnused(true).strict(true).saveAfterBuild(false).build();
 
         assertEquals(false, cfg.booleanEntry.get());
         assertEquals(10, cfg.integerEntry.get());
@@ -33,6 +45,14 @@ public class BuilderTest {
         assertEquals("10.0", entries.get("double"));
         assertEquals("test123", entries.get("string"));
         assertEquals("TEST_1", entries.get("enum"));
+    }
+
+    @Test
+    @DisplayName("Save builder without path")
+    void saveWithoutPath() {
+        Config cfg = ConfigBuilder.builder(Config::new).keepOrder(true).removeUnused(true).strict(true).saveAfterBuild(true).build();
+        cfg.stringEntry.saveSync();
+        cfg.enumEntry.save();
     }
 
     private static class Config {

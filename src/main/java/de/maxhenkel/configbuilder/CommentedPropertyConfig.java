@@ -9,12 +9,15 @@ import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.util.Collections;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class CommentedPropertyConfig implements Config {
 
     private static final Logger LOGGER = Logger.getLogger(CommentedPropertyConfig.class.getName());
+    private static final ExecutorService SAVE_EXECUTOR_SERVICE = Executors.newSingleThreadExecutor();
 
     protected CommentedProperties properties;
     @Nullable
@@ -150,7 +153,7 @@ public class CommentedPropertyConfig implements Config {
      * <br/>
      * Note that this method blocks the current thread until the config is saved
      */
-    public void saveSync() {
+    public synchronized void saveSync() {
         if (path == null) {
             return;
         }
@@ -176,11 +179,7 @@ public class CommentedPropertyConfig implements Config {
         if (path == null) {
             return;
         }
-        new Thread(() -> {
-            synchronized (CommentedPropertyConfig.this) {
-                saveSync();
-            }
-        }).start();
+        SAVE_EXECUTOR_SERVICE.execute(this::saveSync);
     }
 
     @Override

@@ -19,15 +19,14 @@ public class ManualConfigTest {
     void manuallyCreateConfig(@TempDir Path tempDir) throws IOException {
         Path configPath = TestUtils.randomConfigName(tempDir);
         Files.write(configPath, Arrays.asList("test=test123"));
-        TestUtils.sleep();
+
         ConfigBuilderImpl builder = TestUtils.createBuilder(configPath);
         ConfigEntry<String> entry = builder.stringEntry("test", "");
-        builder.config.save();
+        builder.config.saveSync();
 
         assertEquals("test123", entry.get());
         entry.set("abc").saveSync();
 
-        TestUtils.sleep();
         builder.reloadFromDisk();
 
         assertEquals("abc", entry.get());
@@ -39,11 +38,10 @@ public class ManualConfigTest {
         Path configPath = TestUtils.randomConfigName(tempDir);
         ConfigBuilderImpl builder = TestUtils.createBuilder(configPath);
         ConfigEntry<String> entry = builder.stringEntry("test", "test123");
-        builder.config.save();
+        builder.config.saveSync();
 
         assertEquals("test123", entry.get());
 
-        TestUtils.sleep();
         List<String> strings = Files.readAllLines(configPath);
 
         assertEquals(1, strings.size());

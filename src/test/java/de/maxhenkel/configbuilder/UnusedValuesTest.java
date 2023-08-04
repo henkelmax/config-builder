@@ -19,15 +19,13 @@ public class UnusedValuesTest {
     void removeUnused(@TempDir Path tempDir) throws IOException {
         Path configPath = TestUtils.randomConfigName(tempDir);
         Files.write(configPath, Arrays.asList("test=test123", "test1=123", "test2=456"));
-        TestUtils.sleep();
+
         ConfigBuilderImpl builder = TestUtils.createBuilder(configPath);
         ConfigEntry<String> entry = builder.stringEntry("test", "");
         builder.removeUnused();
-        builder.config.save();
+        builder.config.saveSync();
 
         assertEquals("test123", entry.get());
-
-        TestUtils.sleep();
 
         List<String> strings = Files.readAllLines(configPath);
 
