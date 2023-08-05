@@ -103,6 +103,30 @@ public interface ConfigBuilder {
     }
 
     /**
+     * Adds a float entry
+     *
+     * @param key      the config key
+     * @param def      the default value
+     * @param min      the minimum value
+     * @param max      the maximum value
+     * @param comments the comments
+     * @return the config entry
+     */
+    FloatConfigEntry floatEntry(String key, Float def, Float min, Float max, String... comments);
+
+    /**
+     * Adds a float entry
+     *
+     * @param key      the config key
+     * @param def      the default value
+     * @param comments the comments
+     * @return the config entry
+     */
+    default FloatConfigEntry floatEntry(String key, Float def, String... comments) {
+        return floatEntry(key, def, null, null, comments);
+    }
+
+    /**
      * Adds a string entry
      *
      * @param key      the config key

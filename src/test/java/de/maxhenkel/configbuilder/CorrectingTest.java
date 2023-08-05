@@ -53,6 +53,25 @@ public class CorrectingTest {
     }
 
     @Test
+    @DisplayName("Float bounds")
+    void floatBounds(@TempDir Path tempDir) throws IOException {
+        test(tempDir, "#test\nfloat=20", "float=10.0", builder -> {
+            builder.floatEntry("float", 0F, -10F, 10F);
+        });
+        test(tempDir, "#test\nfloat=-20", "float=-10.0", builder -> {
+            builder.floatEntry("float", 0F, -10F, 10F);
+        });
+    }
+
+    @Test
+    @DisplayName("Invalid float")
+    void invalidFloat(@TempDir Path tempDir) throws IOException {
+        test(tempDir, "#test\nfloat=20.0a", "float=0.0", builder -> {
+            builder.floatEntry("float", 0F, -10F, 10F);
+        });
+    }
+
+    @Test
     @DisplayName("Double bounds")
     void doubleBounds(@TempDir Path tempDir) throws IOException {
         test(tempDir, "#test\ndouble=20", "double=10.0", builder -> {

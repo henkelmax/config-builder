@@ -5,7 +5,7 @@ A simple Java property configuration library.
 ## Features
 
 - Simple API
-- Supports boolean, integer, long, double, string and enum entries
+- Supports boolean, integer, long, float, double, string and enum entries
 - Uses the simple, human-readable [properties](https://en.wikipedia.org/wiki/.properties) file format
 - Automatically handles saving and loading
 - Automatically corrects invalid values or missing entries
@@ -78,6 +78,7 @@ static class Config {
     public final ConfigEntry<Boolean> booleanEntry;
     public final ConfigEntry<Integer> integerEntry;
     public final ConfigEntry<Long> longEntry;
+    public final ConfigEntry<Float> floatEntry;
     public final ConfigEntry<Double> doubleEntry;
     public final ConfigEntry<String> stringEntry;
     public final ConfigEntry<TestEnum> enumEntry;
@@ -90,6 +91,7 @@ static class Config {
         booleanEntry = builder.booleanEntry("boolean", false).comment("This is a boolean entry");
         integerEntry = builder.integerEntry("integer", 10, 0, 20).comment("This is an integer entry with the range 0-20");
         longEntry = builder.longEntry("long", 10L, 0L, 20L).comment("This is a long entry with the range 0-20");
+        floatEntry = builder.floatEntry("float", 10F, 0F, 20F).comment("This is a float entry with the range 0.0-20.0");
         doubleEntry = builder.doubleEntry("double", 10D, 0D, 20D).comment("This is a double entry with the range 0.0-20.0");
         stringEntry = builder.stringEntry("string", "test123").comment("This is a string entry");
         enumEntry = builder.enumEntry("enum", TestEnum.TEST_1).comment("This is an enum entry");
@@ -113,6 +115,8 @@ boolean=false
 integer=10
 # This is a long entry with the range 0-20
 long=10
+# This is a float entry with the range 0.0-20.0
+float=10.0
 # This is a double entry with the range 0.0-20.0
 double=10.0
 # This is a string entry

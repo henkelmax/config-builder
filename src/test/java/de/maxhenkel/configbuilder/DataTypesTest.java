@@ -93,6 +93,36 @@ public class DataTypesTest {
     }
 
     @Test
+    @DisplayName("Set float")
+    void setFloat(@TempDir Path tempDir) {
+        ConfigBuilderImpl builder = TestUtils.createBuilderWithRandomPath(tempDir);
+        ConfigEntry<Float> entry = builder.floatEntry("float_test", 10F, 0F, 20F);
+        builder.config.saveSync();
+
+        assertEquals(10F, entry.get());
+        entry.set(15F);
+        // Set again to cover the case where the value is already set to the same value
+        entry.set(15F).saveSync();
+        assertEquals(15F, entry.get());
+
+        builder.reloadFromDisk();
+
+        assertEquals(15F, entry.get());
+
+        entry.set(30F).saveSync();
+        assertEquals(20F, entry.get());
+
+        entry.set(30F).saveSync();
+
+        builder.reloadFromDisk();
+
+        assertEquals(20F, entry.get());
+
+        entry.set(-10F).saveSync();
+        assertEquals(0F, entry.get());
+    }
+
+    @Test
     @DisplayName("Set double")
     void setDouble(@TempDir Path tempDir) {
         ConfigBuilderImpl builder = TestUtils.createBuilderWithRandomPath(tempDir);

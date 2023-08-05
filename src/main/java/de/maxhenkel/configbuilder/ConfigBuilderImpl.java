@@ -87,6 +87,14 @@ public class ConfigBuilderImpl implements ConfigBuilder {
     }
 
     @Override
+    public FloatConfigEntry floatEntry(String key, Float def, Float min, Float max, String... comments) {
+        checkFrozen();
+        FloatConfigEntry entry = new FloatConfigEntry(config, comments, key, def, min, max);
+        entries.add(entry);
+        return entry;
+    }
+
+    @Override
     public StringConfigEntry stringEntry(String key, String def, String... comments) {
         checkFrozen();
         StringConfigEntry entry = new StringConfigEntry(config, comments, key, def);

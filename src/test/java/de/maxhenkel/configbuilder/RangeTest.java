@@ -1,6 +1,7 @@
 package de.maxhenkel.configbuilder;
 
 import de.maxhenkel.configbuilder.entry.DoubleConfigEntry;
+import de.maxhenkel.configbuilder.entry.FloatConfigEntry;
 import de.maxhenkel.configbuilder.entry.IntegerConfigEntry;
 import de.maxhenkel.configbuilder.entry.LongConfigEntry;
 import org.junit.jupiter.api.DisplayName;
@@ -76,6 +77,40 @@ public class RangeTest {
 
         entry.set(Long.MAX_VALUE);
         assertEquals(Long.MAX_VALUE, entry.get());
+    }
+
+    @Test
+    @DisplayName("Float range")
+    void floatRange() {
+        ConfigBuilderImpl builder = TestUtils.createInMemoryBuilder();
+        FloatConfigEntry entry = builder.floatEntry("float", 0F, -10F, 10F);
+
+        assertEquals(-10F, entry.getMin());
+        assertEquals(10F, entry.getMax());
+        assertEquals(0F, entry.get());
+
+        entry.set(-20F);
+        assertEquals(-10F, entry.get());
+
+        entry.set(20F);
+        assertEquals(10F, entry.get());
+    }
+
+    @Test
+    @DisplayName("Float no range")
+    void floatNoRange() {
+        ConfigBuilderImpl builder = TestUtils.createInMemoryBuilder();
+        FloatConfigEntry entry = builder.floatEntry("float", 0F);
+
+        assertEquals(Float.MIN_VALUE, entry.getMin());
+        assertEquals(Float.MAX_VALUE, entry.getMax());
+        assertEquals(0F, entry.get());
+
+        entry.set(Float.MIN_VALUE);
+        assertEquals(Float.MIN_VALUE, entry.get());
+
+        entry.set(Float.MAX_VALUE);
+        assertEquals(Float.MAX_VALUE, entry.get());
     }
 
     @Test
