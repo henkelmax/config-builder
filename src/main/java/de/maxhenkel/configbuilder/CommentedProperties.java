@@ -263,11 +263,11 @@ public class CommentedProperties implements Map<String, String> {
     }
 
     private static boolean isWhitespace(int c) {
-        return c == ' ' || c == '\t' || c == '\r' || c == '\f';
+        return c == ' ' || c == '\t' || c == '\r' || c == '\f' || Character.isWhitespace(c);
     }
 
     private static boolean isSeparator(int c) {
-        return c == '=' || c == ':' || c == ' ' || c == '\t';
+        return c == '=' || c == ':' || c == ' ' || c == '\t' || c == '\f';
     }
 
     /**

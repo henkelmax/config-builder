@@ -43,7 +43,9 @@ public class CompatibilityTest {
                 "test123#123",
                 "test11",
                 "test12 = 123\\",
-                "test13 = 123"
+                "test13 = 123",
+                "test14\\f123",
+                "tes\rt15=123"
         );
     }
 

@@ -85,6 +85,18 @@ public class ParseTest {
     }
 
     @Test
+    @DisplayName("\\f in key")
+    void backslashFInKey() throws IOException {
+        testInput("te\\fst=123", "te\fst", "123");
+    }
+
+    @Test
+    @DisplayName("\\f in value")
+    void backslashFInValue() throws IOException {
+        testInput("test=12\\f3", "test", "12\f3");
+    }
+
+    @Test
     @DisplayName("Unicode in key")
     void unicodeInKey() throws IOException {
         testInput("\\uD83D\\uDE02=123", "\uD83D\uDE02", "123");
@@ -142,8 +154,14 @@ public class ParseTest {
 
     @Test
     @DisplayName("Space at start of key")
-    void spaceInKey() throws IOException {
+    void spaceAtStartOfKey() throws IOException {
         testInput(" test=123", "test", "123");
+    }
+
+    @Test
+    @DisplayName("Whitespace in key")
+    void whitespaceInKey() throws IOException {
+        testInputNoParity("te\u2001st=123", "test", "123");
     }
 
     @Test
@@ -231,6 +249,12 @@ public class ParseTest {
     @DisplayName("\\r at end of line")
     void backslashRAtEndOfLine() throws IOException {
         testInput("test=123\r", "test", "123");
+    }
+
+    @Test
+    @DisplayName("Ending with \\")
+    void endingWithBackslash() throws IOException {
+        testInput("test=123\\", "test", "123");
     }
 
     @Test
