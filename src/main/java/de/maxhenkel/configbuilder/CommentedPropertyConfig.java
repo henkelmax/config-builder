@@ -163,13 +163,13 @@ public class CommentedPropertyConfig implements Config {
         }
         try {
             Files.createDirectories(path.getParent());
-        } catch (IOException e) {
+        } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Failed to create parent directories of config", e);
         }
 
         try (OutputStream stream = Files.newOutputStream(path, StandardOpenOption.CREATE, StandardOpenOption.SYNC, StandardOpenOption.TRUNCATE_EXISTING)) {
             properties.save(stream);
-        } catch (IOException e) {
+        } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Failed to save config", e);
         }
     }
