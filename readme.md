@@ -65,6 +65,7 @@ public static void main(String[] args) {
     System.out.println(config.booleanEntry.getKey() + ": " + config.booleanEntry.get());  // boolean: false
     System.out.println(config.integerEntry.getKey() + ": " + config.integerEntry.get());  // integer: 10
     System.out.println(config.longEntry.getKey() + ": " + config.longEntry.get());        // long: 10
+    System.out.println(config.floatEntry.getKey() + ": " + config.floatEntry.get());      // float: 10.0
     System.out.println(config.doubleEntry.getKey() + ": " + config.doubleEntry.get());    // double: 10.0
     System.out.println(config.stringEntry.getKey() + ": " + config.stringEntry.get());    // string: test123
     System.out.println(config.enumEntry.getKey() + ": " + config.enumEntry.get());        // enum: TEST_1
