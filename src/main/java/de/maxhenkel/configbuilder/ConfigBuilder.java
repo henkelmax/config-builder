@@ -1,5 +1,7 @@
 package de.maxhenkel.configbuilder;
 
+import de.maxhenkel.configbuilder.entry.ConfigEntry;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.nio.file.Path;

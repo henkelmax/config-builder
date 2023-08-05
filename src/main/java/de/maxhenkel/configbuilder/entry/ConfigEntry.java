@@ -1,4 +1,6 @@
-package de.maxhenkel.configbuilder;
+package de.maxhenkel.configbuilder.entry;
+
+import de.maxhenkel.configbuilder.Config;
 
 public interface ConfigEntry<T> {
 

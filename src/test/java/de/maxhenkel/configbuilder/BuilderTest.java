@@ -1,5 +1,6 @@
 package de.maxhenkel.configbuilder;
 
+import de.maxhenkel.configbuilder.entry.ConfigEntry;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
