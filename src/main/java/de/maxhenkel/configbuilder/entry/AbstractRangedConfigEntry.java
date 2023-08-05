@@ -5,14 +5,14 @@ import de.maxhenkel.configbuilder.CommentedPropertyConfig;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public abstract class RangedConfigEntryImpl<T> extends AbstractConfigEntry<T> implements RangedConfigEntry<T> {
+public abstract class AbstractRangedConfigEntry<T> extends AbstractConfigEntry<T> implements RangedConfigEntry<T> {
 
     @Nonnull
     protected final T min;
     @Nonnull
     protected final T max;
 
-    public RangedConfigEntryImpl(CommentedPropertyConfig config, String[] comments, String key, T def, @Nullable T min, @Nullable T max) {
+    public AbstractRangedConfigEntry(CommentedPropertyConfig config, String[] comments, String key, T def, @Nullable T min, @Nullable T max) {
         super(config, comments, key, def);
         if (min != null) {
             this.min = min;

@@ -5,7 +5,7 @@ import de.maxhenkel.configbuilder.CommentedPropertyConfig;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class FloatConfigEntry extends RangedConfigEntryImpl<Float> {
+public class FloatConfigEntry extends AbstractRangedConfigEntry<Float> {
 
     public FloatConfigEntry(CommentedPropertyConfig config, String[] comments, String key, Float def, Float min, Float max) {
         super(config, comments, key, def, min, max);

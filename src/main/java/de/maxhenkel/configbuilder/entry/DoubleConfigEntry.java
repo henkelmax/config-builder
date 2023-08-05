@@ -5,7 +5,7 @@ import de.maxhenkel.configbuilder.CommentedPropertyConfig;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class DoubleConfigEntry extends RangedConfigEntryImpl<Double> {
+public class DoubleConfigEntry extends AbstractRangedConfigEntry<Double> {
 
     public DoubleConfigEntry(CommentedPropertyConfig config, String[] comments, String key, Double def, Double min, Double max) {
         super(config, comments, key, def, min, max);

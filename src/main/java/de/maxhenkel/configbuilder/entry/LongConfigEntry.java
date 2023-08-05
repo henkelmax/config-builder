@@ -5,7 +5,7 @@ import de.maxhenkel.configbuilder.CommentedPropertyConfig;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class LongConfigEntry extends RangedConfigEntryImpl<Long> {
+public class LongConfigEntry extends AbstractRangedConfigEntry<Long> {
 
     public LongConfigEntry(CommentedPropertyConfig config, String[] comments, String key, Long def, Long min, Long max) {
         super(config, comments, key, def, min, max);
