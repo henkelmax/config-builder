@@ -97,6 +97,18 @@ public class ParseTest {
     }
 
     @Test
+    @DisplayName("Lowercase unicode in key")
+    void lowercaseUnicodeInKey() throws IOException {
+        testInput("\\ud83d\\ude02=123", "\uD83D\uDE02", "123");
+    }
+
+    @Test
+    @DisplayName("Lowercase unicode in value")
+    void lowercaseUnicodeInValue() throws IOException {
+        testInput("test=\\ud83d\\ude02", "test", "\uD83D\uDE02");
+    }
+
+    @Test
     @DisplayName("Special character in value")
     void specialCharacterInValue() throws IOException {
         testInputNoParity("test=°", "test", "°");
@@ -219,6 +231,12 @@ public class ParseTest {
     @DisplayName("\\r at end of line")
     void backslashRAtEndOfLine() throws IOException {
         testInput("test=123\r", "test", "123");
+    }
+
+    @Test
+    @DisplayName("Escape sequences")
+    void escapeSequences() throws IOException {
+        testInput("test=test\\t\\r\\n\\ftest", "test", "test\t\r\n\ftest");
     }
 
     private static void testInput(String input, String entryName, String expectedOutput) throws IOException {
