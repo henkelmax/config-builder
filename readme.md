@@ -55,12 +55,12 @@ repositories {
 ```java
 public static void main(String[] args) {
     Config config = ConfigBuilder.builder(Config::new)
-    .path(Paths.get("config.properties")) // The path to the config file
-    .keepOrder(true) // Whether the config should keep the order of the entries - Enabled by default
-    .removeUnused(true) // Whether the config should remove entries that were not defined in the builder - Enabled by default
-    .strict(true) // Whether the config should be strict (compliant to Javas Properties class) - Enabled by default
-    .saveAfterBuild(true) // Whether the config should be saved after building - Enabled by default
-    .build();
+        .path(Paths.get("config.properties")) // The path to the config file
+        .keepOrder(true) // Whether the config should keep the order of the entries - Enabled by default
+        .removeUnused(true) // Whether the config should remove entries that were not defined in the builder - Enabled by default
+        .strict(true) // Whether the config should be strict (compliant to Javas Properties class) - Enabled by default
+        .saveAfterBuild(true) // Whether the config should be saved after building - Enabled by default
+        .build();
 
     System.out.println(config.booleanEntry.getKey() + ": " + config.booleanEntry.get());  // boolean: false
     System.out.println(config.integerEntry.getKey() + ": " + config.integerEntry.get());  // integer: 10
