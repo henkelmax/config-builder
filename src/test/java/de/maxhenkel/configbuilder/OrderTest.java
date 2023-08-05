@@ -37,14 +37,12 @@ public class OrderTest {
         commentedProperties.load(in1);
         commentedProperties.save(Files.newOutputStream(config.toFile().toPath()));
 
-        ConfigBuilder.build(config, builder -> {
+        ConfigBuilder.builder(builder -> {
             ConfigEntry<Integer> one = builder.integerEntry("test_one", 1, 0, 10);
             ConfigEntry<String> two = builder.stringEntry("test_two", "two");
             ConfigEntry<Boolean> three = builder.booleanEntry("test_three", true);
             return null;
-        });
-
-        TestUtils.sleep();
+        }).path(config).keepOrder(true).saveSyncAfterBuild(true).build();
 
         ConfigBuilderImpl builder = TestUtils.createBuilder(config);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -85,14 +83,12 @@ public class OrderTest {
         commentedProperties.load(in1);
         commentedProperties.save(Files.newOutputStream(config.toFile().toPath()));
 
-        ConfigBuilder.build(config, true, builder -> {
+        ConfigBuilder.builder(builder -> {
             ConfigEntry<Integer> one = builder.integerEntry("test_one", 1, 0, 10);
             ConfigEntry<String> two = builder.stringEntry("test_two", "two");
             ConfigEntry<Boolean> three = builder.booleanEntry("test_three", true);
             return null;
-        });
-
-        TestUtils.sleep();
+        }).path(config).removeUnused(true).saveSyncAfterBuild(true).build();
 
         ConfigBuilderImpl builder = TestUtils.createBuilder(config);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
