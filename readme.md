@@ -6,7 +6,7 @@ A simple Java configuration library.
 
 - Simple API
 - Supports boolean, integer, long, double, string and enum entries
-- Uses the `properties` file format
+- Uses the simple, human-readable `properties` file format
 - Automatically handles saving and loading
 - Automatically corrects invalid values
 - Supports header and per-entry comments
