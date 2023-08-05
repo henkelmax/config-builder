@@ -181,6 +181,7 @@ public interface ConfigBuilder {
         private boolean strict;
         private boolean keepOrder;
         private boolean saveAfterBuild;
+        private boolean saveSyncAfterBuild;
 
         private Builder(@Nonnull Function<ConfigBuilder, C> builderConsumer) {
             this.builderConsumer = builderConsumer;
@@ -188,6 +189,7 @@ public interface ConfigBuilder {
             this.strict = true;
             this.keepOrder = true;
             this.saveAfterBuild = true;
+            this.saveSyncAfterBuild = false;
         }
 
         /**
@@ -240,12 +242,33 @@ public interface ConfigBuilder {
 
         /**
          * This value is <code>true</code> by default
+         * <br/>
+         * Setting this to <code>true</code> will set {@link #saveSyncAfterBuild} to <code>false</code>
          *
-         * @param saveAfterBuild whether the config should be saved after building
+         * @param saveAfterBuild whether the config should be saved asynchronously after building
          * @return the builder
          */
         public Builder<C> saveAfterBuild(boolean saveAfterBuild) {
             this.saveAfterBuild = saveAfterBuild;
+            if (saveAfterBuild) {
+                saveSyncAfterBuild = false;
+            }
+            return this;
+        }
+
+        /**
+         * This value is <code>false</code> by default
+         * <br/>
+         * Setting this to <code>true</code> will set {@link #saveAfterBuild} to <code>false</code>
+         *
+         * @param saveSyncAfterBuild whether the config should be saved synchronously after building
+         * @return the builder
+         */
+        public Builder<C> saveSyncAfterBuild(boolean saveSyncAfterBuild) {
+            this.saveSyncAfterBuild = saveSyncAfterBuild;
+            if (saveSyncAfterBuild) {
+                saveAfterBuild = false;
+            }
             return this;
         }
 
@@ -269,6 +292,8 @@ public interface ConfigBuilder {
             }
             if (saveAfterBuild) {
                 builder.config.save();
+            } else if (saveSyncAfterBuild) {
+                builder.config.saveSync();
             }
             return config;
         }
