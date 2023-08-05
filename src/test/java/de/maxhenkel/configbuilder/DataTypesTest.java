@@ -22,6 +22,8 @@ public class DataTypesTest {
         builder.config.saveSync();
 
         assertEquals(false, entry.get());
+        entry.set(true);
+        // Set again to cover the case where the value is already set to the same value
         entry.set(true).saveSync();
         assertEquals(true, entry.get());
 
@@ -38,6 +40,8 @@ public class DataTypesTest {
         builder.config.saveSync();
 
         assertEquals(10, entry.get());
+        entry.set(15);
+        // Set again to cover the case where the value is already set to the same value
         entry.set(15).saveSync();
         assertEquals(15, entry.get());
 
@@ -66,6 +70,8 @@ public class DataTypesTest {
         builder.config.saveSync();
 
         assertEquals(Long.MAX_VALUE - 100L, entry.get());
+        entry.set(Long.MAX_VALUE - 75L);
+        // Set again to cover the case where the value is already set to the same value
         entry.set(Long.MAX_VALUE - 75L).saveSync();
         assertEquals(Long.MAX_VALUE - 75L, entry.get());
 
@@ -94,6 +100,8 @@ public class DataTypesTest {
         builder.config.saveSync();
 
         assertEquals(10D, entry.get());
+        entry.set(15D);
+        // Set again to cover the case where the value is already set to the same value
         entry.set(15D).saveSync();
         assertEquals(15D, entry.get());
 
@@ -122,6 +130,8 @@ public class DataTypesTest {
         builder.config.saveSync();
 
         assertEquals("test123=!\"", entry.get());
+        entry.set("abc!=\"");
+        // Set again to cover the case where the value is already set to the same value
         entry.set("abc!=\"").saveSync();
         assertEquals("abc!=\"", entry.get());
 
@@ -138,6 +148,8 @@ public class DataTypesTest {
         builder.config.saveSync();
 
         assertEquals(Arrays.asList(-1, 0, 1, Integer.MIN_VALUE, Integer.MAX_VALUE), entry.get());
+        entry.set(Collections.emptyList());
+        // Set again to cover the case where the value is already set to the same value
         entry.set(Collections.emptyList()).saveSync();
         assertEquals(Collections.emptyList(), entry.get());
         entry.set(Arrays.asList(1, 2, 3, Integer.MIN_VALUE, Integer.MAX_VALUE)).saveSync();
@@ -155,6 +167,7 @@ public class DataTypesTest {
         builder.config.saveSync();
 
         assertEquals(TestEnum.TEST_2, entry.get());
+        entry.set(TestEnum.TEST_4).saveSync();
         entry.set(TestEnum.TEST_4).saveSync();
         assertEquals(TestEnum.TEST_4, entry.get());
         entry.set(TestEnum.TEST_3).saveSync();

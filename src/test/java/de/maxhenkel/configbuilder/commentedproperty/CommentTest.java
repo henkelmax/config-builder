@@ -98,6 +98,16 @@ public class CommentTest {
     }
 
     @Test
+    @DisplayName("Set comment")
+    void setComment() {
+        CommentedProperties properties = new CommentedProperties();
+        properties.set("test", "123");
+        properties.setComments("test", Collections.singletonList("Test comment"));
+        assertLinesMatch(Collections.singletonList("Test comment"), properties.getComments("test"));
+        assertEquals("123", properties.get("test"));
+    }
+
+    @Test
     @DisplayName("Set comment of nonexistent property")
     void setNonexistentComment() {
         CommentedProperties properties = new CommentedProperties();

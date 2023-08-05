@@ -7,6 +7,7 @@ import org.junit.jupiter.api.io.TempDir;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.function.Consumer;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -14,8 +15,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class CorrectingTest {
 
     @Test
-    @DisplayName("Check integer bounds")
-    void setIntegerBounds(@TempDir Path tempDir) throws IOException {
+    @DisplayName("Integer bounds")
+    void integerBounds(@TempDir Path tempDir) throws IOException {
         test(tempDir, "#test\ninteger=20", "integer=10", builder -> {
             builder.integerEntry("integer", 0, -10, 10);
         });
@@ -25,8 +26,16 @@ public class CorrectingTest {
     }
 
     @Test
-    @DisplayName("Check long bounds")
-    void setLongBounds(@TempDir Path tempDir) throws IOException {
+    @DisplayName("Invalid integer")
+    void invalidInteger(@TempDir Path tempDir) throws IOException {
+        test(tempDir, "#test\ninteger=1a", "integer=0", builder -> {
+            builder.integerEntry("integer", 0, -10, 10);
+        });
+    }
+
+    @Test
+    @DisplayName("Long bounds")
+    void longBounds(@TempDir Path tempDir) throws IOException {
         test(tempDir, "#test\nlong=20", "long=10", builder -> {
             builder.longEntry("long", 0L, -10L, 10L);
         });
@@ -36,13 +45,45 @@ public class CorrectingTest {
     }
 
     @Test
-    @DisplayName("Check double bounds")
-    void setDoubleBounds(@TempDir Path tempDir) throws IOException {
+    @DisplayName("Invalid long")
+    void invalidLong(@TempDir Path tempDir) throws IOException {
+        test(tempDir, "#test\nlong=1a", "long=0", builder -> {
+            builder.longEntry("long", 0L, -10L, 10L);
+        });
+    }
+
+    @Test
+    @DisplayName("Double bounds")
+    void doubleBounds(@TempDir Path tempDir) throws IOException {
         test(tempDir, "#test\ndouble=20", "double=10.0", builder -> {
             builder.doubleEntry("double", 0D, -10D, 10D);
         });
         test(tempDir, "#test\ndouble=-20", "double=-10.0", builder -> {
             builder.doubleEntry("double", 0D, -10D, 10D);
+        });
+    }
+
+    @Test
+    @DisplayName("Invalid double")
+    void invalidDouble(@TempDir Path tempDir) throws IOException {
+        test(tempDir, "#test\ndouble=20.0a", "double=0.0", builder -> {
+            builder.doubleEntry("double", 0D, -10D, 10D);
+        });
+    }
+
+    @Test
+    @DisplayName("Invalid integer list")
+    void invalidIntegerList(@TempDir Path tempDir) throws IOException {
+        test(tempDir, "#test\nint_list=0,a,2", "int_list=0,2", builder -> {
+            builder.integerListEntry("int_list", Arrays.asList(0, 1, 2));
+        });
+    }
+
+    @Test
+    @DisplayName("Invalid enum")
+    void invalidEnum(@TempDir Path tempDir) throws IOException {
+        test(tempDir, "#test\nenum=TEST_0", "enum=TEST_2", builder -> {
+            builder.enumEntry("enum", TestEnum.TEST_2);
         });
     }
 
@@ -54,6 +95,10 @@ public class CorrectingTest {
             return null;
         }).path(path).saveSyncAfterBuild(true).build();
         assertEquals(expected, new String(Files.readAllBytes(path)).trim());
+    }
+
+    public enum TestEnum {
+        TEST_1, TEST_2, TEST_3;
     }
 
 }
