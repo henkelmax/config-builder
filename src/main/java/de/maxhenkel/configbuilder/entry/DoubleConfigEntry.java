@@ -14,19 +14,19 @@ public class DoubleConfigEntry extends RangedConfigEntryImpl<Double> {
 
     @Nonnull
     @Override
-    protected Double minimumPossibleValue() {
+    Double minimumPossibleValue() {
         return Double.MIN_VALUE;
     }
 
     @Nonnull
     @Override
-    protected Double maximumPossibleValue() {
+    Double maximumPossibleValue() {
         return Double.MAX_VALUE;
     }
 
     @Override
     @Nullable
-    public Double deserialize(String str) {
+    Double deserialize(String str) {
         try {
             return Double.parseDouble(str);
         } catch (NumberFormatException e) {
@@ -35,12 +35,12 @@ public class DoubleConfigEntry extends RangedConfigEntryImpl<Double> {
     }
 
     @Override
-    protected Double fixValue(Double value) {
+    Double fixValue(Double value) {
         return Math.max(Math.min(value, max), min);
     }
 
     @Override
-    public String serialize(Double val) {
+    String serialize(Double val) {
         return String.valueOf(val);
     }
 }

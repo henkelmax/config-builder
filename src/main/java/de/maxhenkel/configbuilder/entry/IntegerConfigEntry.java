@@ -14,19 +14,19 @@ public class IntegerConfigEntry extends RangedConfigEntryImpl<Integer> {
 
     @Nonnull
     @Override
-    protected Integer minimumPossibleValue() {
+    Integer minimumPossibleValue() {
         return Integer.MIN_VALUE;
     }
 
     @Nonnull
     @Override
-    protected Integer maximumPossibleValue() {
+    Integer maximumPossibleValue() {
         return Integer.MAX_VALUE;
     }
 
     @Override
     @Nullable
-    public Integer deserialize(String str) {
+    Integer deserialize(String str) {
         try {
             return Integer.parseInt(str);
         } catch (NumberFormatException e) {
@@ -35,12 +35,12 @@ public class IntegerConfigEntry extends RangedConfigEntryImpl<Integer> {
     }
 
     @Override
-    protected Integer fixValue(Integer value) {
+    Integer fixValue(Integer value) {
         return Math.max(Math.min(value, max), min);
     }
 
     @Override
-    public String serialize(Integer val) {
+    String serialize(Integer val) {
         return String.valueOf(val);
     }
 }

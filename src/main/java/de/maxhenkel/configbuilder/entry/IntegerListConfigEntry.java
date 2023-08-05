@@ -16,7 +16,7 @@ public class IntegerListConfigEntry extends ConfigEntryImpl<List<Integer>> {
 
     @Override
     @Nullable
-    public List<Integer> deserialize(String str) {
+    List<Integer> deserialize(String str) {
         List<Integer> list = new ArrayList<>();
         String[] split = str.split(",");
         for (String n : split) {
@@ -29,7 +29,7 @@ public class IntegerListConfigEntry extends ConfigEntryImpl<List<Integer>> {
     }
 
     @Override
-    public String serialize(List<Integer> val) {
+    String serialize(List<Integer> val) {
         return val.stream().map(String::valueOf).collect(Collectors.joining(","));
     }
 }

@@ -14,7 +14,7 @@ public class LongConfigEntry extends RangedConfigEntryImpl<Long> {
 
     @Override
     @Nullable
-    public Long deserialize(String str) {
+    Long deserialize(String str) {
         try {
             return Long.parseLong(str);
         } catch (NumberFormatException e) {
@@ -24,23 +24,23 @@ public class LongConfigEntry extends RangedConfigEntryImpl<Long> {
 
     @Nonnull
     @Override
-    protected Long minimumPossibleValue() {
+    Long minimumPossibleValue() {
         return Long.MIN_VALUE;
     }
 
     @Nonnull
     @Override
-    protected Long maximumPossibleValue() {
+    Long maximumPossibleValue() {
         return Long.MAX_VALUE;
     }
 
     @Override
-    protected Long fixValue(Long value) {
+    Long fixValue(Long value) {
         return Math.max(Math.min(value, max), min);
     }
 
     @Override
-    public String serialize(Long val) {
+    String serialize(Long val) {
         return String.valueOf(val);
     }
 }

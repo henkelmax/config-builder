@@ -13,12 +13,12 @@ public class StringConfigEntry extends ConfigEntryImpl<String> {
 
     @Override
     @Nullable
-    public String deserialize(String str) {
+    String deserialize(String str) {
         return str;
     }
 
     @Override
-    public String serialize(String val) {
+    String serialize(String val) {
         return val;
     }
 }

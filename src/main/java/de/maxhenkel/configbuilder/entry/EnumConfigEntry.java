@@ -16,7 +16,7 @@ public class EnumConfigEntry<E extends Enum<E>> extends ConfigEntryImpl<E> {
 
     @Nullable
     @Override
-    public E deserialize(String str) {
+    E deserialize(String str) {
         try {
             return Enum.valueOf(enumClass, str);
         } catch (Exception e) {
@@ -25,7 +25,7 @@ public class EnumConfigEntry<E extends Enum<E>> extends ConfigEntryImpl<E> {
     }
 
     @Override
-    public String serialize(E val) {
+    String serialize(E val) {
         return val.name();
     }
 }

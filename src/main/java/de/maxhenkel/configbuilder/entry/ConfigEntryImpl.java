@@ -105,7 +105,7 @@ public abstract class ConfigEntryImpl<T> implements ConfigEntry<T> {
      * @return the deserialized value
      */
     @Nullable
-    public abstract T deserialize(String str);
+    abstract T deserialize(String str);
 
     /**
      * Serializes the value to a string
@@ -113,7 +113,7 @@ public abstract class ConfigEntryImpl<T> implements ConfigEntry<T> {
      * @param val the value to serialize
      * @return the serialized value
      */
-    public abstract String serialize(T val);
+    abstract String serialize(T val);
 
     /**
      * Fixes the value if it is invalid or out of bounds
@@ -121,7 +121,7 @@ public abstract class ConfigEntryImpl<T> implements ConfigEntry<T> {
      * @param value the value to fix
      * @return the fixed value
      */
-    protected T fixValue(T value) {
+    T fixValue(T value) {
         return value;
     }
 

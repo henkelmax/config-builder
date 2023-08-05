@@ -42,12 +42,12 @@ public abstract class RangedConfigEntryImpl<T> extends ConfigEntryImpl<T> implem
      * @return the minimum possible value the data type can have
      */
     @Nonnull
-    protected abstract T minimumPossibleValue();
+    abstract T minimumPossibleValue();
 
     /**
      * @return the maximum possible value the data type can have
      */
     @Nonnull
-    protected abstract T maximumPossibleValue();
+    abstract T maximumPossibleValue();
 
 }
