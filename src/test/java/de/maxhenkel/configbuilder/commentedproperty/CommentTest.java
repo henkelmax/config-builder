@@ -7,8 +7,9 @@ import org.junit.jupiter.api.Test;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Collections;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class CommentTest {
 
@@ -63,13 +64,46 @@ public class CommentTest {
     }
 
     private static void testComments(String[] headerComments, String key, String value, String[] comments, String... expectedOutput) throws IOException {
-        CommentedProperties commentedProperties = new CommentedProperties();
-        commentedProperties.setHeaderComments(Arrays.asList(headerComments));
-        commentedProperties.set(key, value, comments);
+        CommentedProperties properties = new CommentedProperties();
+        properties.setHeaderComments(Arrays.asList(headerComments));
+        properties.set(key, value, comments);
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        commentedProperties.save(stream);
+        properties.save(stream);
         String output = stream.toString().replace("\r\n", "\n");
         assertEquals(String.join("\n", expectedOutput), output);
+    }
+
+    @Test
+    @DisplayName("Test get comments")
+    void testGetComments() {
+        CommentedProperties properties = new CommentedProperties();
+
+        properties.addHeaderComment("Header 1");
+
+        properties.set("test", "123", "Test comment");
+        ByteArrayOutputStream stream2 = new ByteArrayOutputStream();
+        properties.save(stream2);
+        String output = stream2.toString().replace("\r\n", "\n");
+
+        assertEquals("# Header 1\n\n# Test comment\ntest=123\n", output);
+
+        assertLinesMatch(Collections.singletonList("Test comment"), properties.getComments("test"));
+    }
+
+    @Test
+    @DisplayName("Get comment of nonexistent property")
+    void getNonexistentComment() {
+        CommentedProperties properties = new CommentedProperties();
+        assertNull(properties.getComments("test"));
+    }
+
+    @Test
+    @DisplayName("Set comment of nonexistent property")
+    void setNonexistentComment() {
+        CommentedProperties properties = new CommentedProperties();
+        properties.setComments("test", Collections.singletonList("Test comment"));
+        assertLinesMatch(Collections.singletonList("Test comment"), properties.getComments("test"));
+        assertEquals("", properties.get("test"));
     }
 
 }
