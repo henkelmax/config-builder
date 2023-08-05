@@ -72,7 +72,7 @@ public static void main(String[] args) {
         config.integerEntry.set(15).save(); // Set the value of the integer entry to 15 and saves the config asynchronously
         config.integerEntry.set(12).saveSync(); // Set the value of the integer entry to 12 and saves the config synchronously
         config.integerEntry.reset().save(); // Reset the value of the integer entry to the default value and saves the config asynchronously
-        }
+}
 
 static class Config {
     public final ConfigEntry<Boolean> booleanEntry;
