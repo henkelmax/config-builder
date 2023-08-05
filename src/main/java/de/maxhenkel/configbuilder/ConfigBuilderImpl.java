@@ -55,7 +55,7 @@ public class ConfigBuilderImpl implements ConfigBuilder {
     }
 
     @Override
-    public ConfigEntry<Boolean> booleanEntry(String key, boolean def, String... comments) {
+    public BooleanConfigEntry booleanEntry(String key, Boolean def, String... comments) {
         checkFrozen();
         BooleanConfigEntry entry = new BooleanConfigEntry(config, comments, key, def);
         entries.add(entry);
@@ -63,7 +63,7 @@ public class ConfigBuilderImpl implements ConfigBuilder {
     }
 
     @Override
-    public ConfigEntry<Integer> integerEntry(String key, int def, int min, int max, String... comments) {
+    public IntegerConfigEntry integerEntry(String key, Integer def, Integer min, Integer max, String... comments) {
         checkFrozen();
         IntegerConfigEntry entry = new IntegerConfigEntry(config, comments, key, def, min, max);
         entries.add(entry);
@@ -71,7 +71,7 @@ public class ConfigBuilderImpl implements ConfigBuilder {
     }
 
     @Override
-    public ConfigEntry<Long> longEntry(String key, long def, long min, long max, String... comments) {
+    public LongConfigEntry longEntry(String key, Long def, Long min, Long max, String... comments) {
         checkFrozen();
         LongConfigEntry entry = new LongConfigEntry(config, comments, key, def, min, max);
         entries.add(entry);
@@ -79,7 +79,7 @@ public class ConfigBuilderImpl implements ConfigBuilder {
     }
 
     @Override
-    public ConfigEntry<Double> doubleEntry(String key, double def, double min, double max, String... comments) {
+    public DoubleConfigEntry doubleEntry(String key, Double def, Double min, Double max, String... comments) {
         checkFrozen();
         DoubleConfigEntry entry = new DoubleConfigEntry(config, comments, key, def, min, max);
         entries.add(entry);
@@ -87,7 +87,7 @@ public class ConfigBuilderImpl implements ConfigBuilder {
     }
 
     @Override
-    public ConfigEntry<String> stringEntry(String key, String def, String... comments) {
+    public StringConfigEntry stringEntry(String key, String def, String... comments) {
         checkFrozen();
         StringConfigEntry entry = new StringConfigEntry(config, comments, key, def);
         entries.add(entry);
@@ -95,7 +95,7 @@ public class ConfigBuilderImpl implements ConfigBuilder {
     }
 
     @Override
-    public ConfigEntry<List<Integer>> integerListEntry(String key, List<Integer> def, String... comments) {
+    public IntegerListConfigEntry integerListEntry(String key, List<Integer> def, String... comments) {
         checkFrozen();
         IntegerListConfigEntry entry = new IntegerListConfigEntry(config, comments, key, def);
         entries.add(entry);
@@ -103,11 +103,11 @@ public class ConfigBuilderImpl implements ConfigBuilder {
     }
 
     @Override
-    public <T extends Enum<T>> ConfigEntry<T> enumEntry(String key, T def, String... comments) {
+    public <E extends Enum<E>> EnumConfigEntry<E> enumEntry(String key, E def, String... comments) {
         checkFrozen();
-        EnumConfigEntry<T> entry = new EnumConfigEntry(config, comments, key, def, def.getClass());
+        EnumConfigEntry<E> entry = new EnumConfigEntry(config, comments, key, def, def.getClass());
         entries.add(entry);
-        return (ConfigEntryImpl<T>) entry;
+        return entry;
     }
 
 }

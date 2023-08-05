@@ -4,11 +4,11 @@ import de.maxhenkel.configbuilder.CommentedPropertyConfig;
 
 import javax.annotation.Nullable;
 
-public class EnumConfigEntry<T extends Enum> extends ConfigEntryImpl<Enum> {
+public class EnumConfigEntry<E extends Enum<E>> extends ConfigEntryImpl<E> {
 
-    protected Class<T> enumClass;
+    protected Class<E> enumClass;
 
-    public EnumConfigEntry(CommentedPropertyConfig config, String[] comments, String key, Enum def, Class<T> enumClass) {
+    public EnumConfigEntry(CommentedPropertyConfig config, String[] comments, String key, E def, Class<E> enumClass) {
         super(config, comments, key, def);
         this.enumClass = enumClass;
         reload();
@@ -16,7 +16,7 @@ public class EnumConfigEntry<T extends Enum> extends ConfigEntryImpl<Enum> {
 
     @Nullable
     @Override
-    public Enum deserialize(String str) {
+    public E deserialize(String str) {
         try {
             return Enum.valueOf(enumClass, str);
         } catch (Exception e) {
@@ -25,7 +25,7 @@ public class EnumConfigEntry<T extends Enum> extends ConfigEntryImpl<Enum> {
     }
 
     @Override
-    public String serialize(Enum val) {
+    public String serialize(E val) {
         return val.name();
     }
 }

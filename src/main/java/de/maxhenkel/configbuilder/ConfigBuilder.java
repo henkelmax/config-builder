@@ -1,6 +1,6 @@
 package de.maxhenkel.configbuilder;
 
-import de.maxhenkel.configbuilder.entry.ConfigEntry;
+import de.maxhenkel.configbuilder.entry.*;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -28,7 +28,7 @@ public interface ConfigBuilder {
      * @param comments the comments
      * @return the config entry
      */
-    ConfigEntry<Boolean> booleanEntry(String key, boolean def, String... comments);
+    BooleanConfigEntry booleanEntry(String key, Boolean def, String... comments);
 
     /**
      * Adds an integer entry
@@ -40,7 +40,19 @@ public interface ConfigBuilder {
      * @param comments the comments
      * @return the config entry
      */
-    ConfigEntry<Integer> integerEntry(String key, int def, int min, int max, String... comments);
+    IntegerConfigEntry integerEntry(String key, Integer def, Integer min, Integer max, String... comments);
+
+    /**
+     * Adds an integer entry
+     *
+     * @param key      the config key
+     * @param def      the default value
+     * @param comments the comments
+     * @return the config entry
+     */
+    default IntegerConfigEntry integerEntry(String key, Integer def, String... comments) {
+        return integerEntry(key, def, null, null, comments);
+    }
 
     /**
      * Adds a long entry
@@ -52,7 +64,19 @@ public interface ConfigBuilder {
      * @param comments the comments
      * @return the config entry
      */
-    ConfigEntry<Long> longEntry(String key, long def, long min, long max, String... comments);
+    LongConfigEntry longEntry(String key, Long def, Long min, Long max, String... comments);
+
+    /**
+     * Adds a long entry
+     *
+     * @param key      the config key
+     * @param def      the default value
+     * @param comments the comments
+     * @return the config entry
+     */
+    default LongConfigEntry longEntry(String key, Long def, String... comments) {
+        return longEntry(key, def, null, null, comments);
+    }
 
     /**
      * Adds a double entry
@@ -64,7 +88,19 @@ public interface ConfigBuilder {
      * @param comments the comments
      * @return the config entry
      */
-    ConfigEntry<Double> doubleEntry(String key, double def, double min, double max, String... comments);
+    DoubleConfigEntry doubleEntry(String key, Double def, Double min, Double max, String... comments);
+
+    /**
+     * Adds a double entry
+     *
+     * @param key      the config key
+     * @param def      the default value
+     * @param comments the comments
+     * @return the config entry
+     */
+    default DoubleConfigEntry doubleEntry(String key, Double def, String... comments) {
+        return doubleEntry(key, def, null, null, comments);
+    }
 
     /**
      * Adds a string entry
@@ -74,7 +110,7 @@ public interface ConfigBuilder {
      * @param comments the comments
      * @return the config entry
      */
-    ConfigEntry<String> stringEntry(String key, String def, String... comments);
+    StringConfigEntry stringEntry(String key, String def, String... comments);
 
     /**
      * Adds an integer list entry
@@ -84,7 +120,7 @@ public interface ConfigBuilder {
      * @param comments the comments
      * @return the config entry
      */
-    ConfigEntry<List<Integer>> integerListEntry(String key, List<Integer> def, String... comments);
+    IntegerListConfigEntry integerListEntry(String key, List<Integer> def, String... comments);
 
     /**
      * Adds an enum entry
@@ -95,7 +131,7 @@ public interface ConfigBuilder {
      * @param <E>      the enum type
      * @return the config entry
      */
-    <E extends Enum<E>> ConfigEntry<E> enumEntry(String key, E def, String... comments);
+    <E extends Enum<E>> EnumConfigEntry<E> enumEntry(String key, E def, String... comments);
 
     /**
      * @param path            the storage location of the config file

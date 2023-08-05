@@ -25,4 +25,8 @@ public class TestUtils {
         return new ConfigBuilderImpl(CommentedPropertyConfig.builder().path(configPath).build());
     }
 
+    public static ConfigBuilderImpl createInMemoryBuilder() {
+        return createBuilder(null);
+    }
+
 }

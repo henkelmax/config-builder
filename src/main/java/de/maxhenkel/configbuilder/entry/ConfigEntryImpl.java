@@ -5,6 +5,7 @@ import de.maxhenkel.configbuilder.Config;
 
 import javax.annotation.Nullable;
 import java.util.Arrays;
+import java.util.Objects;
 
 public abstract class ConfigEntryImpl<T> implements ConfigEntry<T> {
 
@@ -16,6 +17,10 @@ public abstract class ConfigEntryImpl<T> implements ConfigEntry<T> {
     protected T value;
 
     public ConfigEntryImpl(CommentedPropertyConfig config, String[] comments, String key, T def) {
+        Objects.requireNonNull(config);
+        Objects.requireNonNull(comments);
+        Objects.requireNonNull(key);
+        Objects.requireNonNull(def);
         this.config = config;
         this.comments = comments;
         this.key = key;
