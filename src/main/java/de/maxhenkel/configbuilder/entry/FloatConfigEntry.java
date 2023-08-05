@@ -25,8 +25,13 @@ public class FloatConfigEntry extends RangedConfigEntryImpl<Float> {
     }
 
     @Override
+    Float fixValue(Float value) {
+        return Math.max(Math.min(value, max), min);
+    }
+
     @Nullable
-    Float deserialize(String str) {
+    @Override
+    public Float deserialize(String str) {
         try {
             return Float.parseFloat(str);
         } catch (NumberFormatException e) {
@@ -35,12 +40,7 @@ public class FloatConfigEntry extends RangedConfigEntryImpl<Float> {
     }
 
     @Override
-    Float fixValue(Float value) {
-        return Math.max(Math.min(value, max), min);
-    }
-
-    @Override
-    String serialize(Float val) {
+    public String serialize(Float val) {
         return String.valueOf(val);
     }
 }

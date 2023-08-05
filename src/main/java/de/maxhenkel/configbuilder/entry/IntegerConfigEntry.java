@@ -25,8 +25,13 @@ public class IntegerConfigEntry extends RangedConfigEntryImpl<Integer> {
     }
 
     @Override
+    Integer fixValue(Integer value) {
+        return Math.max(Math.min(value, max), min);
+    }
+
     @Nullable
-    Integer deserialize(String str) {
+    @Override
+    public Integer deserialize(String str) {
         try {
             return Integer.parseInt(str);
         } catch (NumberFormatException e) {
@@ -35,12 +40,7 @@ public class IntegerConfigEntry extends RangedConfigEntryImpl<Integer> {
     }
 
     @Override
-    Integer fixValue(Integer value) {
-        return Math.max(Math.min(value, max), min);
-    }
-
-    @Override
-    String serialize(Integer val) {
+    public String serialize(Integer val) {
         return String.valueOf(val);
     }
 }

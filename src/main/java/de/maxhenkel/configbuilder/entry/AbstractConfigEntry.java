@@ -6,7 +6,7 @@ import de.maxhenkel.configbuilder.Config;
 import javax.annotation.Nullable;
 import java.util.Objects;
 
-public abstract class AbstractConfigEntry<T> implements ConfigEntry<T> {
+public abstract class AbstractConfigEntry<T> implements ConfigEntry<T>, EntryConverter<T> {
 
     protected final CommentedPropertyConfig config;
     protected String[] comments;
@@ -97,23 +97,6 @@ public abstract class AbstractConfigEntry<T> implements ConfigEntry<T> {
         config.saveSync();
         return this;
     }
-
-    /**
-     * Deserializes the string to {@link T}
-     *
-     * @param str the string to deserialize
-     * @return the deserialized value
-     */
-    @Nullable
-    abstract T deserialize(String str);
-
-    /**
-     * Serializes the value to a string
-     *
-     * @param val the value to serialize
-     * @return the serialized value
-     */
-    abstract String serialize(T val);
 
     /**
      * Fixes the value if it is invalid or out of bounds

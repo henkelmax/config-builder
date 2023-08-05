@@ -11,14 +11,14 @@ public class StringConfigEntry extends AbstractConfigEntry<String> {
         reload();
     }
 
-    @Override
     @Nullable
-    String deserialize(String str) {
+    @Override
+    public String deserialize(String str) {
         return str;
     }
 
     @Override
-    String serialize(String val) {
+    public String serialize(String val) {
         return val;
     }
 }

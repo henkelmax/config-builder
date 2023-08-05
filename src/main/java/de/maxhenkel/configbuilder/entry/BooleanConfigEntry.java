@@ -11,8 +11,8 @@ public class BooleanConfigEntry extends AbstractConfigEntry<Boolean> {
         reload();
     }
 
-    @Override
     @Nullable
+    @Override
     public Boolean deserialize(String str) {
         return Boolean.valueOf(str);
     }
