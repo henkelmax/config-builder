@@ -1,14 +1,14 @@
 # Config Builder
 
-A simple Java configuration library.
+A simple Java property configuration library.
 
 ## Features
 
 - Simple API
 - Supports boolean, integer, long, double, string and enum entries
-- Uses the simple, human-readable `properties` file format
+- Uses the simple, human-readable [properties](https://en.wikipedia.org/wiki/.properties) file format
 - Automatically handles saving and loading
-- Automatically corrects invalid values
+- Automatically corrects invalid values or missing entries
 - Supports header and per-entry comments
 - Supports default values
 - Supports min and max values
