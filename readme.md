@@ -54,24 +54,24 @@ repositories {
 
 ```java
 public static void main(String[] args) {
-        Config config = ConfigBuilder.builder(Config::new)
-        .path(Paths.get("config.properties")) // The path to the config file
-        .keepOrder(true) // Whether the config should keep the order of the entries - Enabled by default
-        .removeUnused(true) // Whether the config should remove entries that were not defined in the builder - Enabled by default
-        .strict(true) // Whether the config should be strict (compliant to Javas Properties class) - Enabled by default
-        .saveAfterBuild(true) // Whether the config should be saved after building - Enabled by default
-        .build();
+    Config config = ConfigBuilder.builder(Config::new)
+    .path(Paths.get("config.properties")) // The path to the config file
+    .keepOrder(true) // Whether the config should keep the order of the entries - Enabled by default
+    .removeUnused(true) // Whether the config should remove entries that were not defined in the builder - Enabled by default
+    .strict(true) // Whether the config should be strict (compliant to Javas Properties class) - Enabled by default
+    .saveAfterBuild(true) // Whether the config should be saved after building - Enabled by default
+    .build();
 
-        System.out.println(config.booleanEntry.getKey() + ": " + config.booleanEntry.get());  // boolean: false
-        System.out.println(config.integerEntry.getKey() + ": " + config.integerEntry.get());  // integer: 10
-        System.out.println(config.longEntry.getKey() + ": " + config.longEntry.get());        // long: 10
-        System.out.println(config.doubleEntry.getKey() + ": " + config.doubleEntry.get());    // double: 10.0
-        System.out.println(config.stringEntry.getKey() + ": " + config.stringEntry.get());    // string: test123
-        System.out.println(config.enumEntry.getKey() + ": " + config.enumEntry.get());        // enum: TEST_1
+    System.out.println(config.booleanEntry.getKey() + ": " + config.booleanEntry.get());  // boolean: false
+    System.out.println(config.integerEntry.getKey() + ": " + config.integerEntry.get());  // integer: 10
+    System.out.println(config.longEntry.getKey() + ": " + config.longEntry.get());        // long: 10
+    System.out.println(config.doubleEntry.getKey() + ": " + config.doubleEntry.get());    // double: 10.0
+    System.out.println(config.stringEntry.getKey() + ": " + config.stringEntry.get());    // string: test123
+    System.out.println(config.enumEntry.getKey() + ": " + config.enumEntry.get());        // enum: TEST_1
 
-        config.integerEntry.set(15).save(); // Set the value of the integer entry to 15 and saves the config asynchronously
-        config.integerEntry.set(12).saveSync(); // Set the value of the integer entry to 12 and saves the config synchronously
-        config.integerEntry.reset().save(); // Reset the value of the integer entry to the default value and saves the config asynchronously
+    config.integerEntry.set(15).save(); // Set the value of the integer entry to 15 and saves the config asynchronously
+    config.integerEntry.set(12).saveSync(); // Set the value of the integer entry to 12 and saves the config synchronously
+    config.integerEntry.reset().save(); // Reset the value of the integer entry to the default value and saves the config asynchronously
 }
 
 static class Config {
