@@ -11,7 +11,9 @@ import java.util.function.Function;
 public interface ConfigBuilder {
 
     /**
-     * Adds header comments to the config
+     * Sets header comments for the config
+     * <br/>
+     * Calling this method multiple times will overwrite the previous header
      *
      * @param header The header comments
      * @return the config builder
