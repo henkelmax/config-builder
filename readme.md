@@ -1,4 +1,4 @@
-# Config Builder
+# ConfigBuilder
 
 A simple Java property configuration library.
 
