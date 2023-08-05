@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 public class ConfigBuilderImpl implements ConfigBuilder {
 
     protected CommentedPropertyConfig config;
-    protected List<ConfigEntryImpl<?>> entries;
+    protected List<AbstractConfigEntry<?>> entries;
     protected boolean frozen;
 
     public ConfigBuilderImpl(CommentedPropertyConfig config) {
@@ -17,7 +17,7 @@ public class ConfigBuilderImpl implements ConfigBuilder {
     }
 
     void removeUnused() {
-        List<String> existingKeys = entries.stream().map(ConfigEntryImpl::getKey).collect(Collectors.toList());
+        List<String> existingKeys = entries.stream().map(AbstractConfigEntry::getKey).collect(Collectors.toList());
         List<String> toRemove = config.getProperties().keySet().stream().filter(s -> !existingKeys.contains(s)).collect(Collectors.toList());
         for (String key : toRemove) {
             config.getProperties().remove(key);
@@ -34,7 +34,7 @@ public class ConfigBuilderImpl implements ConfigBuilder {
 
     void reloadFromDisk() {
         config.reload();
-        entries.forEach(ConfigEntryImpl::reload);
+        entries.forEach(AbstractConfigEntry::reload);
     }
 
     void freeze() {

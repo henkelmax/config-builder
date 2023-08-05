@@ -6,7 +6,7 @@ import de.maxhenkel.configbuilder.Config;
 import javax.annotation.Nullable;
 import java.util.Objects;
 
-public abstract class ConfigEntryImpl<T> implements ConfigEntry<T> {
+public abstract class AbstractConfigEntry<T> implements ConfigEntry<T> {
 
     protected final CommentedPropertyConfig config;
     protected String[] comments;
@@ -15,7 +15,7 @@ public abstract class ConfigEntryImpl<T> implements ConfigEntry<T> {
     @Nullable
     protected T value;
 
-    public ConfigEntryImpl(CommentedPropertyConfig config, String[] comments, String key, T def) {
+    public AbstractConfigEntry(CommentedPropertyConfig config, String[] comments, String key, T def) {
         Objects.requireNonNull(config);
         Objects.requireNonNull(comments);
         Objects.requireNonNull(key);
@@ -49,7 +49,7 @@ public abstract class ConfigEntryImpl<T> implements ConfigEntry<T> {
     }
 
     @Override
-    public ConfigEntryImpl<T> set(T value) {
+    public AbstractConfigEntry<T> set(T value) {
         if (this.value.equals(value)) {
             return this;
         }
@@ -64,7 +64,7 @@ public abstract class ConfigEntryImpl<T> implements ConfigEntry<T> {
     }
 
     @Override
-    public ConfigEntryImpl<T> comment(String... comments) {
+    public AbstractConfigEntry<T> comment(String... comments) {
         this.comments = comments;
         syncEntryToProperties();
         return this;

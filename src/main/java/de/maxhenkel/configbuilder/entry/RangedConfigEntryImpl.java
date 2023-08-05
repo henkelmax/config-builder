@@ -5,7 +5,7 @@ import de.maxhenkel.configbuilder.CommentedPropertyConfig;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public abstract class RangedConfigEntryImpl<T> extends ConfigEntryImpl<T> implements RangedConfigEntry<T> {
+public abstract class RangedConfigEntryImpl<T> extends AbstractConfigEntry<T> implements RangedConfigEntry<T> {
 
     @Nonnull
     protected final T min;

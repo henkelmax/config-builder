@@ -4,7 +4,7 @@ import de.maxhenkel.configbuilder.CommentedPropertyConfig;
 
 import javax.annotation.Nullable;
 
-public class EnumConfigEntry<E extends Enum<E>> extends ConfigEntryImpl<E> {
+public class EnumConfigEntry<E extends Enum<E>> extends AbstractConfigEntry<E> {
 
     protected Class<E> enumClass;
 

@@ -4,7 +4,7 @@ import de.maxhenkel.configbuilder.CommentedPropertyConfig;
 
 import javax.annotation.Nullable;
 
-public class BooleanConfigEntry extends ConfigEntryImpl<Boolean> {
+public class BooleanConfigEntry extends AbstractConfigEntry<Boolean> {
 
     public BooleanConfigEntry(CommentedPropertyConfig config, String[] comments, String key, Boolean def) {
         super(config, comments, key, def);

@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class IntegerListConfigEntry extends ConfigEntryImpl<List<Integer>> {
+public class IntegerListConfigEntry extends AbstractConfigEntry<List<Integer>> {
 
     public IntegerListConfigEntry(CommentedPropertyConfig config, String[] comments, String key, List<Integer> def) {
         super(config, comments, key, def);
