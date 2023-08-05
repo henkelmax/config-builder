@@ -4,7 +4,6 @@ import de.maxhenkel.configbuilder.CommentedPropertyConfig;
 import de.maxhenkel.configbuilder.Config;
 
 import javax.annotation.Nullable;
-import java.util.Arrays;
 import java.util.Objects;
 
 public abstract class ConfigEntryImpl<T> implements ConfigEntry<T> {
@@ -37,7 +36,7 @@ public abstract class ConfigEntryImpl<T> implements ConfigEntry<T> {
                 reset();
             } else {
                 value = fixValue(val);
-                config.getProperties().setComments(key, Arrays.asList(comments));
+                syncEntryToProperties();
             }
         } else {
             reset();
@@ -55,8 +54,7 @@ public abstract class ConfigEntryImpl<T> implements ConfigEntry<T> {
             return this;
         }
         this.value = fixValue(value);
-        String serialized = serialize(this.value);
-        config.getProperties().set(key, serialized, comments);
+        syncEntryToProperties();
         return this;
     }
 
@@ -68,7 +66,7 @@ public abstract class ConfigEntryImpl<T> implements ConfigEntry<T> {
     @Override
     public ConfigEntryImpl<T> comment(String... comments) {
         this.comments = comments;
-        config.getProperties().setComments(key, Arrays.asList(comments));
+        syncEntryToProperties();
         return this;
     }
 
@@ -80,8 +78,12 @@ public abstract class ConfigEntryImpl<T> implements ConfigEntry<T> {
     @Override
     public ConfigEntry<T> reset() {
         value = def;
-        config.getProperties().set(key, serialize(def), comments);
+        syncEntryToProperties();
         return this;
+    }
+
+    private void syncEntryToProperties() {
+        config.getProperties().set(key, serialize(value), comments);
     }
 
     @Override
