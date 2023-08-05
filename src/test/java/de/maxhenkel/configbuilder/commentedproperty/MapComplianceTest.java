@@ -57,6 +57,7 @@ public class MapComplianceTest {
         properties.set("test", "123");
         assertEquals("123", properties.get("test"));
         assertNull(properties.get("test1"));
+        assertNull(properties.get(new Object()));
     }
 
     @Test
@@ -73,6 +74,7 @@ public class MapComplianceTest {
         CommentedProperties properties = new CommentedProperties();
         properties.set("test", "123");
         assertEquals("123", properties.remove("test"));
+        assertNull(properties.remove("test1"));
     }
 
     @Test
