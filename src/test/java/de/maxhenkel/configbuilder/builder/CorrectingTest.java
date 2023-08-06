@@ -9,7 +9,6 @@ import org.junit.jupiter.api.io.TempDir;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Arrays;
 import java.util.function.Consumer;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -89,14 +88,6 @@ public class CorrectingTest {
     void invalidDouble(@TempDir Path tempDir) throws IOException {
         test(tempDir, "#test\ndouble=20.0a", "double=0.0", builder -> {
             builder.doubleEntry("double", 0D, -10D, 10D);
-        });
-    }
-
-    @Test
-    @DisplayName("Invalid integer list")
-    void invalidIntegerList(@TempDir Path tempDir) throws IOException {
-        test(tempDir, "#test\nint_list=0,a,2", "int_list=0,2", builder -> {
-            builder.integerListEntry("int_list", Arrays.asList(0, 1, 2));
         });
     }
 

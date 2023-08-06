@@ -106,14 +106,6 @@ public class ConfigBuilderImpl implements ConfigBuilder {
     }
 
     @Override
-    public IntegerListConfigEntry integerListEntry(String key, List<Integer> def, String... comments) {
-        checkFrozen();
-        IntegerListConfigEntry entry = new IntegerListConfigEntry(config, comments, key, def);
-        entries.add(entry);
-        return entry;
-    }
-
-    @Override
     public <E extends Enum<E>> EnumConfigEntry<E> enumEntry(String key, E def, String... comments) {
         checkFrozen();
         EnumConfigEntry<E> entry = new EnumConfigEntry(config, comments, key, def, def.getClass());

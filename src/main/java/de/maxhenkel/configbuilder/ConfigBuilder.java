@@ -5,7 +5,6 @@ import de.maxhenkel.configbuilder.entry.*;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.nio.file.Path;
-import java.util.List;
 import java.util.function.Function;
 
 public interface ConfigBuilder {
@@ -135,16 +134,6 @@ public interface ConfigBuilder {
      * @return the config entry
      */
     StringConfigEntry stringEntry(String key, String def, String... comments);
-
-    /**
-     * Adds an integer list entry
-     *
-     * @param key      the config key
-     * @param def      the default value
-     * @param comments the comments
-     * @return the config entry
-     */
-    IntegerListConfigEntry integerListEntry(String key, List<Integer> def, String... comments);
 
     /**
      * Adds an enum entry

@@ -8,9 +8,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 import java.nio.file.Path;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -170,25 +167,6 @@ public class DataTypesTest {
         TestUtils.reloadBuilder(builder);
 
         assertEquals("abc!=\"", entry.get());
-    }
-
-    @Test
-    @DisplayName("Set integer list")
-    void setIntList(@TempDir Path tempDir) {
-        ConfigBuilderImpl builder = TestUtils.createBuilderWithRandomPath(tempDir);
-        ConfigEntry<List<Integer>> entry = builder.integerListEntry("int_list_test", Arrays.asList(-1, 0, 1, Integer.MIN_VALUE, Integer.MAX_VALUE));
-        TestUtils.finalizeBuilder(builder);
-
-        assertEquals(Arrays.asList(-1, 0, 1, Integer.MIN_VALUE, Integer.MAX_VALUE), entry.get());
-        entry.set(Collections.emptyList());
-        // Set again to cover the case where the value is already set to the same value
-        entry.set(Collections.emptyList()).saveSync();
-        assertEquals(Collections.emptyList(), entry.get());
-        entry.set(Arrays.asList(1, 2, 3, Integer.MIN_VALUE, Integer.MAX_VALUE)).saveSync();
-
-        TestUtils.reloadBuilder(builder);
-
-        assertEquals(Arrays.asList(1, 2, 3, Integer.MIN_VALUE, Integer.MAX_VALUE), entry.get());
     }
 
     @Test
