@@ -46,7 +46,7 @@ public class OrderTest {
             ConfigEntry<String> two = builder.stringEntry("test_two", "two");
             ConfigEntry<Boolean> three = builder.booleanEntry("test_three", true);
             return null;
-        }).path(config).keepOrder(true).saveSyncAfterBuild(true).build();
+        }).path(config).keepOrder(true).saveSyncAfterBuild(true).removeUnused(false).build();
 
         ConfigBuilderImpl builder = TestUtils.createBuilder(config);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
