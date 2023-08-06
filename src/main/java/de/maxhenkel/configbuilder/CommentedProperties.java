@@ -21,14 +21,14 @@ public class CommentedProperties implements Map<String, String> {
     }
 
     /**
-     * Creates a new instance with strict mode enabled
+     * Creates a new instance with strict mode enabled.
      */
     public CommentedProperties() {
         this(true);
     }
 
     /**
-     * Adds the provided comment to the header comments
+     * Adds the provided comment to the header comments.
      *
      * @param comment the comment
      * @return this
@@ -39,7 +39,7 @@ public class CommentedProperties implements Map<String, String> {
     }
 
     /**
-     * Clears all previously set header comments and adds the provided comments
+     * Clears all previously set header comments and adds the provided comments.
      *
      * @param headerComments the header comments
      * @return this
@@ -118,7 +118,7 @@ public class CommentedProperties implements Map<String, String> {
     }
 
     /**
-     * Loads the properties from the provided file
+     * Loads the properties from the provided file.
      *
      * @param inputStream the input stream to read from
      * @return this
@@ -276,7 +276,7 @@ public class CommentedProperties implements Map<String, String> {
     }
 
     /**
-     * Saves the properties to the provided output stream
+     * Saves the properties to the provided output stream.
      *
      * @param outputStream the output stream to write to
      * @return this
@@ -438,7 +438,7 @@ public class CommentedProperties implements Map<String, String> {
     }
 
     /**
-     * Adds all the properties from the provided map
+     * Adds all the properties from the provided map.
      *
      * @param map the map
      * @deprecated use {@link #set(String, String, String...)} instead
@@ -452,7 +452,7 @@ public class CommentedProperties implements Map<String, String> {
     }
 
     /**
-     * Clears all the properties and comments
+     * Clears all the properties and comments.
      */
     @Override
     public void clear() {

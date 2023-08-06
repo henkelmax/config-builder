@@ -48,9 +48,9 @@ public class CommentedPropertyConfig implements Config {
         }
 
         /**
-         * Sets the path to the config
+         * Sets the path to the config.
          * <br/>
-         * If this value is not set, the config will be in-memory only and not saved to disk
+         * If this value is not set, the config will be in-memory only and not saved to disk.
          *
          * @param path the path
          * @return the builder
@@ -61,9 +61,9 @@ public class CommentedPropertyConfig implements Config {
         }
 
         /**
-         * A strict config is compliant to Javas {@link java.util.Properties} class
+         * A strict config is compliant to Javas {@link java.util.Properties} class.
          * <br/>
-         * This value is <code>true</code> by default
+         * This value is <code>true</code> by default.
          *
          * @param strict whether the config should be strict
          * @return the builder
@@ -112,7 +112,7 @@ public class CommentedPropertyConfig implements Config {
     }
 
     /**
-     * Loads the config from the disk if the path is set and the file exists
+     * Loads the config from the disk if the path is set and the file exists.
      *
      * @throws IOException if an IO error occurs
      */
@@ -128,7 +128,7 @@ public class CommentedPropertyConfig implements Config {
     }
 
     /**
-     * Clears the config and reloads all entries from the disk
+     * Clears the config and reloads all entries from the disk.
      */
     public void reload() {
         properties.clear();
@@ -140,9 +140,9 @@ public class CommentedPropertyConfig implements Config {
     }
 
     /**
-     * Saves the config to the disk synchronously
+     * Saves the config to the disk synchronously.
      * <br/>
-     * Note that this method blocks the current thread until the config is saved
+     * Note that this method blocks the current thread until the config is saved.
      */
     public synchronized void saveSync() {
         if (path == null) {
@@ -162,9 +162,9 @@ public class CommentedPropertyConfig implements Config {
     }
 
     /**
-     * Saves the config to the disk asynchronously
+     * Saves the config to the disk asynchronously.
      * <br/>
-     * Note that reloading the config immediately after saving it asynchronously may cause issues
+     * Note that reloading the config immediately after saving it asynchronously may cause issues.
      */
     public void save() {
         if (path == null) {

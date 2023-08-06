@@ -5,7 +5,7 @@ import javax.annotation.Nullable;
 public interface EntrySerializer<T> {
 
     /**
-     * Deserializes the string to {@link T}
+     * Deserializes the string to {@link T}.
      *
      * @param str the string to deserialize
      * @return the deserialized value
@@ -14,7 +14,7 @@ public interface EntrySerializer<T> {
     T deserialize(String str);
 
     /**
-     * Serializes the value to a string
+     * Serializes the value to a string.
      *
      * @param val the value to serialize
      * @return the serialized value

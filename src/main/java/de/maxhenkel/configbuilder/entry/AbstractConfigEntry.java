@@ -27,7 +27,7 @@ public abstract class AbstractConfigEntry<T> implements ConfigEntry<T>, EntrySer
     }
 
     /**
-     * Loads the config entry from the config or sets the default value if it doesn't exist
+     * Loads the config entry from the config or sets the default value if it doesn't exist.
      */
     public void reload() {
         if (config.getProperties().containsKey(key)) {
@@ -107,7 +107,7 @@ public abstract class AbstractConfigEntry<T> implements ConfigEntry<T>, EntrySer
     }
 
     /**
-     * Fixes the value if it is invalid or out of bounds
+     * Fixes the value if it is invalid or out of bounds.
      *
      * @param value the value to fix
      * @return the fixed value

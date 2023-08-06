@@ -5,7 +5,7 @@ import de.maxhenkel.configbuilder.Config;
 public interface ConfigEntry<T> {
 
     /**
-     * Sets the comments of the config entry
+     * Sets the comments of the config entry.
      *
      * @param comments the comments
      * @return the config entry
@@ -23,7 +23,7 @@ public interface ConfigEntry<T> {
     T get();
 
     /**
-     * Sets the value of the config entry
+     * Sets the value of the config entry.
      *
      * @param value the new value
      * @return the config entry
@@ -36,25 +36,25 @@ public interface ConfigEntry<T> {
     String getKey();
 
     /**
-     * Resets the config entry to the default value
+     * Resets the config entry to the default value.
      *
      * @return the config entry
      */
     ConfigEntry<T> reset();
 
     /**
-     * Saves the config to the disk asynchronously
+     * Saves the config to the disk asynchronously.
      * <br/>
-     * Note that reloading the config immediately after saving it asynchronously may cause issues
+     * Note that reloading the config immediately after saving it asynchronously may cause issues.
      *
      * @return the config entry
      */
     ConfigEntry<T> save();
 
     /**
-     * Saves the whole config to the disk synchronously
+     * Saves the whole config to the disk synchronously.
      * <br/>
-     * Note that this method blocks the current thread until the config is saved
+     * Note that this method blocks the current thread until the config is saved.
      *
      * @return the config entry
      */

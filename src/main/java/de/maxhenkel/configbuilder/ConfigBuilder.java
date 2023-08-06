@@ -10,9 +10,9 @@ import java.util.function.Function;
 public interface ConfigBuilder {
 
     /**
-     * Sets header comments for the config
+     * Sets header comments for the config.
      * <br/>
-     * Calling this method multiple times will overwrite the previous header
+     * Calling this method multiple times will overwrite the previous header.
      *
      * @param header The header comments
      * @return the config builder
@@ -20,7 +20,7 @@ public interface ConfigBuilder {
     ConfigBuilder header(String... header);
 
     /**
-     * Adds a string entry
+     * Adds a string entry.
      *
      * @param key      the config key
      * @param def      the default value
@@ -30,7 +30,7 @@ public interface ConfigBuilder {
     BooleanConfigEntry booleanEntry(String key, Boolean def, String... comments);
 
     /**
-     * Adds an integer entry
+     * Adds an integer entry.
      *
      * @param key      the config key
      * @param def      the default value
@@ -42,7 +42,7 @@ public interface ConfigBuilder {
     IntegerConfigEntry integerEntry(String key, Integer def, Integer min, Integer max, String... comments);
 
     /**
-     * Adds an integer entry
+     * Adds an integer entry.
      *
      * @param key      the config key
      * @param def      the default value
@@ -54,7 +54,7 @@ public interface ConfigBuilder {
     }
 
     /**
-     * Adds a long entry
+     * Adds a long entry.
      *
      * @param key      the config key
      * @param def      the default value
@@ -66,7 +66,7 @@ public interface ConfigBuilder {
     LongConfigEntry longEntry(String key, Long def, Long min, Long max, String... comments);
 
     /**
-     * Adds a long entry
+     * Adds a long entry.
      *
      * @param key      the config key
      * @param def      the default value
@@ -78,7 +78,7 @@ public interface ConfigBuilder {
     }
 
     /**
-     * Adds a double entry
+     * Adds a double entry.
      *
      * @param key      the config key
      * @param def      the default value
@@ -90,7 +90,7 @@ public interface ConfigBuilder {
     DoubleConfigEntry doubleEntry(String key, Double def, Double min, Double max, String... comments);
 
     /**
-     * Adds a double entry
+     * Adds a double entry.
      *
      * @param key      the config key
      * @param def      the default value
@@ -102,7 +102,7 @@ public interface ConfigBuilder {
     }
 
     /**
-     * Adds a float entry
+     * Adds a float entry.
      *
      * @param key      the config key
      * @param def      the default value
@@ -114,7 +114,7 @@ public interface ConfigBuilder {
     FloatConfigEntry floatEntry(String key, Float def, Float min, Float max, String... comments);
 
     /**
-     * Adds a float entry
+     * Adds a float entry.
      *
      * @param key      the config key
      * @param def      the default value
@@ -126,7 +126,7 @@ public interface ConfigBuilder {
     }
 
     /**
-     * Adds a string entry
+     * Adds a string entry.
      *
      * @param key      the config key
      * @param def      the default value
@@ -136,7 +136,7 @@ public interface ConfigBuilder {
     StringConfigEntry stringEntry(String key, String def, String... comments);
 
     /**
-     * Adds an enum entry
+     * Adds an enum entry.
      *
      * @param key      the config key
      * @param def      the default value
@@ -174,7 +174,7 @@ public interface ConfigBuilder {
     <T> ConfigEntry<T> entry(String key, T def, String... comments);
 
     /**
-     * Creates a new builder to build a config
+     * Creates a new builder to build a config.
      *
      * @param builderConsumer the builder consumer
      * @param <C>             your config class
@@ -205,7 +205,7 @@ public interface ConfigBuilder {
         }
 
         /**
-         * If the path is not specified, the config will be in-memory only and not saved anywhere
+         * If the path is not specified, the config will be in-memory only and not saved anywhere.
          *
          * @param path the storage location of the config file
          * @return the builder
@@ -216,7 +216,7 @@ public interface ConfigBuilder {
         }
 
         /**
-         * This value is <code>false</code> by default
+         * This value is <code>false</code> by default.
          *
          * @param removeUnused whether unused entries should be removed
          * @return the builder
@@ -227,9 +227,9 @@ public interface ConfigBuilder {
         }
 
         /**
-         * A strict config is compliant to Javas {@link java.util.Properties} class
+         * A strict config is compliant to Javas {@link java.util.Properties} class.
          * <br/>
-         * This value is <code>true</code> by default
+         * This value is <code>true</code> by default.
          *
          * @param strict whether the config should be strict
          * @return the builder
@@ -240,9 +240,9 @@ public interface ConfigBuilder {
         }
 
         /**
-         * This will only get applied to the config file if {@link #saveAfterBuild} is true or the config is saved manually
+         * This will only get applied to the config file if {@link #saveAfterBuild} is true or the config is saved manually.
          * <br/>
-         * This value is <code>true</code> by default
+         * This value is <code>true</code> by default.
          *
          * @param keepOrder whether the config should keep the order of the entries
          * @return the builder
@@ -253,9 +253,9 @@ public interface ConfigBuilder {
         }
 
         /**
-         * This value is <code>true</code> by default
+         * This value is <code>true</code> by default.
          * <br/>
-         * Setting this to <code>true</code> will set {@link #saveSyncAfterBuild} to <code>false</code>
+         * Setting this to <code>true</code> will set {@link #saveSyncAfterBuild} to <code>false</code>.
          *
          * @param saveAfterBuild whether the config should be saved asynchronously after building
          * @return the builder
@@ -269,9 +269,9 @@ public interface ConfigBuilder {
         }
 
         /**
-         * This value is <code>false</code> by default
+         * This value is <code>false</code> by default.
          * <br/>
-         * Setting this to <code>true</code> will set {@link #saveAfterBuild} to <code>false</code>
+         * Setting this to <code>true</code> will set {@link #saveAfterBuild} to <code>false</code>.
          *
          * @param saveSyncAfterBuild whether the config should be saved synchronously after building
          * @return the builder
@@ -285,7 +285,7 @@ public interface ConfigBuilder {
         }
 
         /**
-         * Builds the config
+         * Builds the config.
          *
          * @return the config
          * @throws IllegalStateException if {@link #path} was not set
