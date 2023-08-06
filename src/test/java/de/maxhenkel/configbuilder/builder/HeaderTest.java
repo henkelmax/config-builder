@@ -1,5 +1,7 @@
-package de.maxhenkel.configbuilder;
+package de.maxhenkel.configbuilder.builder;
 
+import de.maxhenkel.configbuilder.ConfigBuilderImpl;
+import de.maxhenkel.configbuilder.TestUtils;
 import de.maxhenkel.configbuilder.entry.ConfigEntry;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -21,7 +23,7 @@ public class HeaderTest {
         ConfigBuilderImpl builder = TestUtils.createBuilder(configPath);
         builder.header("Header 1", "Header 2", "Header 3\nHeader 4");
         ConfigEntry<String> entry = builder.stringEntry("test", "123");
-        builder.config.saveSync();
+        TestUtils.finalizeBuilder(builder);
 
         List<String> strings = Files.readAllLines(configPath);
 

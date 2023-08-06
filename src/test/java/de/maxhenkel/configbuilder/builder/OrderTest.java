@@ -1,5 +1,9 @@
-package de.maxhenkel.configbuilder;
+package de.maxhenkel.configbuilder.builder;
 
+import de.maxhenkel.configbuilder.CommentedProperties;
+import de.maxhenkel.configbuilder.ConfigBuilder;
+import de.maxhenkel.configbuilder.ConfigBuilderImpl;
+import de.maxhenkel.configbuilder.TestUtils;
 import de.maxhenkel.configbuilder.entry.ConfigEntry;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -46,7 +50,7 @@ public class OrderTest {
 
         ConfigBuilderImpl builder = TestUtils.createBuilder(config);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        builder.config.properties.save(baos);
+        TestUtils.getProperties(builder).save(baos);
 
         StringBuilder expectedOutput = new StringBuilder();
         expectedOutput.append("test_one=1");
@@ -92,7 +96,7 @@ public class OrderTest {
 
         ConfigBuilderImpl builder = TestUtils.createBuilder(config);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        builder.config.properties.save(baos);
+        TestUtils.getProperties(builder).save(baos);
 
         StringBuilder expectedOutput = new StringBuilder();
         expectedOutput.append("test_one=1");

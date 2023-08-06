@@ -1,6 +1,9 @@
-package de.maxhenkel.configbuilder;
+package de.maxhenkel.configbuilder.builder;
 
+import de.maxhenkel.configbuilder.ConfigBuilder;
+import de.maxhenkel.configbuilder.TestUtils;
 import de.maxhenkel.configbuilder.entry.ConfigEntry;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -43,13 +46,13 @@ public class BuilderTest {
     }
 
     private void checkConfig(Config cfg) {
-        assertEquals(false, cfg.booleanEntry.get());
-        assertEquals(10, cfg.integerEntry.get());
-        assertEquals(10L, cfg.longEntry.get());
-        assertEquals(10F, cfg.floatEntry.get());
-        assertEquals(10D, cfg.doubleEntry.get());
-        assertEquals("test123", cfg.stringEntry.get());
-        assertEquals(TestEnum.TEST_1, cfg.enumEntry.get());
+        Assertions.assertEquals(false, cfg.booleanEntry.get());
+        Assertions.assertEquals(10, cfg.integerEntry.get());
+        Assertions.assertEquals(10L, cfg.longEntry.get());
+        Assertions.assertEquals(10F, cfg.floatEntry.get());
+        Assertions.assertEquals(10D, cfg.doubleEntry.get());
+        Assertions.assertEquals("test123", cfg.stringEntry.get());
+        Assertions.assertEquals(TestEnum.TEST_1, cfg.enumEntry.get());
 
         Map<String, String> entries = cfg.stringEntry.getConfig().getEntries();
 
@@ -62,28 +65,28 @@ public class BuilderTest {
         assertEquals("test123", entries.get("string"));
         assertEquals("TEST_1", entries.get("enum"));
 
-        assertEquals(false, cfg.booleanEntry.getDefault());
-        assertEquals(10, cfg.integerEntry.getDefault());
-        assertEquals(10L, cfg.longEntry.getDefault());
-        assertEquals(10F, cfg.floatEntry.getDefault());
-        assertEquals(10D, cfg.doubleEntry.getDefault());
-        assertEquals("test123", cfg.stringEntry.getDefault());
-        assertEquals(TestEnum.TEST_1, cfg.enumEntry.getDefault());
+        Assertions.assertEquals(false, cfg.booleanEntry.getDefault());
+        Assertions.assertEquals(10, cfg.integerEntry.getDefault());
+        Assertions.assertEquals(10L, cfg.longEntry.getDefault());
+        Assertions.assertEquals(10F, cfg.floatEntry.getDefault());
+        Assertions.assertEquals(10D, cfg.doubleEntry.getDefault());
+        Assertions.assertEquals("test123", cfg.stringEntry.getDefault());
+        Assertions.assertEquals(TestEnum.TEST_1, cfg.enumEntry.getDefault());
 
-        assertEquals(1, cfg.booleanEntry.getComments().length);
-        assertEquals("Test boolean", cfg.booleanEntry.getComments()[0]);
-        assertEquals(1, cfg.integerEntry.getComments().length);
-        assertEquals("Test integer", cfg.integerEntry.getComments()[0]);
-        assertEquals(1, cfg.longEntry.getComments().length);
-        assertEquals("Test long", cfg.longEntry.getComments()[0]);
-        assertEquals(1, cfg.floatEntry.getComments().length);
-        assertEquals("Test float", cfg.floatEntry.getComments()[0]);
-        assertEquals(1, cfg.doubleEntry.getComments().length);
-        assertEquals("Test double", cfg.doubleEntry.getComments()[0]);
-        assertEquals(1, cfg.stringEntry.getComments().length);
-        assertEquals("Test string", cfg.stringEntry.getComments()[0]);
-        assertEquals(1, cfg.enumEntry.getComments().length);
-        assertEquals("Test enum", cfg.enumEntry.getComments()[0]);
+        Assertions.assertEquals(1, cfg.booleanEntry.getComments().length);
+        Assertions.assertEquals("Test boolean", cfg.booleanEntry.getComments()[0]);
+        Assertions.assertEquals(1, cfg.integerEntry.getComments().length);
+        Assertions.assertEquals("Test integer", cfg.integerEntry.getComments()[0]);
+        Assertions.assertEquals(1, cfg.longEntry.getComments().length);
+        Assertions.assertEquals("Test long", cfg.longEntry.getComments()[0]);
+        Assertions.assertEquals(1, cfg.floatEntry.getComments().length);
+        Assertions.assertEquals("Test float", cfg.floatEntry.getComments()[0]);
+        Assertions.assertEquals(1, cfg.doubleEntry.getComments().length);
+        Assertions.assertEquals("Test double", cfg.doubleEntry.getComments()[0]);
+        Assertions.assertEquals(1, cfg.stringEntry.getComments().length);
+        Assertions.assertEquals("Test string", cfg.stringEntry.getComments()[0]);
+        Assertions.assertEquals(1, cfg.enumEntry.getComments().length);
+        Assertions.assertEquals("Test enum", cfg.enumEntry.getComments()[0]);
     }
 
     private static class Config {

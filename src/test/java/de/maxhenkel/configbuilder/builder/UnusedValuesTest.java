@@ -1,5 +1,7 @@
-package de.maxhenkel.configbuilder;
+package de.maxhenkel.configbuilder.builder;
 
+import de.maxhenkel.configbuilder.ConfigBuilderImpl;
+import de.maxhenkel.configbuilder.TestUtils;
 import de.maxhenkel.configbuilder.entry.ConfigEntry;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -23,8 +25,8 @@ public class UnusedValuesTest {
 
         ConfigBuilderImpl builder = TestUtils.createBuilder(configPath);
         ConfigEntry<String> entry = builder.stringEntry("test", "");
-        builder.removeUnused();
-        builder.config.saveSync();
+        TestUtils.removeUnused(builder);
+        TestUtils.finalizeBuilder(builder);
 
         assertEquals("test123", entry.get());
 

@@ -1,5 +1,7 @@
-package de.maxhenkel.configbuilder;
+package de.maxhenkel.configbuilder.builder;
 
+import de.maxhenkel.configbuilder.ConfigBuilderImpl;
+import de.maxhenkel.configbuilder.TestUtils;
 import de.maxhenkel.configbuilder.entry.ConfigEntry;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -19,7 +21,7 @@ public class DataTypesTest {
     void setBoolean(@TempDir Path tempDir) {
         ConfigBuilderImpl builder = TestUtils.createBuilderWithRandomPath(tempDir);
         ConfigEntry<Boolean> entry = builder.booleanEntry("boolean_test", false);
-        builder.config.saveSync();
+        TestUtils.finalizeBuilder(builder);
 
         assertEquals(false, entry.get());
         entry.set(true);
@@ -27,7 +29,7 @@ public class DataTypesTest {
         entry.set(true).saveSync();
         assertEquals(true, entry.get());
 
-        builder.reloadFromDisk();
+        TestUtils.reloadBuilder(builder);
 
         assertEquals(true, entry.get());
     }
@@ -37,7 +39,7 @@ public class DataTypesTest {
     void setInteger(@TempDir Path tempDir) {
         ConfigBuilderImpl builder = TestUtils.createBuilderWithRandomPath(tempDir);
         ConfigEntry<Integer> entry = builder.integerEntry("integer_test", 10, 0, 20);
-        builder.config.saveSync();
+        TestUtils.finalizeBuilder(builder);
 
         assertEquals(10, entry.get());
         entry.set(15);
@@ -45,7 +47,7 @@ public class DataTypesTest {
         entry.set(15).saveSync();
         assertEquals(15, entry.get());
 
-        builder.reloadFromDisk();
+        TestUtils.reloadBuilder(builder);
 
         assertEquals(15, entry.get());
 
@@ -54,7 +56,7 @@ public class DataTypesTest {
 
         entry.set(30).saveSync();
 
-        builder.reloadFromDisk();
+        TestUtils.reloadBuilder(builder);
 
         assertEquals(20, entry.get());
 
@@ -67,7 +69,7 @@ public class DataTypesTest {
     void setLong(@TempDir Path tempDir) {
         ConfigBuilderImpl builder = TestUtils.createBuilderWithRandomPath(tempDir);
         ConfigEntry<Long> entry = builder.longEntry("long_test", Long.MAX_VALUE - 100L, 0L, Long.MAX_VALUE - 50L);
-        builder.config.saveSync();
+        TestUtils.finalizeBuilder(builder);
 
         assertEquals(Long.MAX_VALUE - 100L, entry.get());
         entry.set(Long.MAX_VALUE - 75L);
@@ -75,7 +77,7 @@ public class DataTypesTest {
         entry.set(Long.MAX_VALUE - 75L).saveSync();
         assertEquals(Long.MAX_VALUE - 75L, entry.get());
 
-        builder.reloadFromDisk();
+        TestUtils.reloadBuilder(builder);
 
         assertEquals(Long.MAX_VALUE - 75L, entry.get());
 
@@ -84,7 +86,7 @@ public class DataTypesTest {
 
         entry.set(Long.MAX_VALUE).saveSync();
 
-        builder.reloadFromDisk();
+        TestUtils.reloadBuilder(builder);
 
         assertEquals(Long.MAX_VALUE - 50L, entry.get());
 
@@ -97,7 +99,7 @@ public class DataTypesTest {
     void setFloat(@TempDir Path tempDir) {
         ConfigBuilderImpl builder = TestUtils.createBuilderWithRandomPath(tempDir);
         ConfigEntry<Float> entry = builder.floatEntry("float_test", 10F, 0F, 20F);
-        builder.config.saveSync();
+        TestUtils.finalizeBuilder(builder);
 
         assertEquals(10F, entry.get());
         entry.set(15F);
@@ -105,7 +107,7 @@ public class DataTypesTest {
         entry.set(15F).saveSync();
         assertEquals(15F, entry.get());
 
-        builder.reloadFromDisk();
+        TestUtils.reloadBuilder(builder);
 
         assertEquals(15F, entry.get());
 
@@ -114,7 +116,7 @@ public class DataTypesTest {
 
         entry.set(30F).saveSync();
 
-        builder.reloadFromDisk();
+        TestUtils.reloadBuilder(builder);
 
         assertEquals(20F, entry.get());
 
@@ -127,7 +129,7 @@ public class DataTypesTest {
     void setDouble(@TempDir Path tempDir) {
         ConfigBuilderImpl builder = TestUtils.createBuilderWithRandomPath(tempDir);
         ConfigEntry<Double> entry = builder.doubleEntry("double_test", 10D, 0D, 20D);
-        builder.config.saveSync();
+        TestUtils.finalizeBuilder(builder);
 
         assertEquals(10D, entry.get());
         entry.set(15D);
@@ -135,7 +137,7 @@ public class DataTypesTest {
         entry.set(15D).saveSync();
         assertEquals(15D, entry.get());
 
-        builder.reloadFromDisk();
+        TestUtils.reloadBuilder(builder);
 
         assertEquals(15D, entry.get());
 
@@ -144,7 +146,7 @@ public class DataTypesTest {
 
         entry.set(30D).saveSync();
 
-        builder.reloadFromDisk();
+        TestUtils.reloadBuilder(builder);
 
         assertEquals(20D, entry.get());
 
@@ -157,7 +159,7 @@ public class DataTypesTest {
     void setString(@TempDir Path tempDir) {
         ConfigBuilderImpl builder = TestUtils.createBuilderWithRandomPath(tempDir);
         ConfigEntry<String> entry = builder.stringEntry("string_test", "test123=!\"");
-        builder.config.saveSync();
+        TestUtils.finalizeBuilder(builder);
 
         assertEquals("test123=!\"", entry.get());
         entry.set("abc!=\"");
@@ -165,7 +167,7 @@ public class DataTypesTest {
         entry.set("abc!=\"").saveSync();
         assertEquals("abc!=\"", entry.get());
 
-        builder.reloadFromDisk();
+        TestUtils.reloadBuilder(builder);
 
         assertEquals("abc!=\"", entry.get());
     }
@@ -175,7 +177,7 @@ public class DataTypesTest {
     void setIntList(@TempDir Path tempDir) {
         ConfigBuilderImpl builder = TestUtils.createBuilderWithRandomPath(tempDir);
         ConfigEntry<List<Integer>> entry = builder.integerListEntry("int_list_test", Arrays.asList(-1, 0, 1, Integer.MIN_VALUE, Integer.MAX_VALUE));
-        builder.config.saveSync();
+        TestUtils.finalizeBuilder(builder);
 
         assertEquals(Arrays.asList(-1, 0, 1, Integer.MIN_VALUE, Integer.MAX_VALUE), entry.get());
         entry.set(Collections.emptyList());
@@ -184,7 +186,7 @@ public class DataTypesTest {
         assertEquals(Collections.emptyList(), entry.get());
         entry.set(Arrays.asList(1, 2, 3, Integer.MIN_VALUE, Integer.MAX_VALUE)).saveSync();
 
-        builder.reloadFromDisk();
+        TestUtils.reloadBuilder(builder);
 
         assertEquals(Arrays.asList(1, 2, 3, Integer.MIN_VALUE, Integer.MAX_VALUE), entry.get());
     }
@@ -194,7 +196,7 @@ public class DataTypesTest {
     void setEnum(@TempDir Path tempDir) {
         ConfigBuilderImpl builder = TestUtils.createBuilderWithRandomPath(tempDir);
         ConfigEntry<TestEnum> entry = builder.enumEntry("enum_test", TestEnum.TEST_2);
-        builder.config.saveSync();
+        TestUtils.finalizeBuilder(builder);
 
         assertEquals(TestEnum.TEST_2, entry.get());
         entry.set(TestEnum.TEST_4).saveSync();
@@ -202,7 +204,7 @@ public class DataTypesTest {
         assertEquals(TestEnum.TEST_4, entry.get());
         entry.set(TestEnum.TEST_3).saveSync();
 
-        builder.reloadFromDisk();
+        TestUtils.reloadBuilder(builder);
 
         assertEquals(TestEnum.TEST_3, entry.get());
     }

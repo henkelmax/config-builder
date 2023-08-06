@@ -1,5 +1,7 @@
-package de.maxhenkel.configbuilder;
+package de.maxhenkel.configbuilder.builder;
 
+import de.maxhenkel.configbuilder.ConfigBuilderImpl;
+import de.maxhenkel.configbuilder.TestUtils;
 import de.maxhenkel.configbuilder.entry.DoubleConfigEntry;
 import de.maxhenkel.configbuilder.entry.FloatConfigEntry;
 import de.maxhenkel.configbuilder.entry.IntegerConfigEntry;

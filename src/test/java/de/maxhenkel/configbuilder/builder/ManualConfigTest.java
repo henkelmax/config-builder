@@ -1,5 +1,7 @@
-package de.maxhenkel.configbuilder;
+package de.maxhenkel.configbuilder.builder;
 
+import de.maxhenkel.configbuilder.ConfigBuilderImpl;
+import de.maxhenkel.configbuilder.TestUtils;
 import de.maxhenkel.configbuilder.entry.ConfigEntry;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -23,12 +25,12 @@ public class ManualConfigTest {
 
         ConfigBuilderImpl builder = TestUtils.createBuilder(configPath);
         ConfigEntry<String> entry = builder.stringEntry("test", "");
-        builder.config.saveSync();
+        TestUtils.finalizeBuilder(builder);
 
         assertEquals("test123", entry.get());
         entry.set("abc").saveSync();
 
-        builder.reloadFromDisk();
+        TestUtils.reloadBuilder(builder);
 
         assertEquals("abc", entry.get());
     }
@@ -39,7 +41,7 @@ public class ManualConfigTest {
         Path configPath = TestUtils.randomConfigName(tempDir);
         ConfigBuilderImpl builder = TestUtils.createBuilder(configPath);
         ConfigEntry<String> entry = builder.stringEntry("test", "test123");
-        builder.config.saveSync();
+        TestUtils.finalizeBuilder(builder);
 
         assertEquals("test123", entry.get());
 

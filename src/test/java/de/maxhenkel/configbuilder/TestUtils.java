@@ -29,4 +29,20 @@ public class TestUtils {
         return createBuilder(null);
     }
 
+    public static void finalizeBuilder(ConfigBuilderImpl builder) {
+        builder.config.saveSync();
+    }
+
+    public static void reloadBuilder(ConfigBuilderImpl builder) {
+        builder.reloadFromDisk();
+    }
+
+    public static CommentedProperties getProperties(ConfigBuilderImpl builder) {
+        return builder.config.getProperties();
+    }
+
+    public static void removeUnused(ConfigBuilderImpl builder) {
+        builder.removeUnused();
+    }
+
 }
