@@ -125,3 +125,63 @@ string=test123
 # This is an enum entry
 enum=TEST_1
 ```
+
+## Adding Custom Entry Types
+
+Annotate your custom type with `@EntrySerializable` and provide a serializer class that implements `EntrySerializer`.
+
+```java
+@EntrySerializable(CustomTypeEntrySerializer.class)
+public class CustomType {
+    private final String value;
+    
+    public CustomType(String value) {
+        this.value = value;
+    }
+    
+    public String getValue() {
+        return value;
+    }
+}
+```
+
+Your serializer class should have a no-args constructor and implement `EntrySerializer`.
+Invalid conversions should return `null`.
+
+```java
+public class CustomTypeEntrySerializer implements EntrySerializer<CustomType> {
+    @Nullable
+    @Override
+    public CustomType deserialize(String str) {
+        return new CustomType(str);
+    }
+    
+    @Nullable
+    @Override
+    public String serialize(CustomType val) {
+        return val.getValue();
+    }
+}
+```
+
+Custom types can be used like this:
+
+```java
+public static void main(String[] args) {
+    Config config = ConfigBuilder.builder(Config::new)
+            .path(Paths.get("config.properties"))
+            .build();
+
+    System.out.println(config.customType.get().getValue()); // Prints "Test"
+    config.customType.set(new CustomType("Test2"));
+    System.out.println(config.customType.get().getValue()); // Prints "Test2"
+}
+
+public class Config {
+    public final ConfigEntry<CustomType> customType;
+
+    public Config(ConfigBuilder builder) {
+        customType = builder.entry("test", new CustomType("Test")).comment("This is a custom entry");
+    }
+}
+```
