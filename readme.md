@@ -130,6 +130,7 @@ enum=TEST_1
 ## Adding Custom Entry Types
 
 Annotate your custom type with `@EntrySerializable` and provide a serializer class that implements `EntrySerializer`.
+Custom types should always be immutable.
 
 ```java
 @EntrySerializable(CustomTypeEntrySerializer.class)

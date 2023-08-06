@@ -140,7 +140,7 @@ public class GenericTypeTest {
         });
     }
 
-    private <T> ConfigEntry<T> testGenericValue(Path tempDir, T value1, T value2) {
+    public static <T> ConfigEntry<T> testGenericValue(Path tempDir, T value1, T value2) {
         ConfigBuilderImpl builder = TestUtils.createBuilderWithRandomPath(tempDir);
         ConfigEntry<T> entry = builder.entry("test", value1);
         TestUtils.finalizeBuilder(builder);
