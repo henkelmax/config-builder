@@ -17,6 +17,7 @@ public class BooleanConfigEntry extends AbstractConfigEntry<Boolean> {
         return Boolean.valueOf(str);
     }
 
+    @Nullable
     @Override
     public String serialize(Boolean val) {
         return String.valueOf(val);

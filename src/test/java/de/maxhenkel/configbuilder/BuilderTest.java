@@ -13,22 +13,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class BuilderTest {
 
     @Test
-    @DisplayName("Old builder")
-    void oldBuilder(@TempDir Path tempDir) {
-        Path configPath = TestUtils.randomConfigName(tempDir);
-        Config cfg = ConfigBuilder.build(configPath, Config::new);
-        checkConfig(cfg);
-    }
-
-    @Test
-    @DisplayName("Old builder remove unused")
-    void oldBuilderRemoveUnused(@TempDir Path tempDir) {
-        Path configPath = TestUtils.randomConfigName(tempDir);
-        Config cfg = ConfigBuilder.build(configPath, true, Config::new);
-        checkConfig(cfg);
-    }
-
-    @Test
     @DisplayName("Builder with saving")
     void builder(@TempDir Path tempDir) {
         Path configPath = TestUtils.randomConfigName(tempDir);

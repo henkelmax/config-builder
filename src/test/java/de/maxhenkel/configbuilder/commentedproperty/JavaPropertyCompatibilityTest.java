@@ -11,7 +11,7 @@ import java.util.Properties;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class CompatibilityTest {
+public class JavaPropertyCompatibilityTest {
 
     @Test
     @DisplayName("Test compatibility")

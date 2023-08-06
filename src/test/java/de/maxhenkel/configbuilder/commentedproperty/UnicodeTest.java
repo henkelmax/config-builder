@@ -10,7 +10,7 @@ import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class InputOutputTest {
+public class UnicodeTest {
 
     @Test
     @DisplayName("All characters")

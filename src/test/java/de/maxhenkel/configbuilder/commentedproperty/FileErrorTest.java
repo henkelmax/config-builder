@@ -28,7 +28,7 @@ public class FileErrorTest {
     @Test
     @DisplayName("Exception when reloading")
     void reload(@TempDir Path tempDir) throws IOException {
-        CommentedPropertyConfig config = new CommentedPropertyConfig(TestUtils.randomConfigName(tempDir));
+        CommentedPropertyConfig config = CommentedPropertyConfig.builder().path(TestUtils.randomConfigName(tempDir)).build();
 
         CommentedPropertyConfig spyConfig = spy(config);
         doThrow(IOException.class).when(spyConfig).load();
@@ -45,7 +45,7 @@ public class FileErrorTest {
         doReturn(mockPath).when(mockPath).toAbsolutePath();
         doThrow(UncheckedIOException.class).when(mockPath).getParent();
 
-        CommentedPropertyConfig config = new CommentedPropertyConfig(mockPath);
+        CommentedPropertyConfig config = CommentedPropertyConfig.builder().path(mockPath).build();
 
         assertDoesNotThrow(config::saveSync);
     }
@@ -54,7 +54,7 @@ public class FileErrorTest {
     @DisplayName("Exception when saving")
     void save(@TempDir Path tempDir) throws NoSuchFieldException, IllegalAccessException {
         Path path = TestUtils.randomConfigName(tempDir);
-        CommentedPropertyConfig config = new CommentedPropertyConfig(path);
+        CommentedPropertyConfig config = CommentedPropertyConfig.builder().path(path).build();
         Field propertiesField = CommentedPropertyConfig.class.getDeclaredField("properties");
         propertiesField.setAccessible(true);
         CommentedProperties properties = spy((CommentedProperties) propertiesField.get(config));

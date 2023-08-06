@@ -39,6 +39,7 @@ public class DoubleConfigEntry extends AbstractRangedConfigEntry<Double> {
         }
     }
 
+    @Nullable
     @Override
     public String serialize(Double val) {
         return String.valueOf(val);

@@ -10,13 +10,37 @@ import java.nio.charset.StandardCharsets;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class InvalidTest {
+public class ExceptionTest {
 
     @Test
     @DisplayName("Nonexistent entry")
     void nonexistentEntry() {
         CommentedProperties properties = new CommentedProperties();
         assertNull(properties.get("test"));
+    }
+
+    @Test
+    @DisplayName("null key")
+    void nullKey() {
+        CommentedProperties properties = new CommentedProperties();
+        assertThrowsExactly(NullPointerException.class, () -> {
+            properties.set(null, "test");
+        });
+        assertThrowsExactly(NullPointerException.class, () -> {
+            properties.put(null, "test");
+        });
+    }
+
+    @Test
+    @DisplayName("null value")
+    void nullValue() {
+        CommentedProperties properties = new CommentedProperties();
+        assertThrowsExactly(NullPointerException.class, () -> {
+            properties.set("test", null);
+        });
+        assertThrowsExactly(NullPointerException.class, () -> {
+            properties.put("test", null);
+        });
     }
 
     @Test

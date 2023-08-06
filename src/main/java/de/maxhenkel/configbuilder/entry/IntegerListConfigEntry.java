@@ -14,8 +14,8 @@ public class IntegerListConfigEntry extends AbstractConfigEntry<List<Integer>> {
         reload();
     }
 
-    @Override
     @Nullable
+    @Override
     public List<Integer> deserialize(String str) {
         List<Integer> list = new ArrayList<>();
         String[] split = str.split(",");
@@ -28,6 +28,7 @@ public class IntegerListConfigEntry extends AbstractConfigEntry<List<Integer>> {
         return list;
     }
 
+    @Nullable
     @Override
     public String serialize(List<Integer> val) {
         return val.stream().map(String::valueOf).collect(Collectors.joining(","));

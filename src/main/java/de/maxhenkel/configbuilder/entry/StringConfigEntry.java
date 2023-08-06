@@ -17,6 +17,7 @@ public class StringConfigEntry extends AbstractConfigEntry<String> {
         return str;
     }
 
+    @Nullable
     @Override
     public String serialize(String val) {
         return val;

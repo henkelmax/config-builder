@@ -39,6 +39,7 @@ public class LongConfigEntry extends AbstractRangedConfigEntry<Long> {
         }
     }
 
+    @Nullable
     @Override
     public String serialize(Long val) {
         return String.valueOf(val);

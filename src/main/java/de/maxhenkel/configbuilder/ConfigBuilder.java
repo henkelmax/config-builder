@@ -158,32 +158,31 @@ public interface ConfigBuilder {
     <E extends Enum<E>> EnumConfigEntry<E> enumEntry(String key, E def, String... comments);
 
     /**
-     * @param path            the storage location of the config file
-     * @param builderConsumer the builder consumer
-     * @param <C>             your config class
-     * @return the config
-     * @deprecated Use {@link #builder(Function)} instead
+     * Adds an entry for the given type.
+     * <br/>
+     * You can add custom types by implementing an {@link EntrySerializer} and annotating the type with {@link EntrySerializable}.
+     * <br/>
+     * Example:
+     * <pre>{@code
+     * @EntrySerializable(MyTypeSerializer.class)
+     * public class MyType {
+     *     ...
+     * }
+     * public class MyTypeSerializer implements EntrySerializer<MyType> {
+     *     ...
+     * }
+     * }</pre>
+     * <br/>
+     * Note that your {@link EntrySerializer} must have a no-argument constructor, otherwise an {@link IllegalArgumentException} will be thrown.
+     *
+     * @param key      the config key
+     * @param def      the default value
+     * @param comments the comments
+     * @param <T>      the type
+     * @return the config entry
+     * @throws IllegalArgumentException if the type is not supported
      */
-    @Deprecated
-    static <C> C build(Path path, Function<ConfigBuilder, C> builderConsumer) {
-        return build(path, false, builderConsumer);
-    }
-
-    /**
-     * @param path            the storage location of the config file
-     * @param removeUnused    whether unused entries should be removed
-     * @param builderConsumer the builder consumer
-     * @param <C>             your config class
-     * @return the config
-     * @deprecated Use {@link #builder(Function)} instead
-     */
-    @Deprecated
-    static <C> C build(Path path, boolean removeUnused, Function<ConfigBuilder, C> builderConsumer) {
-        return ConfigBuilder.builder(builderConsumer)
-                .path(path)
-                .removeUnused(removeUnused)
-                .build();
-    }
+    <T> ConfigEntry<T> entry(String key, T def, String... comments);
 
     /**
      * Creates a new builder to build a config

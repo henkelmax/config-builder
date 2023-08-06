@@ -6,7 +6,7 @@ import de.maxhenkel.configbuilder.Config;
 import javax.annotation.Nullable;
 import java.util.Objects;
 
-public abstract class AbstractConfigEntry<T> implements ConfigEntry<T>, EntryConverter<T> {
+public abstract class AbstractConfigEntry<T> implements ConfigEntry<T>, EntrySerializer<T> {
 
     protected final CommentedPropertyConfig config;
     protected String[] comments;
@@ -50,7 +50,7 @@ public abstract class AbstractConfigEntry<T> implements ConfigEntry<T>, EntryCon
 
     @Override
     public AbstractConfigEntry<T> set(T value) {
-        if (this.value.equals(value)) {
+        if (this.value != null && this.value.equals(value)) {
             return this;
         }
         this.value = fixValue(value);
@@ -83,7 +83,12 @@ public abstract class AbstractConfigEntry<T> implements ConfigEntry<T>, EntryCon
     }
 
     private void syncEntryToProperties() {
-        config.getProperties().set(key, serialize(value), comments);
+        String serialized = serialize(value);
+        if (serialized == null) {
+            reset();
+            return;
+        }
+        config.getProperties().set(key, serialized, comments);
     }
 
     @Override

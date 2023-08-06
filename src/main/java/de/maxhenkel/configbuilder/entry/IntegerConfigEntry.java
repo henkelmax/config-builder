@@ -39,6 +39,7 @@ public class IntegerConfigEntry extends AbstractRangedConfigEntry<Integer> {
         }
     }
 
+    @Nullable
     @Override
     public String serialize(Integer val) {
         return String.valueOf(val);

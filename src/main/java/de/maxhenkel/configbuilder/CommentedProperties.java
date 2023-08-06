@@ -66,6 +66,7 @@ public class CommentedProperties implements Map<String, String> {
      */
     @Nullable
     public String get(String key) {
+        Objects.requireNonNull(key);
         Property property = properties.get(key);
         if (property == null) {
             return null;
@@ -79,6 +80,7 @@ public class CommentedProperties implements Map<String, String> {
      */
     @Nullable
     public List<String> getComments(String key) {
+        Objects.requireNonNull(key);
         Property property = properties.get(key);
         if (property == null) {
             return null;
@@ -92,6 +94,7 @@ public class CommentedProperties implements Map<String, String> {
      * @return this
      */
     public CommentedProperties setComments(String key, List<String> comments) {
+        Objects.requireNonNull(key);
         Property property = properties.get(key);
         if (property == null) {
             properties.put(key, new Property(comments, ""));
@@ -108,6 +111,8 @@ public class CommentedProperties implements Map<String, String> {
      * @return this
      */
     public CommentedProperties set(String key, String value, String... comments) {
+        Objects.requireNonNull(key);
+        Objects.requireNonNull(value);
         properties.put(key, new Property(Arrays.asList(comments), value));
         return this;
     }

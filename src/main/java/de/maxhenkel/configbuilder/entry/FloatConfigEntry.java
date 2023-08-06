@@ -39,6 +39,7 @@ public class FloatConfigEntry extends AbstractRangedConfigEntry<Float> {
         }
     }
 
+    @Nullable
     @Override
     public String serialize(Float val) {
         return String.valueOf(val);

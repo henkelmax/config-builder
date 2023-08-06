@@ -32,19 +32,6 @@ public class CommentedPropertyConfig implements Config {
     }
 
     /**
-     * @param path the path to the config
-     * @deprecated use {@link #builder()} instead
-     */
-    @Deprecated
-    public CommentedPropertyConfig(@Nullable Path path) {
-        if (path != null) {
-            this.path = path.toAbsolutePath();
-        }
-        this.properties = new CommentedProperties();
-        reload();
-    }
-
-    /**
      * @return the builder
      */
     public static Builder builder() {

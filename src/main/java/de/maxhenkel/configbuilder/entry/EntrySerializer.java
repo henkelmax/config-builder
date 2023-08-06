@@ -2,7 +2,7 @@ package de.maxhenkel.configbuilder.entry;
 
 import javax.annotation.Nullable;
 
-public interface EntryConverter<T> {
+public interface EntrySerializer<T> {
 
     /**
      * Deserializes the string to {@link T}
@@ -19,6 +19,7 @@ public interface EntryConverter<T> {
      * @param val the value to serialize
      * @return the serialized value
      */
+    @Nullable
     String serialize(T val);
 
 }

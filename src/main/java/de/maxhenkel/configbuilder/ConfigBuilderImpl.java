@@ -2,6 +2,9 @@ package de.maxhenkel.configbuilder;
 
 import de.maxhenkel.configbuilder.entry.*;
 
+import javax.annotation.Nullable;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -116,6 +119,51 @@ public class ConfigBuilderImpl implements ConfigBuilder {
         EnumConfigEntry<E> entry = new EnumConfigEntry(config, comments, key, def, def.getClass());
         entries.add(entry);
         return entry;
+    }
+
+    @Override
+    public <T> ConfigEntry<T> entry(String key, T def, String... comments) {
+        ConfigEntry<T> builtin = getBuiltin(key, def, comments);
+        if (builtin != null) {
+            return builtin;
+        }
+        try {
+            EntrySerializable annotation = def.getClass().getDeclaredAnnotation(EntrySerializable.class);
+            if (annotation == null) {
+                throw new IllegalArgumentException(String.format("Unsupported data type: %s", def.getClass().getName()));
+            }
+            Class<? extends EntrySerializer<?>> entryConverterClass = annotation.value();
+            Constructor<? extends EntrySerializer<?>> constructor = entryConverterClass.getDeclaredConstructor();
+            constructor.setAccessible(true);
+            constructor.newInstance();
+
+            EntrySerializer<T> converter = (EntrySerializer<T>) constructor.newInstance();
+            return new GenericConfigEntry<>(config, comments, key, def, converter);
+        } catch (InvocationTargetException | InstantiationException | IllegalAccessException |
+                 NoSuchMethodException e) {
+            throw new IllegalArgumentException("Could not instantiate entry converter", e);
+        }
+    }
+
+    @Nullable
+    private <T> ConfigEntry<T> getBuiltin(String key, T def, String... comments) {
+        Class<T> clazz = (Class<T>) def.getClass();
+        if (Boolean.class.equals(clazz)) {
+            return (ConfigEntry<T>) new BooleanConfigEntry(config, comments, key, (Boolean) def);
+        } else if (Integer.class.equals(clazz)) {
+            return (ConfigEntry<T>) new IntegerConfigEntry(config, comments, key, (Integer) def, null, null);
+        } else if (Long.class.equals(clazz)) {
+            return (ConfigEntry<T>) new LongConfigEntry(config, comments, key, (Long) def, null, null);
+        } else if (Float.class.equals(clazz)) {
+            return (ConfigEntry<T>) new FloatConfigEntry(config, comments, key, (Float) def, null, null);
+        } else if (Double.class.equals(clazz)) {
+            return (ConfigEntry<T>) new DoubleConfigEntry(config, comments, key, (Double) def, null, null);
+        } else if (String.class.equals(clazz)) {
+            return (ConfigEntry<T>) new StringConfigEntry(config, comments, key, (String) def);
+        } else if (Enum.class.isAssignableFrom(clazz)) {
+            return (ConfigEntry<T>) new EnumConfigEntry(config, comments, key, (Enum) def, clazz);
+        }
+        return null;
     }
 
 }

@@ -24,6 +24,7 @@ public class EnumConfigEntry<E extends Enum<E>> extends AbstractConfigEntry<E> {
         }
     }
 
+    @Nullable
     @Override
     public String serialize(E val) {
         return val.name();
