@@ -197,8 +197,8 @@ public interface ConfigBuilder {
 
         private Builder(@Nonnull Function<ConfigBuilder, C> builderConsumer) {
             this.builderConsumer = builderConsumer;
-            this.removeUnused = false;
-            this.strict = true;
+            this.removeUnused = true;
+            this.strict = false;
             this.keepOrder = true;
             this.saveAfterBuild = true;
             this.saveSyncAfterBuild = false;
@@ -216,7 +216,7 @@ public interface ConfigBuilder {
         }
 
         /**
-         * This value is <code>false</code> by default.
+         * This value is <code>true</code> by default.
          *
          * @param removeUnused whether unused entries should be removed
          * @return the builder
@@ -227,9 +227,9 @@ public interface ConfigBuilder {
         }
 
         /**
-         * A strict config is compliant to Javas {@link java.util.Properties} class.
+         * A strict config behaves exactly like Javas {@link java.util.Properties} implementation.
          * <br/>
-         * This value is <code>true</code> by default.
+         * This value is <code>false</code> by default.
          *
          * @param strict whether the config should be strict
          * @return the builder

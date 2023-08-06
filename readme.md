@@ -59,7 +59,7 @@ public static void main(String[] args) {
         .path(Paths.get("config.properties")) // The path to the config file
         .keepOrder(true) // Whether the config should keep the order of the entries - Enabled by default
         .removeUnused(true) // Whether the config should remove entries that were not defined in the builder - Enabled by default
-        .strict(true) // Whether the config should be strict (compliant to Javas Properties implementation) - Enabled by default
+        .strict(true) // Whether the config should be strict (compliant to Javas Properties implementation) - Disabled by default
         .saveAfterBuild(true) // Whether the config should be saved after building - Enabled by default
         .build();
 
