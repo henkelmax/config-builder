@@ -15,12 +15,20 @@ public class StringList implements List<String> {
 
     protected final List<String> list;
 
-    public StringList(String... values) {
+    protected StringList(String... values) {
         this(Arrays.asList(values));
     }
 
-    public StringList(List<String> values) {
+    protected StringList(List<String> values) {
         list = Collections.unmodifiableList(values);
+    }
+
+    public static StringList of(String... values) {
+        return new StringList(values);
+    }
+
+    public static StringList of(List<String> values) {
+        return new StringList(values);
     }
 
     @Override
