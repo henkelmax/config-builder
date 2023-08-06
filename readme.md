@@ -133,7 +133,7 @@ Annotate your custom type with `@EntrySerializable` and provide a serializer cla
 Custom types should always be immutable.
 
 ```java
-@EntrySerializable(CustomTypeEntrySerializer.class)
+@EntrySerializable(CustomTypeValueSerializer.class)
 public class CustomType {
     private final String value;
     
@@ -151,7 +151,7 @@ Your serializer class should have a no-args constructor and implement `EntrySeri
 Invalid conversions should return `null`.
 
 ```java
-public class CustomTypeEntrySerializer implements EntrySerializer<CustomType> {
+public class CustomTypeValueSerializer implements ValueSerializer<CustomType> {
     @Nullable
     @Override
     public CustomType deserialize(String str) {

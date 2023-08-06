@@ -6,7 +6,7 @@ import de.maxhenkel.configbuilder.Config;
 import javax.annotation.Nullable;
 import java.util.Objects;
 
-public abstract class AbstractConfigEntry<T> implements ConfigEntry<T>, EntrySerializer<T> {
+public abstract class AbstractConfigEntry<T> implements ConfigEntry<T>, ValueSerializer<T> {
 
     protected final CommentedPropertyConfig config;
     protected String[] comments;

@@ -21,13 +21,13 @@ public class StringListTest {
     @Test
     @DisplayName("Builder")
     void builder(@TempDir Path tempDir) throws IOException {
-        GenericTypeTest.testGenericValue(tempDir, StringList.of(), StringList.of("test", "123", ";", "\\;", "\\\\;"));
-        GenericTypeTest.testGenericValue(tempDir, StringList.of(), StringList.of(Arrays.asList("test", "123", ";", "\\;", "\\\\;")));
+        GenericTypeTest.testGenericValue(tempDir, StringListValue.of(), StringListValue.of("test", "123", ";", "\\;", "\\\\;"));
+        GenericTypeTest.testGenericValue(tempDir, StringListValue.of(), StringListValue.of(Arrays.asList("test", "123", ";", "\\;", "\\\\;")));
 
         Path path = TestUtils.randomConfigName(tempDir);
         Files.write(path, "test=test\\\\;123".getBytes(StandardCharsets.UTF_8));
         ConfigBuilderImpl builder = TestUtils.createBuilder(path);
-        ConfigEntry<StringList> entry = builder.entry("test", StringList.of());
+        ConfigEntry<StringListValue> entry = builder.entry("test", StringListValue.of());
         TestUtils.finalizeBuilder(builder);
         assertEquals(1, entry.get().size());
         assertEquals("test;123", entry.get().get(0));
@@ -36,7 +36,7 @@ public class StringListTest {
     @Test
     @DisplayName("List compliance")
     void listCompliance() {
-        StringList stringList = StringList.of("test", "123");
+        StringListValue stringList = StringListValue.of("test", "123");
 
         assertEquals(2, stringList.size());
         assertFalse(stringList.isEmpty());

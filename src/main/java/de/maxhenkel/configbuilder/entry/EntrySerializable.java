@@ -9,6 +9,6 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 public @interface EntrySerializable {
 
-    Class<? extends EntrySerializer<?>> value();
+    Class<? extends ValueSerializer<?>> value();
 
 }

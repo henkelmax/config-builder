@@ -6,9 +6,9 @@ import javax.annotation.Nullable;
 
 public class GenericConfigEntry<T> extends AbstractConfigEntry<T> {
 
-    protected final EntrySerializer<T> entrySerializer;
+    protected final ValueSerializer<T> entrySerializer;
 
-    public GenericConfigEntry(CommentedPropertyConfig config, String[] comments, String key, T def, EntrySerializer<T> entrySerializer) {
+    public GenericConfigEntry(CommentedPropertyConfig config, String[] comments, String key, T def, ValueSerializer<T> entrySerializer) {
         super(config, comments, key, def);
         this.entrySerializer = entrySerializer;
         reload();
@@ -26,7 +26,7 @@ public class GenericConfigEntry<T> extends AbstractConfigEntry<T> {
         return entrySerializer.serialize(val);
     }
 
-    public EntrySerializer<T> getEntrySerializer() {
+    public ValueSerializer<T> getEntrySerializer() {
         return entrySerializer;
     }
 }

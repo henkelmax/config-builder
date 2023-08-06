@@ -1,7 +1,7 @@
 package de.maxhenkel.configbuilder.custom;
 
 import de.maxhenkel.configbuilder.entry.EntrySerializable;
-import de.maxhenkel.configbuilder.entry.EntrySerializer;
+import de.maxhenkel.configbuilder.entry.ValueSerializer;
 
 import java.util.*;
 
@@ -10,25 +10,25 @@ import java.util.*;
  * <br/>
  * The list is serialized as a string with the elements separated by a semicolon.
  */
-@EntrySerializable(StringList.StringListEntrySerializer.class)
-public class StringList implements List<String> {
+@EntrySerializable(StringListValue.StringListEntrySerializer.class)
+public class StringListValue implements List<String> {
 
     protected final List<String> list;
 
-    protected StringList(String... values) {
+    protected StringListValue(String... values) {
         this(Arrays.asList(values));
     }
 
-    protected StringList(List<String> values) {
+    protected StringListValue(List<String> values) {
         list = Collections.unmodifiableList(values);
     }
 
-    public static StringList of(String... values) {
-        return new StringList(values);
+    public static StringListValue of(String... values) {
+        return new StringListValue(values);
     }
 
-    public static StringList of(List<String> values) {
-        return new StringList(values);
+    public static StringListValue of(List<String> values) {
+        return new StringListValue(values);
     }
 
     @Override
@@ -150,18 +150,18 @@ public class StringList implements List<String> {
         throw new UnsupportedOperationException("Can't modify config entries");
     }
 
-    static class StringListEntrySerializer implements EntrySerializer<StringList> {
+    static class StringListEntrySerializer implements ValueSerializer<StringListValue> {
         @Override
-        public StringList deserialize(String str) {
+        public StringListValue deserialize(String str) {
             List<String> resultList = new ArrayList<>();
             for (String s : str.split("(?<!\\\\);")) {
                 resultList.add(s.replace("\\;", ";"));
             }
-            return new StringList(resultList);
+            return new StringListValue(resultList);
         }
 
         @Override
-        public String serialize(StringList val) {
+        public String serialize(StringListValue val) {
             List<String> resultList = new ArrayList<>(val.size());
             for (String str : val) {
                 resultList.add(str.replace(";", "\\;"));

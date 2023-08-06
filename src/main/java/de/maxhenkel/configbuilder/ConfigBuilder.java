@@ -149,7 +149,7 @@ public interface ConfigBuilder {
     /**
      * Adds an entry for the given type.
      * <br/>
-     * You can add custom types by implementing an {@link EntrySerializer} and annotating the type with {@link EntrySerializable}.
+     * You can add custom types by implementing an {@link ValueSerializer} and annotating the type with {@link EntrySerializable}.
      * <br/>
      * Example:
      * <pre>{@code
@@ -162,7 +162,7 @@ public interface ConfigBuilder {
      * }
      * }</pre>
      * <br/>
-     * Note that your {@link EntrySerializer} must have a no-argument constructor, otherwise an {@link IllegalArgumentException} will be thrown.
+     * Note that your {@link ValueSerializer} must have a no-argument constructor, otherwise an {@link IllegalArgumentException} will be thrown.
      *
      * @param key      the config key
      * @param def      the default value

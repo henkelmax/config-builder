@@ -124,12 +124,12 @@ public class ConfigBuilderImpl implements ConfigBuilder {
             if (annotation == null) {
                 throw new IllegalArgumentException(String.format("Unsupported data type: %s", def.getClass().getName()));
             }
-            Class<? extends EntrySerializer<?>> entryConverterClass = annotation.value();
-            Constructor<? extends EntrySerializer<?>> constructor = entryConverterClass.getDeclaredConstructor();
+            Class<? extends ValueSerializer<?>> entryConverterClass = annotation.value();
+            Constructor<? extends ValueSerializer<?>> constructor = entryConverterClass.getDeclaredConstructor();
             constructor.setAccessible(true);
             constructor.newInstance();
 
-            EntrySerializer<T> converter = (EntrySerializer<T>) constructor.newInstance();
+            ValueSerializer<T> converter = (ValueSerializer<T>) constructor.newInstance();
             return new GenericConfigEntry<>(config, comments, key, def, converter);
         } catch (InvocationTargetException | InstantiationException | IllegalAccessException |
                  NoSuchMethodException e) {

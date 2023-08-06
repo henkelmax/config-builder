@@ -4,7 +4,7 @@ import de.maxhenkel.configbuilder.ConfigBuilderImpl;
 import de.maxhenkel.configbuilder.TestUtils;
 import de.maxhenkel.configbuilder.entry.ConfigEntry;
 import de.maxhenkel.configbuilder.entry.EntrySerializable;
-import de.maxhenkel.configbuilder.entry.EntrySerializer;
+import de.maxhenkel.configbuilder.entry.ValueSerializer;
 import de.maxhenkel.configbuilder.entry.GenericConfigEntry;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -190,7 +190,7 @@ public class GenericTypeTest {
         }
     }
 
-    static class CustomTypeEntrySerializer implements EntrySerializer<CustomType> {
+    static class CustomTypeEntrySerializer implements ValueSerializer<CustomType> {
         @Override
         public CustomType deserialize(String str) {
             if (str.equals("invalid")) {
@@ -231,7 +231,7 @@ public class GenericTypeTest {
         }
     }
 
-    static class NullCustomTypeEntrySerializer implements EntrySerializer<NullCustomType> {
+    static class NullCustomTypeEntrySerializer implements ValueSerializer<NullCustomType> {
         @Override
         public NullCustomType deserialize(String str) {
             return null;
@@ -268,7 +268,7 @@ public class GenericTypeTest {
         }
     }
 
-    static class InvalidSerializer implements EntrySerializer<CustomType> {
+    static class InvalidSerializer implements ValueSerializer<CustomType> {
 
         public InvalidSerializer(String str) {
 
