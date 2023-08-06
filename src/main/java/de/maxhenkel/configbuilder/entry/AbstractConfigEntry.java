@@ -85,6 +85,9 @@ public abstract class AbstractConfigEntry<T> implements ConfigEntry<T>, EntrySer
     private void syncEntryToProperties() {
         String serialized = serialize(value);
         if (serialized == null) {
+            if (value == def) {
+                throw new IllegalStateException("Failed to serialize default value");
+            }
             reset();
             return;
         }
