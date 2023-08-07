@@ -3,7 +3,7 @@ package de.maxhenkel.configbuilder.custom;
 import de.maxhenkel.configbuilder.ConfigBuilderImpl;
 import de.maxhenkel.configbuilder.TestUtils;
 import de.maxhenkel.configbuilder.entry.ConfigEntry;
-import de.maxhenkel.configbuilder.entry.serializer.EntrySerializable;
+import de.maxhenkel.configbuilder.entry.serializer.ValueSerializable;
 import de.maxhenkel.configbuilder.entry.GenericConfigEntry;
 import de.maxhenkel.configbuilder.entry.serializer.ValueSerializer;
 import org.junit.jupiter.api.DisplayName;
@@ -99,7 +99,7 @@ public class CustomAnnotatedTypeTest {
         });
     }
 
-    @EntrySerializable(CustomTypeEntrySerializer.class)
+    @ValueSerializable(CustomTypeEntrySerializer.class)
     static class CustomType {
         private final String value;
 
@@ -145,7 +145,7 @@ public class CustomAnnotatedTypeTest {
         }
     }
 
-    @EntrySerializable(NullCustomTypeEntrySerializer.class)
+    @ValueSerializable(NullCustomTypeEntrySerializer.class)
     static class NullCustomType {
         private final String value;
 
@@ -192,7 +192,7 @@ public class CustomAnnotatedTypeTest {
         }
     }
 
-    @EntrySerializable(InvalidSerializer.class)
+    @ValueSerializable(InvalidSerializer.class)
     static class CustomTypeWithInvalidSerializer {
         private final String value;
 

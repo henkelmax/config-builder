@@ -1,7 +1,7 @@
 package de.maxhenkel.configbuilder;
 
 import de.maxhenkel.configbuilder.entry.*;
-import de.maxhenkel.configbuilder.entry.serializer.EntrySerializable;
+import de.maxhenkel.configbuilder.entry.serializer.ValueSerializable;
 import de.maxhenkel.configbuilder.entry.serializer.ValueSerializer;
 
 import javax.annotation.Nonnull;
@@ -153,7 +153,7 @@ public interface ConfigBuilder {
     /**
      * Adds an entry for the given type.
      * <br/>
-     * You can add custom types by implementing an {@link ValueSerializer} and annotating the type with {@link EntrySerializable}.
+     * You can add custom types by implementing an {@link ValueSerializer} and annotating the type with {@link ValueSerializable}.
      * <br/>
      * Example:
      * <pre>{@code

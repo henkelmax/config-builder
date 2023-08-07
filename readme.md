@@ -216,25 +216,27 @@ public class CustomTypeValueSerializer implements ValueSerializer<CustomType> {
 
 ## Variant 2
 
-Annotate your custom type with `@EntrySerializable` and provide a serializer class that implements `EntrySerializer`.
+Annotate your custom type with `@ValueSerializable` and provide a serializer class that implements `ValueSerializer`.
 Custom types should always be immutable.
 
 ```java
-@EntrySerializable(CustomTypeValueSerializer.class)
+import de.maxhenkel.configbuilder.entry.serializer.ValueSerializable;
+
+@ValueSerializable(CustomTypeValueSerializer.class)
 public class CustomType {
     private final String value;
-    
+
     public CustomType(String value) {
         this.value = value;
     }
-    
+
     public String getValue() {
         return value;
     }
 }
 ```
 
-Your serializer class should have a no-args constructor and implement `EntrySerializer`.
+Your serializer class should have a no-args constructor and implement `ValueSerializer`.
 Invalid conversions should return `null`.
 
 ```java

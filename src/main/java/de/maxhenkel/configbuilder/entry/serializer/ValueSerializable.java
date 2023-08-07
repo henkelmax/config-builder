@@ -7,7 +7,7 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-public @interface EntrySerializable {
+public @interface ValueSerializable {
 
     Class<? extends ValueSerializer<?>> value();
 

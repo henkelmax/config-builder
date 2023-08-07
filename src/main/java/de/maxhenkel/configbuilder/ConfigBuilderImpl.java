@@ -137,7 +137,7 @@ public class ConfigBuilderImpl implements ConfigBuilder {
             return enumEntry(key, (Enum) def, comments);
         }
         try {
-            EntrySerializable annotation = def.getClass().getDeclaredAnnotation(EntrySerializable.class);
+            ValueSerializable annotation = def.getClass().getDeclaredAnnotation(ValueSerializable.class);
             if (annotation == null) {
                 throw new IllegalArgumentException(String.format("Unsupported data type: %s", def.getClass().getName()));
             }
