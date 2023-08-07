@@ -7,24 +7,24 @@ import java.util.*;
  * <br/>
  * The list is serialized as a string with the elements separated by a semicolon.
  */
-public class StringListValue implements List<String> {
+public class StringList implements List<String> {
 
     protected final List<String> list;
 
-    protected StringListValue(String... values) {
+    protected StringList(String... values) {
         this(Arrays.asList(values));
     }
 
-    protected StringListValue(List<String> values) {
+    protected StringList(List<String> values) {
         list = Collections.unmodifiableList(values);
     }
 
-    public static StringListValue of(String... values) {
-        return new StringListValue(values);
+    public static StringList of(String... values) {
+        return new StringList(values);
     }
 
-    public static StringListValue of(List<String> values) {
-        return new StringListValue(values);
+    public static StringList of(List<String> values) {
+        return new StringList(values);
     }
 
     @Override
