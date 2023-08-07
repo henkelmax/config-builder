@@ -142,7 +142,7 @@ public class Config {
 }
 ```
 
-### String Lists
+### Lists
 
 The `StringList` type is a wrapper around an immutable list.
 It is serialized as a comma separated list of strings.
@@ -159,6 +159,8 @@ public class Config {
     }
 }
 ```
+
+The same can be done with `IntegerList`.
 
 ## Adding Custom Value Types
 
