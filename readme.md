@@ -129,6 +129,60 @@ enum=TEST_1
 
 ## Adding Custom Entry Types
 
+## Variant 1
+
+Add your value serializer while creating your config builder.
+You can also override the default value serializer for an already existing type
+by adding a new value serializer for that type.
+Custom types should always be immutable.
+
+```java
+public static void main(String[] args) {
+    ConfigBuilder
+            .builder(Config::new)
+            .addValueSerializer(CustomType.class, CustomTypeValueSerializer.INSTANCE)
+            .build();
+}
+
+public class Config {
+    public final ConfigEntry<CustomType> customType;
+
+    public Config(ConfigBuilder builder) {
+        customType = builder.entry("test", new CustomType("Test")).comment("This is a custom entry");
+    }
+}
+
+public class CustomType {
+    private final String value;
+
+    public CustomType(String value) {
+        this.value = value;
+    }
+
+    public String getValue() {
+        return value;
+    }
+}
+
+public class CustomTypeValueSerializer implements ValueSerializer<CustomType> {
+    public static final CustomTypeValueSerializer INSTANCE = new CustomTypeValueSerializer();
+
+    @Nullable
+    @Override
+    public CustomType deserialize(String str) {
+        return new CustomType(str);
+    }
+
+    @Nullable
+    @Override
+    public String serialize(CustomType val) {
+        return val.getValue();
+    }
+}
+```
+
+## Variant 2
+
 Annotate your custom type with `@EntrySerializable` and provide a serializer class that implements `EntrySerializer`.
 Custom types should always be immutable.
 
