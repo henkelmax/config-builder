@@ -1,8 +1,5 @@
 package de.maxhenkel.configbuilder.custom;
 
-import de.maxhenkel.configbuilder.entry.serializer.EntrySerializable;
-import de.maxhenkel.configbuilder.entry.serializer.ValueSerializer;
-
 import java.util.*;
 
 /**
@@ -10,7 +7,6 @@ import java.util.*;
  * <br/>
  * The list is serialized as a string with the elements separated by a semicolon.
  */
-@EntrySerializable(StringListValue.StringListEntrySerializer.class)
 public class StringListValue implements List<String> {
 
     protected final List<String> list;
@@ -150,23 +146,4 @@ public class StringListValue implements List<String> {
         throw new UnsupportedOperationException("Can't modify config entries");
     }
 
-    static class StringListEntrySerializer implements ValueSerializer<StringListValue> {
-        @Override
-        public StringListValue deserialize(String str) {
-            List<String> resultList = new ArrayList<>();
-            for (String s : str.split("(?<!\\\\);")) {
-                resultList.add(s.replace("\\;", ";"));
-            }
-            return new StringListValue(resultList);
-        }
-
-        @Override
-        public String serialize(StringListValue val) {
-            List<String> resultList = new ArrayList<>(val.size());
-            for (String str : val) {
-                resultList.add(str.replace(";", "\\;"));
-            }
-            return String.join(";", resultList);
-        }
-    }
 }

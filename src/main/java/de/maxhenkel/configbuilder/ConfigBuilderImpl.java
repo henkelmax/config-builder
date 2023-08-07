@@ -1,5 +1,7 @@
 package de.maxhenkel.configbuilder;
 
+import de.maxhenkel.configbuilder.custom.StringListValue;
+import de.maxhenkel.configbuilder.custom.serializer.StringListValueSerializer;
 import de.maxhenkel.configbuilder.custom.serializer.UUIDSerializer;
 import de.maxhenkel.configbuilder.entry.*;
 import de.maxhenkel.configbuilder.entry.serializer.*;
@@ -164,7 +166,8 @@ public class ConfigBuilderImpl implements ConfigBuilder {
         valueSerializers.put(String.class, new StringSerializer());
 
         // Builtin types
-        valueSerializers.put(UUID.class, new UUIDSerializer());
+        valueSerializers.put(UUID.class, UUIDSerializer.INSTANCE);
+        valueSerializers.put(StringListValue.class, StringListValueSerializer.INSTANCE);
 
         return valueSerializers;
     }
