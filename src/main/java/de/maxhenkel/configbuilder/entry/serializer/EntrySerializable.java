@@ -1,4 +1,4 @@
-package de.maxhenkel.configbuilder.entry;
+package de.maxhenkel.configbuilder.entry.serializer;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

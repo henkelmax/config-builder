@@ -2,25 +2,29 @@ package de.maxhenkel.configbuilder.entry;
 
 import de.maxhenkel.configbuilder.CommentedPropertyConfig;
 import de.maxhenkel.configbuilder.Config;
+import de.maxhenkel.configbuilder.entry.serializer.ValueSerializer;
 
 import javax.annotation.Nullable;
 import java.util.Objects;
 
-public abstract class AbstractConfigEntry<T> implements ConfigEntry<T>, ValueSerializer<T> {
+public abstract class AbstractConfigEntry<T> implements ConfigEntry<T> {
 
     protected final CommentedPropertyConfig config;
+    protected final ValueSerializer<T> serializer;
     protected String[] comments;
     protected String key;
     protected T def;
     @Nullable
     protected T value;
 
-    public AbstractConfigEntry(CommentedPropertyConfig config, String[] comments, String key, T def) {
+    public AbstractConfigEntry(CommentedPropertyConfig config, ValueSerializer<T> serializer, String[] comments, String key, T def) {
         Objects.requireNonNull(config);
+        Objects.requireNonNull(serializer);
         Objects.requireNonNull(comments);
         Objects.requireNonNull(key);
         Objects.requireNonNull(def);
         this.config = config;
+        this.serializer = serializer;
         this.comments = comments;
         this.key = key;
         this.def = def;
@@ -31,7 +35,7 @@ public abstract class AbstractConfigEntry<T> implements ConfigEntry<T>, ValueSer
      */
     public void reload() {
         if (config.getProperties().containsKey(key)) {
-            T val = deserialize(config.getProperties().get(key));
+            T val = serializer.deserialize(config.getProperties().get(key));
             if (val == null) {
                 reset();
             } else {
@@ -83,7 +87,7 @@ public abstract class AbstractConfigEntry<T> implements ConfigEntry<T>, ValueSer
     }
 
     private void syncEntryToProperties() {
-        String serialized = serialize(value);
+        String serialized = serializer.serialize(value);
         if (serialized == null) {
             if (value == def) {
                 throw new IllegalStateException("Failed to serialize default value");
@@ -124,5 +128,9 @@ public abstract class AbstractConfigEntry<T> implements ConfigEntry<T>, ValueSer
     @Override
     public Config getConfig() {
         return config;
+    }
+
+    public ValueSerializer<T> getSerializer() {
+        return serializer;
     }
 }

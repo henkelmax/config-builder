@@ -1,25 +1,13 @@
 package de.maxhenkel.configbuilder.entry;
 
 import de.maxhenkel.configbuilder.CommentedPropertyConfig;
-
-import javax.annotation.Nullable;
+import de.maxhenkel.configbuilder.entry.serializer.ValueSerializer;
 
 public class StringConfigEntry extends AbstractConfigEntry<String> {
 
-    public StringConfigEntry(CommentedPropertyConfig config, String[] comments, String key, String def) {
-        super(config, comments, key, def);
+    public StringConfigEntry(CommentedPropertyConfig config, ValueSerializer<String> serializer, String[] comments, String key, String def) {
+        super(config, serializer, comments, key, def);
         reload();
     }
 
-    @Nullable
-    @Override
-    public String deserialize(String str) {
-        return str;
-    }
-
-    @Nullable
-    @Override
-    public String serialize(String val) {
-        return val;
-    }
 }

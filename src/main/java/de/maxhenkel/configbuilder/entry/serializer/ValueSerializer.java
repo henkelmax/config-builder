@@ -1,4 +1,4 @@
-package de.maxhenkel.configbuilder.entry;
+package de.maxhenkel.configbuilder.entry.serializer;
 
 import javax.annotation.Nullable;
 

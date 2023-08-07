@@ -1,6 +1,8 @@
 package de.maxhenkel.configbuilder;
 
+import de.maxhenkel.configbuilder.custom.serializer.UUIDSerializer;
 import de.maxhenkel.configbuilder.entry.*;
+import de.maxhenkel.configbuilder.entry.serializer.*;
 
 import javax.annotation.Nullable;
 import java.lang.reflect.Constructor;
@@ -10,12 +12,21 @@ import java.util.stream.Collectors;
 
 public class ConfigBuilderImpl implements ConfigBuilder {
 
-    protected CommentedPropertyConfig config;
+    protected final CommentedPropertyConfig config;
+    protected final Map<Class<?>, ValueSerializer<?>> valueSerializers;
     protected List<AbstractConfigEntry<?>> entries;
     protected boolean frozen;
 
     public ConfigBuilderImpl(CommentedPropertyConfig config) {
+        this(config, null);
+    }
+
+    public ConfigBuilderImpl(CommentedPropertyConfig config, @Nullable Map<Class<?>, ValueSerializer<?>> customValueSerializers) {
         this.config = config;
+        this.valueSerializers = getDefaultValueSerializers();
+        if (customValueSerializers != null) {
+            this.valueSerializers.putAll(customValueSerializers);
+        }
         this.entries = new ArrayList<>();
     }
 
@@ -60,7 +71,7 @@ public class ConfigBuilderImpl implements ConfigBuilder {
     @Override
     public BooleanConfigEntry booleanEntry(String key, Boolean def, String... comments) {
         checkFrozen();
-        BooleanConfigEntry entry = new BooleanConfigEntry(config, comments, key, def);
+        BooleanConfigEntry entry = new BooleanConfigEntry(config, BooleanSerializer.INSTANCE, comments, key, def);
         entries.add(entry);
         return entry;
     }
@@ -68,7 +79,7 @@ public class ConfigBuilderImpl implements ConfigBuilder {
     @Override
     public IntegerConfigEntry integerEntry(String key, Integer def, Integer min, Integer max, String... comments) {
         checkFrozen();
-        IntegerConfigEntry entry = new IntegerConfigEntry(config, comments, key, def, min, max);
+        IntegerConfigEntry entry = new IntegerConfigEntry(config, IntegerSerializer.INSTANCE, comments, key, def, min, max);
         entries.add(entry);
         return entry;
     }
@@ -76,7 +87,7 @@ public class ConfigBuilderImpl implements ConfigBuilder {
     @Override
     public LongConfigEntry longEntry(String key, Long def, Long min, Long max, String... comments) {
         checkFrozen();
-        LongConfigEntry entry = new LongConfigEntry(config, comments, key, def, min, max);
+        LongConfigEntry entry = new LongConfigEntry(config, LongSerializer.INSTANCE, comments, key, def, min, max);
         entries.add(entry);
         return entry;
     }
@@ -84,7 +95,7 @@ public class ConfigBuilderImpl implements ConfigBuilder {
     @Override
     public DoubleConfigEntry doubleEntry(String key, Double def, Double min, Double max, String... comments) {
         checkFrozen();
-        DoubleConfigEntry entry = new DoubleConfigEntry(config, comments, key, def, min, max);
+        DoubleConfigEntry entry = new DoubleConfigEntry(config, DoubleSerializer.INSTANCE, comments, key, def, min, max);
         entries.add(entry);
         return entry;
     }
@@ -92,7 +103,7 @@ public class ConfigBuilderImpl implements ConfigBuilder {
     @Override
     public FloatConfigEntry floatEntry(String key, Float def, Float min, Float max, String... comments) {
         checkFrozen();
-        FloatConfigEntry entry = new FloatConfigEntry(config, comments, key, def, min, max);
+        FloatConfigEntry entry = new FloatConfigEntry(config, FloatSerializer.INSTANCE, comments, key, def, min, max);
         entries.add(entry);
         return entry;
     }
@@ -100,7 +111,7 @@ public class ConfigBuilderImpl implements ConfigBuilder {
     @Override
     public StringConfigEntry stringEntry(String key, String def, String... comments) {
         checkFrozen();
-        StringConfigEntry entry = new StringConfigEntry(config, comments, key, def);
+        StringConfigEntry entry = new StringConfigEntry(config, StringSerializer.INSTANCE, comments, key, def);
         entries.add(entry);
         return entry;
     }
@@ -108,16 +119,20 @@ public class ConfigBuilderImpl implements ConfigBuilder {
     @Override
     public <E extends Enum<E>> EnumConfigEntry<E> enumEntry(String key, E def, String... comments) {
         checkFrozen();
-        EnumConfigEntry<E> entry = new EnumConfigEntry(config, comments, key, def, def.getClass());
+        EnumConfigEntry<E> entry = new EnumConfigEntry<>(config, new EnumSerializer<>((Class<E>) def.getClass()), comments, key, def);
         entries.add(entry);
         return entry;
     }
 
     @Override
     public <T> ConfigEntry<T> entry(String key, T def, String... comments) {
-        ConfigEntry<T> builtin = getBuiltin(key, def, comments);
-        if (builtin != null) {
-            return builtin;
+        checkFrozen();
+        ValueSerializer<?> valueSerializer = valueSerializers.get(def.getClass());
+        if (valueSerializer != null) {
+            return new GenericConfigEntry<>(config, (ValueSerializer<T>) valueSerializer, comments, key, def);
+        }
+        if (def instanceof Enum<?>) {
+            return enumEntry(key, (Enum) def, comments);
         }
         try {
             EntrySerializable annotation = def.getClass().getDeclaredAnnotation(EntrySerializable.class);
@@ -130,32 +145,28 @@ public class ConfigBuilderImpl implements ConfigBuilder {
             constructor.newInstance();
 
             ValueSerializer<T> converter = (ValueSerializer<T>) constructor.newInstance();
-            return new GenericConfigEntry<>(config, comments, key, def, converter);
+            return new GenericConfigEntry<>(config, converter, comments, key, def);
         } catch (InvocationTargetException | InstantiationException | IllegalAccessException |
                  NoSuchMethodException e) {
             throw new IllegalArgumentException("Could not instantiate entry serializer", e);
         }
     }
 
-    @Nullable
-    private <T> ConfigEntry<T> getBuiltin(String key, T def, String... comments) {
-        Class<T> clazz = (Class<T>) def.getClass();
-        if (Boolean.class.equals(clazz)) {
-            return (ConfigEntry<T>) new BooleanConfigEntry(config, comments, key, (Boolean) def);
-        } else if (Integer.class.equals(clazz)) {
-            return (ConfigEntry<T>) new IntegerConfigEntry(config, comments, key, (Integer) def, null, null);
-        } else if (Long.class.equals(clazz)) {
-            return (ConfigEntry<T>) new LongConfigEntry(config, comments, key, (Long) def, null, null);
-        } else if (Float.class.equals(clazz)) {
-            return (ConfigEntry<T>) new FloatConfigEntry(config, comments, key, (Float) def, null, null);
-        } else if (Double.class.equals(clazz)) {
-            return (ConfigEntry<T>) new DoubleConfigEntry(config, comments, key, (Double) def, null, null);
-        } else if (String.class.equals(clazz)) {
-            return (ConfigEntry<T>) new StringConfigEntry(config, comments, key, (String) def);
-        } else if (Enum.class.isAssignableFrom(clazz)) {
-            return (ConfigEntry<T>) new EnumConfigEntry(config, comments, key, (Enum) def, clazz);
-        }
-        return null;
+    protected static Map<Class<?>, ValueSerializer<?>> getDefaultValueSerializers() {
+        Map<Class<?>, ValueSerializer<?>> valueSerializers = new HashMap<>();
+
+        // Primitive types
+        valueSerializers.put(Boolean.class, new BooleanSerializer());
+        valueSerializers.put(Integer.class, new IntegerSerializer());
+        valueSerializers.put(Long.class, new LongSerializer());
+        valueSerializers.put(Float.class, new FloatSerializer());
+        valueSerializers.put(Double.class, new DoubleSerializer());
+        valueSerializers.put(String.class, new StringSerializer());
+
+        // Builtin types
+        valueSerializers.put(UUID.class, new UUIDSerializer());
+
+        return valueSerializers;
     }
 
 }

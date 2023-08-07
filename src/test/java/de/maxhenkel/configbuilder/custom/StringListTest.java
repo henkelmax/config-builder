@@ -2,7 +2,6 @@ package de.maxhenkel.configbuilder.custom;
 
 import de.maxhenkel.configbuilder.ConfigBuilderImpl;
 import de.maxhenkel.configbuilder.TestUtils;
-import de.maxhenkel.configbuilder.builder.GenericTypeTest;
 import de.maxhenkel.configbuilder.entry.ConfigEntry;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

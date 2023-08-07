@@ -1,14 +1,15 @@
 package de.maxhenkel.configbuilder.entry;
 
 import de.maxhenkel.configbuilder.CommentedPropertyConfig;
+import de.maxhenkel.configbuilder.entry.serializer.ValueSerializer;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class IntegerConfigEntry extends AbstractRangedConfigEntry<Integer> {
 
-    public IntegerConfigEntry(CommentedPropertyConfig config, String[] comments, String key, Integer def, Integer min, Integer max) {
-        super(config, comments, key, def, min, max);
+    public IntegerConfigEntry(CommentedPropertyConfig config, ValueSerializer<Integer> serializer, String[] comments, String key, Integer def, @Nullable Integer min, @Nullable Integer max) {
+        super(config, serializer, comments, key, def, min, max);
         reload();
     }
 
@@ -29,19 +30,4 @@ public class IntegerConfigEntry extends AbstractRangedConfigEntry<Integer> {
         return Math.max(Math.min(value, max), min);
     }
 
-    @Nullable
-    @Override
-    public Integer deserialize(String str) {
-        try {
-            return Integer.parseInt(str);
-        } catch (NumberFormatException e) {
-            return null;
-        }
-    }
-
-    @Nullable
-    @Override
-    public String serialize(Integer val) {
-        return String.valueOf(val);
-    }
 }

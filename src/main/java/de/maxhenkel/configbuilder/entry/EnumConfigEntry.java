@@ -1,32 +1,13 @@
 package de.maxhenkel.configbuilder.entry;
 
 import de.maxhenkel.configbuilder.CommentedPropertyConfig;
-
-import javax.annotation.Nullable;
+import de.maxhenkel.configbuilder.entry.serializer.ValueSerializer;
 
 public class EnumConfigEntry<E extends Enum<E>> extends AbstractConfigEntry<E> {
 
-    protected Class<E> enumClass;
-
-    public EnumConfigEntry(CommentedPropertyConfig config, String[] comments, String key, E def, Class<E> enumClass) {
-        super(config, comments, key, def);
-        this.enumClass = enumClass;
+    public EnumConfigEntry(CommentedPropertyConfig config, ValueSerializer<E> serializer, String[] comments, String key, E def) {
+        super(config, serializer, comments, key, def);
         reload();
     }
 
-    @Nullable
-    @Override
-    public E deserialize(String str) {
-        try {
-            return Enum.valueOf(enumClass, str);
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
-    @Nullable
-    @Override
-    public String serialize(E val) {
-        return val.name();
-    }
 }

@@ -1,10 +1,14 @@
 package de.maxhenkel.configbuilder;
 
 import de.maxhenkel.configbuilder.entry.*;
+import de.maxhenkel.configbuilder.entry.serializer.EntrySerializable;
+import de.maxhenkel.configbuilder.entry.serializer.ValueSerializer;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.nio.file.Path;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Function;
 
 public interface ConfigBuilder {
@@ -189,6 +193,7 @@ public interface ConfigBuilder {
         private final Function<ConfigBuilder, C> builderConsumer;
         @Nullable
         private Path path;
+        private final Map<Class<?>, ValueSerializer<?>> valueSerializers;
         private boolean removeUnused;
         private boolean strict;
         private boolean keepOrder;
@@ -197,6 +202,7 @@ public interface ConfigBuilder {
 
         private Builder(@Nonnull Function<ConfigBuilder, C> builderConsumer) {
             this.builderConsumer = builderConsumer;
+            this.valueSerializers = new HashMap<>();
             this.removeUnused = true;
             this.strict = false;
             this.keepOrder = true;
@@ -212,6 +218,21 @@ public interface ConfigBuilder {
          */
         public Builder<C> path(Path path) {
             this.path = path;
+            return this;
+        }
+
+        /**
+         * Adds a custom value serializer for the given type.
+         * <br/>
+         * Custom value serializers can override the default built-in serializers.
+         *
+         * @param type       the type to serialize
+         * @param serializer the serializer for the given type
+         * @param <T>        the type
+         * @return the builder
+         */
+        public <T> Builder<C> addValueSerializer(Class<T> type, ValueSerializer<T> serializer) {
+            valueSerializers.put(type, serializer);
             return this;
         }
 
@@ -293,7 +314,7 @@ public interface ConfigBuilder {
         public C build() {
             CommentedPropertyConfig cpc = CommentedPropertyConfig.builder().path(path).strict(strict).build();
 
-            ConfigBuilderImpl builder = new ConfigBuilderImpl(cpc);
+            ConfigBuilderImpl builder = new ConfigBuilderImpl(cpc, valueSerializers);
             C config = builderConsumer.apply(builder);
             builder.freeze();
             if (removeUnused) {

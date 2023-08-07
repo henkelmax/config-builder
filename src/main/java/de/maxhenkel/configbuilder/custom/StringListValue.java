@@ -1,7 +1,7 @@
 package de.maxhenkel.configbuilder.custom;
 
-import de.maxhenkel.configbuilder.entry.EntrySerializable;
-import de.maxhenkel.configbuilder.entry.ValueSerializer;
+import de.maxhenkel.configbuilder.entry.serializer.EntrySerializable;
+import de.maxhenkel.configbuilder.entry.serializer.ValueSerializer;
 
 import java.util.*;
 
