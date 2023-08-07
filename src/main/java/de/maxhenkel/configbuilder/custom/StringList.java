@@ -5,7 +5,7 @@ import java.util.*;
 /**
  * An unmodifiable string list that can be used as a config entry.
  * <br/>
- * The list is serialized as a string with the elements separated by a semicolon.
+ * The list is serialized as a string with the elements separated by a comma.
  */
 public class StringList extends AbstractValueList<String> {
 

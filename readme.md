@@ -145,7 +145,7 @@ public class Config {
 ### String Lists
 
 The `StringList` type is a wrapper around an immutable list.
-It is serialized as a semicolon separated list of strings.
+It is serialized as a comma separated list of strings.
 
 It can be instantiated with `StringList.of(String...)` or `StringList.of(List<String>)`.
 

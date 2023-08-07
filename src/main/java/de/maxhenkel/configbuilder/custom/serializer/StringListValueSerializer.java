@@ -13,8 +13,8 @@ public class StringListValueSerializer implements ValueSerializer<StringList> {
     @Override
     public StringList deserialize(String str) {
         List<String> resultList = new ArrayList<>();
-        for (String s : str.split("(?<!\\\\);")) {
-            resultList.add(s.replace("\\;", ";"));
+        for (String s : str.split("(?<!\\\\),")) {
+            resultList.add(s.replace("\\,", ","));
         }
         return StringList.of(resultList);
     }
@@ -23,9 +23,9 @@ public class StringListValueSerializer implements ValueSerializer<StringList> {
     public String serialize(StringList val) {
         List<String> resultList = new ArrayList<>(val.size());
         for (String str : val) {
-            resultList.add(str.replace(";", "\\;"));
+            resultList.add(str.replace(",", "\\,"));
         }
-        return String.join(";", resultList);
+        return String.join(",", resultList);
     }
 
 }
