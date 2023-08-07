@@ -20,15 +20,15 @@ public class UUIDTest {
     @Test
     @DisplayName("Builder")
     void builder(@TempDir Path tempDir) throws IOException {
-        GenericTypeTest.testGenericValue(tempDir, new UUID(0L, 0L), UUID.fromString("affa4e1e-8c9a-4a9d-9b1a-1b9f7e9e1a0a"));
+        GenericTypeTest.testGenericValue(tempDir, new UUID(0L, 0L), UUID.fromString("f63be47b-adad-4c74-83fb-a181b9110595"));
         GenericTypeTest.testGenericValue(tempDir, new UUID(0L, 0L), UUID.randomUUID());
 
         Path path = TestUtils.randomConfigName(tempDir);
-        Files.write(path, "test=affa4e1e-8c9a-4a9d-9b1a-1b9f7e9e1a0a".getBytes(StandardCharsets.UTF_8));
+        Files.write(path, "test=f63be47b-adad-4c74-83fb-a181b9110595".getBytes(StandardCharsets.UTF_8));
         ConfigBuilderImpl builder = TestUtils.createBuilder(path);
         ConfigEntry<UUID> entry = builder.entry("test", new UUID(0L, 0L));
         TestUtils.finalizeBuilder(builder);
-        assertEquals(UUID.fromString("affa4e1e-8c9a-4a9d-9b1a-1b9f7e9e1a0a"), entry.get());
+        assertEquals(UUID.fromString("f63be47b-adad-4c74-83fb-a181b9110595"), entry.get());
     }
 
 }
