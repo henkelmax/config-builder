@@ -150,7 +150,7 @@ public class ConfigBuilderImpl implements ConfigBuilder {
             return new GenericConfigEntry<>(config, converter, comments, key, def);
         } catch (InvocationTargetException | InstantiationException | IllegalAccessException |
                  NoSuchMethodException e) {
-            throw new IllegalArgumentException("Could not instantiate entry serializer", e);
+            throw new IllegalArgumentException("Could not instantiate value serializer", e);
         }
     }
 
