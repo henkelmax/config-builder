@@ -76,7 +76,7 @@ public static void main(String[] args) {
     config.integerEntry.reset().save(); // Reset the value of the integer entry to the default value and saves the config asynchronously
 }
 
-static class Config {
+public class Config {
     public final ConfigEntry<Boolean> booleanEntry;
     public final ConfigEntry<Integer> integerEntry;
     public final ConfigEntry<Long> longEntry;
@@ -127,7 +127,40 @@ string=test123
 enum=TEST_1
 ```
 
-## Adding Custom Entry Types
+## Supported Value Types
+
+Besides the types shown in the above example, there are several built-in types that are supported out of the box.
+
+### UUIDs
+
+```java
+public class Config {
+    public final ConfigEntry<UUID> uuidEntry;
+    public Config(ConfigBuilder builder) {
+        uuidEntry = builder.entry("uuid_entry", UUID.fromString("cee9f733-870b-48e3-936f-d3be5d527524")).comment("This is a UUID entry");
+    }
+}
+```
+
+### String Lists
+
+The `StringList` type is a wrapper around an immutable list.
+It is serialized as a semicolon separated list of strings.
+
+It can be instantiated with `StringList.of(String...)` or `StringList.of(List<String>)`.
+
+```java
+import de.maxhenkel.configbuilder.custom.StringList;
+
+public class Config {
+    public final ConfigEntry<StringList> stringListEntry;
+    public Config(ConfigBuilder builder) {
+        stringListEntry = builder.entry("string_list_entry", StringList.of("test", "test1", "test2")).comment("This is a String list entry");
+    }
+}
+```
+
+## Adding Custom Value Types
 
 ## Variant 1
 
