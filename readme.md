@@ -155,12 +155,31 @@ import de.maxhenkel.configbuilder.custom.StringList;
 public class Config {
     public final ConfigEntry<StringList> stringListEntry;
     public Config(ConfigBuilder builder) {
-        stringListEntry = builder.entry("string_list_entry", StringList.of("test", "test1", "test2")).comment("This is a String list entry");
+        stringListEntry = builder.entry("string_list_entry", StringList.of("test", "test1", "test2")).comment("This is a string list entry");
     }
 }
 ```
 
 The same can be done with `IntegerList`.
+
+
+### Maps
+
+The `StringMap` type is a wrapper around an immutable map.
+
+It can be instantiated with `StringMap.of(List<Map<String, String>)` or `StringMap.builder().put(key, value).putAll(map).build()`.
+
+```java
+import de.maxhenkel.configbuilder.custom.StringMap;
+
+public class Config {
+    public final ConfigEntry<StringMap> stringMapEntry;
+    public Config(ConfigBuilder builder) {
+        stringMapEntry = builder.entry("string_map_entry", StringMap.builder().put("test", "123").put("test1", "456").build()).comment("This is a string map entry");
+    }
+}
+```
+
 
 ## Adding Custom Value Types
 
