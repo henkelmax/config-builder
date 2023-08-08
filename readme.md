@@ -5,7 +5,7 @@ A simple Java property configuration library.
 ## Features
 
 - Simple API
-- Supports boolean, integer, long, float, double, string and enum entries by default
+- Supports boolean, integer, long, float, double, string and enum entries out of the box
 - Supports custom entry types
 - Uses the simple, human-readable [properties](https://en.wikipedia.org/wiki/.properties) file format
 - Automatically handles saving and loading
