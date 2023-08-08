@@ -12,7 +12,7 @@ public class StringMapValueSerializer implements ValueSerializer<StringMap> {
 
     public static final StringMapValueSerializer INSTANCE = new StringMapValueSerializer();
 
-    public static final Pattern QUOTE_ESCAPE_PATTERN = Pattern.compile("\"((?:(?![\"\\\\]).|\\\\.)*)\"=\"((?:(?![\"\\\\]).|\\\\.)*)\"");
+    public static final Pattern QUOTE_ESCAPE_PATTERN = Pattern.compile("\"((?:(?![\"\\\\]).|\\\\.)*)\"\\s*=\\s*\"((?:(?![\"\\\\]).|\\\\.)*)\"");
 
     @Nullable
     @Override

@@ -32,6 +32,7 @@ public class MapTest {
         testMap(tempDir, "\"test\"=\"1,2,3\"", StringMap.builder().put("test", "1,2,3").build());
         testMap(tempDir, "\"test\"=\"123\\\\\",\"test1\"=\"456\"", StringMap.builder().put("test", "123\\").put("test1", "456").build());
         testMap(tempDir, " , \"test\"=\"123\" , \"test1\"=\"456\" , ", "\"test\"=\"123\",\"test1\"=\"456\"", StringMap.builder().put("test", "123").put("test1", "456").build());
+        testMap(tempDir, "\"test\" = \"123\",\"test1\"  =\"456\"", "\"test\"=\"123\",\"test1\"=\"456\"", StringMap.builder().put("test", "123").put("test1", "456").build());
         testMap(tempDir, " \"test\"=\"123\" \"test1\"=\"456\" ", "\"test\"=\"123\",\"test1\"=\"456\"", StringMap.builder().put("test", "123").put("test1", "456").build());
 
         testMap(tempDir, "\"test\"=\"123\" x \"123\"=\"test\"", "", StringMap.of());
