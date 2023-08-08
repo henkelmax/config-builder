@@ -100,7 +100,7 @@ public class Config {
     }
 }
 
-enum TestEnum {
+public enum TestEnum {
     TEST_1, TEST_2, TEST_3;
 }
 ```
@@ -150,8 +150,6 @@ It is serialized as a comma separated list of strings.
 It can be instantiated with `StringList.of(String...)` or `StringList.of(List<String>)`.
 
 ```java
-import de.maxhenkel.configbuilder.custom.StringList;
-
 public class Config {
     public final ConfigEntry<StringList> stringListEntry;
     public Config(ConfigBuilder builder) {
@@ -170,8 +168,6 @@ The `StringMap` type is a wrapper around an immutable map.
 It can be instantiated with `StringMap.of(List<Map<String, String>)` or `StringMap.builder().put(key, value).putAll(map).build()`.
 
 ```java
-import de.maxhenkel.configbuilder.custom.StringMap;
-
 public class Config {
     public final ConfigEntry<StringMap> stringMapEntry;
     public Config(ConfigBuilder builder) {
@@ -241,8 +237,6 @@ Annotate your custom type with `@ValueSerializable` and provide a serializer cla
 Custom types should always be immutable.
 
 ```java
-import de.maxhenkel.configbuilder.entry.serializer.ValueSerializable;
-
 @ValueSerializable(CustomTypeValueSerializer.class)
 public class CustomType {
     private final String value;
