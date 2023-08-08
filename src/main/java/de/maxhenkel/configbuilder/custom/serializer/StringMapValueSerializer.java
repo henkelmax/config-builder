@@ -33,7 +33,7 @@ public class StringMapValueSerializer implements ValueSerializer<StringMap> {
     public String serialize(StringMap val) {
         List<String> resultList = new ArrayList<>(val.size());
         for (Map.Entry<String, String> entry : val.entrySet()) {
-            resultList.add("\"" + escape(entry.getKey()) + "\"" + "=" + "\"" + escape(entry.getValue()) + "\"");
+            resultList.add("\"" + escape(entry.getKey()) + "\"=\"" + escape(entry.getValue()) + "\"");
         }
         return String.join(",", resultList);
     }
