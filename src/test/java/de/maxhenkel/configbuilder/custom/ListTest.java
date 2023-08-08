@@ -78,6 +78,9 @@ public class ListTest {
         assertNotNull(stringList.listIterator());
         assertNotNull(stringList.listIterator(0));
         assertEquals(1, stringList.subList(0, 1).size());
+        assertFalse(stringList.equals(null));
+        assertFalse(stringList.equals(new Object()));
+        assertDoesNotThrow(() -> stringList.hashCode());
     }
 
 }

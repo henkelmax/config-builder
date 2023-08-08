@@ -132,6 +132,23 @@ public abstract class AbstractValueList<T> implements List<T> {
         return list.subList(fromIndex, toIndex);
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        AbstractValueList<?> that = (AbstractValueList<?>) o;
+        return Objects.equals(list, that.list);
+    }
+
+    @Override
+    public int hashCode() {
+        return list.hashCode();
+    }
+
     private static <T> T throwException() {
         throw new UnsupportedOperationException("Can't modify config entries");
     }

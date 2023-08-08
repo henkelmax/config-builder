@@ -2,8 +2,10 @@ package de.maxhenkel.configbuilder;
 
 import de.maxhenkel.configbuilder.custom.IntegerList;
 import de.maxhenkel.configbuilder.custom.StringList;
+import de.maxhenkel.configbuilder.custom.StringMap;
 import de.maxhenkel.configbuilder.custom.serializer.IntegerListValueSerializer;
 import de.maxhenkel.configbuilder.custom.serializer.StringListValueSerializer;
+import de.maxhenkel.configbuilder.custom.serializer.StringMapValueSerializer;
 import de.maxhenkel.configbuilder.custom.serializer.UUIDSerializer;
 import de.maxhenkel.configbuilder.entry.*;
 import de.maxhenkel.configbuilder.entry.serializer.*;
@@ -131,6 +133,12 @@ public class ConfigBuilderImpl implements ConfigBuilder {
     @Override
     public <T> ConfigEntry<T> entry(String key, T def, String... comments) {
         checkFrozen();
+        AbstractConfigEntry<T> entry = entryInternal(key, def, comments);
+        entries.add(entry);
+        return entry;
+    }
+
+    private <T> AbstractConfigEntry<T> entryInternal(String key, T def, String... comments) {
         ValueSerializer<?> valueSerializer = valueSerializers.get(def.getClass());
         if (valueSerializer != null) {
             return new GenericConfigEntry<>(config, (ValueSerializer<T>) valueSerializer, comments, key, def);
@@ -171,6 +179,7 @@ public class ConfigBuilderImpl implements ConfigBuilder {
         valueSerializers.put(UUID.class, UUIDSerializer.INSTANCE);
         valueSerializers.put(StringList.class, StringListValueSerializer.INSTANCE);
         valueSerializers.put(IntegerList.class, IntegerListValueSerializer.INSTANCE);
+        valueSerializers.put(StringMap.class, StringMapValueSerializer.INSTANCE);
 
         return valueSerializers;
     }
