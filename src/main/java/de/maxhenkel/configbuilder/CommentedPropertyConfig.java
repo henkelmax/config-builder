@@ -27,8 +27,8 @@ public class CommentedPropertyConfig implements Config {
     @Nullable
     protected Path path;
 
-    private CommentedPropertyConfig() {
-
+    protected CommentedPropertyConfig(CommentedProperties properties) {
+        this.properties = properties;
     }
 
     /**
@@ -77,11 +77,10 @@ public class CommentedPropertyConfig implements Config {
          * @return the config
          */
         public CommentedPropertyConfig build() {
-            CommentedPropertyConfig config = new CommentedPropertyConfig();
+            CommentedPropertyConfig config = new CommentedPropertyConfig(new CommentedProperties(strict));
             if (path != null) {
                 config.path = path.toAbsolutePath();
             }
-            config.properties = new CommentedProperties(strict);
             config.reload();
             return config;
         }
