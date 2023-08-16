@@ -20,6 +20,7 @@ public class CommentedPropertyConfig implements Config {
     private static final ExecutorService SAVE_EXECUTOR_SERVICE = Executors.newSingleThreadExecutor(runnable -> {
         Thread thread = new Thread(runnable);
         thread.setName("ConfigSaver");
+        thread.setDaemon(true);
         return thread;
     });
 
