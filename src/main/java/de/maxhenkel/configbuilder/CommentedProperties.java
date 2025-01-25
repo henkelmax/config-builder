@@ -164,6 +164,7 @@ public class CommentedProperties implements Map<String, String> {
         StringBuilder value = new StringBuilder();
         StringReader reader = new StringReader(line);
 
+        boolean hasBackslashAppeared = false;
         boolean isKey = true;
         boolean isComment = false;
         boolean isPrecedingBackslash = false;
@@ -192,6 +193,7 @@ public class CommentedProperties implements Map<String, String> {
             }
             if (c == '\\') {
                 isPrecedingBackslash = true;
+                hasBackslashAppeared = true;
                 continue;
             }
             if (c == '#' || c == '!') {
@@ -217,7 +219,7 @@ public class CommentedProperties implements Map<String, String> {
                 }
                 key.append((char) c);
             } else {
-                if (isStartOfValue) {
+                if (isStartOfValue && !hasBackslashAppeared) {
                     if (isWhitespace(c) || isSeparator(c)) {
                         continue;
                     }
