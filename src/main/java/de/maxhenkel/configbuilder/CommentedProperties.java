@@ -188,6 +188,7 @@ public class CommentedProperties implements Map<String, String> {
                     value.append((char) readEscapedCharacter(c, reader));
                 }
                 isPrecedingBackslash = false;
+                isStartOfValue = false;
                 continue;
             }
             if (c == '\\') {

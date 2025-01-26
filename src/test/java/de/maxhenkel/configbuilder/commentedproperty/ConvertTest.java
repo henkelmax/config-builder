@@ -82,6 +82,31 @@ public class ConvertTest {
         testConversionNoParity("\\ =#Test\ntest=123", "\\ =\\#Test\ntest=123\n");
     }
 
+    @Test
+    @DisplayName("Unicode start with whitespace")
+    void unicodeStartWithWhitespace() throws IOException {
+        testConversion("test=\\uD83D\\uDE02 \\uD83D\\uDCA9", "test=\\uD83D\\uDE02 \\uD83D\\uDCA9");
+        testConversion("test=\\uD83D\\uDE02\\uD83D\\uDCA9 \\uD83D\\uDE02", "test=\\uD83D\\uDE02\\uD83D\\uDCA9 \\uD83D\\uDE02");
+        testConversion("test=\\uD83D\\uDE02\t\\uD83D\\uDCA9", "test=\\uD83D\\uDE02\\t\\uD83D\\uDCA9");
+    }
+
+    @Test
+    @DisplayName("Whitespace with unicode start")
+    void whitespaceWithUnicodeStart() throws IOException {
+        testConversion("test= \\uD83D\\uDE02 \\uD83D\\uDCA9", "test=\\uD83D\\uDE02 \\uD83D\\uDCA9");
+        testConversion("test= \\uD83D\\uDE02\\uD83D\\uDCA9 \\uD83D\\uDE02", "test=\\uD83D\\uDE02\\uD83D\\uDCA9 \\uD83D\\uDE02");
+        testConversion("test=\t\\uD83D\\uDE02 \\uD83D\\uDCA9", "test=\\uD83D\\uDE02 \\uD83D\\uDCA9");
+        testConversion("test=\t\t\\uD83D\\uDE02 \\uD83D\\uDCA9", "test=\\uD83D\\uDE02 \\uD83D\\uDCA9");
+        testConversion("test=\t\t\\uD83D\\uDE02\t\\uD83D\\uDCA9", "test=\\uD83D\\uDE02\\t\\uD83D\\uDCA9");
+    }
+
+    @Test
+    @DisplayName("Unicode with whitespace in between")
+    void unicodeWithWhitespaceInBetween() throws IOException {
+        testConversion("test=\\uD83D \\uDE02", "test=\\uD83D \\uDE02");
+        testConversion("test= \\uD83D \\uDE02", "test=\\uD83D \\uDE02");
+    }
+
     private static void testConversion(String input, String expectedOutput) throws IOException {
         ByteArrayInputStream in1 = new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8));
         CommentedProperties commentedProperties = new CommentedProperties();
