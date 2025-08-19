@@ -25,7 +25,7 @@ A simple Java property configuration library.
 <dependency>
   <groupId>de.maxhenkel.configbuilder</groupId>
   <artifactId>configbuilder</artifactId>
-  <version>2.0.2</version>
+  <version>2.1.0</version>
 </dependency>
 
 <repositories>
@@ -40,7 +40,7 @@ A simple Java property configuration library.
 
 ``` groovy
 dependencies {
-  implementation 'de.maxhenkel.configbuilder:configbuilder:2.0.2'
+  implementation 'de.maxhenkel.configbuilder:configbuilder:2.1.0'
 }
 
 repositories {
