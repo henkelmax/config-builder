@@ -96,6 +96,14 @@ public class CommentedPropertyConfig implements Config {
     }
 
     /**
+     * @param key the config key
+     * @return if the entry exists
+     */
+    public boolean has(String key) {
+        return properties.containsKey(key);
+    }
+
+    /**
      * @param key      the config key
      * @param value    the config string value
      * @param comments the comments for the config entry

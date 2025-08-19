@@ -1,6 +1,7 @@
 package de.maxhenkel.configbuilder.builder;
 
 import de.maxhenkel.configbuilder.ConfigBuilder;
+import de.maxhenkel.configbuilder.MigratableConfig;
 import de.maxhenkel.configbuilder.TestUtils;
 import de.maxhenkel.configbuilder.entry.ConfigEntry;
 import org.junit.jupiter.api.Assertions;
@@ -10,8 +11,10 @@ import org.junit.jupiter.api.io.TempDir;
 
 import java.nio.file.Path;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Consumer;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class BuilderTest {
 
@@ -28,6 +31,55 @@ public class BuilderTest {
 
         // Wait a while until the async save is done
         TestUtils.sleep();
+    }
+
+    @Test
+    @DisplayName("Builder with migration")
+    void builderMigration(@TempDir Path tempDir) {
+        Path configPath = TestUtils.randomConfigName(tempDir);
+
+        Config cfg1 = ConfigBuilder.builder(Config::new).path(configPath).build();
+        cfg1.stringEntry.set("migrate me");
+        cfg1.enumEntry.saveSync();
+
+        TestUtils.sleep();
+
+        AtomicReference<MigratableConfig> migratableConfigRef = new AtomicReference<>();
+
+        Consumer<MigratableConfig> migration = migratableConfig -> {
+            migratableConfigRef.set(migratableConfig);
+            assertTrue(migratableConfig.has("string"));
+            assertEquals("migrate me", migratableConfig.get("string"));
+            migratableConfig.set("string", "migrated");
+            assertEquals(7, migratableConfig.getEntries().size());
+        };
+        Config cfg = ConfigBuilder.builder(Config::new).path(configPath).keepOrder(true).removeUnused(true).strict(true).migration(migration).build();
+
+        assertNotNull(migratableConfigRef.get());
+
+        assertThrowsExactly(IllegalStateException.class, () -> {
+            migratableConfigRef.get().get("string");
+        });
+
+        assertThrowsExactly(IllegalStateException.class, () -> {
+            migratableConfigRef.get().has("string");
+        });
+
+        assertThrowsExactly(IllegalStateException.class, () -> {
+            migratableConfigRef.get().set("string", "");
+        });
+
+        assertThrowsExactly(IllegalStateException.class, () -> {
+            migratableConfigRef.get().getEntries();
+        });
+
+        assertEquals("migrated", cfg.stringEntry.get());
+
+        cfg.stringEntry.saveSync();
+        TestUtils.sleep();
+
+        Config cfg2 = ConfigBuilder.builder(Config::new).path(configPath).keepOrder(true).removeUnused(true).strict(true).build();
+        assertEquals("migrated", cfg2.stringEntry.get());
     }
 
     @Test

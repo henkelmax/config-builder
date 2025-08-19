@@ -6,9 +6,11 @@ import de.maxhenkel.configbuilder.entry.serializer.ValueSerializer;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 public interface ConfigBuilder {
@@ -199,6 +201,8 @@ public interface ConfigBuilder {
         private boolean keepOrder;
         private boolean saveAfterBuild;
         private boolean saveSyncAfterBuild;
+        @Nullable
+        private Consumer<MigratableConfig> migration;
 
         private Builder(@Nonnull Function<ConfigBuilder, C> builderConsumer) {
             this.builderConsumer = builderConsumer;
@@ -306,13 +310,30 @@ public interface ConfigBuilder {
         }
 
         /**
+         * Allows you to migrate the config before applying it to all entries.
+         * <br/>
+         * Do not use the migratable config object outside this consumer.
+         *
+         * @param migration the migration
+         * @return the builder
+         */
+        public Builder<C> migration(Consumer<MigratableConfig> migration) {
+            this.migration = migration;
+            return this;
+        }
+
+        /**
          * Builds the config.
          *
          * @return the config
-         * @throws IllegalStateException if {@link #path} was not set
          */
         public C build() {
             CommentedPropertyConfig cpc = CommentedPropertyConfig.builder().path(path).strict(strict).build();
+            if (migration != null && path != null && Files.exists(path)) {
+                MigratableConfigImpl migratableConfig = new MigratableConfigImpl(cpc);
+                migration.accept(migratableConfig);
+                migratableConfig.freeze();
+            }
 
             ConfigBuilderImpl builder = new ConfigBuilderImpl(cpc, valueSerializers);
             C config = builderConsumer.apply(builder);
